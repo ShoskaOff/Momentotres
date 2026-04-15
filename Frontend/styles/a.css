@@ -6,22 +6,74 @@
 
 :root{
     --color-fondo: #F0F7FF;
-    --color-primario: #0056B3;
-    --color-texto: #1A202C;
-    --fuente-principal: Georgia, 'Times New Roman', Times, serif;
-    --detalles: #D4AF37;
-    --detalles-hover: #B8972F;
+    --color-primario: #c7c5f1;
+    --color-texto: #110202;
+    --fuente-principal: @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        font-family: "Inter", sans-serif;;
+    --titulos: @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700&display=swap');
+        font-family: "League Spartan", sans-serif;
+    --detalles: #40c4be;
+    --detalles-hover: #30bfb8; 
+
 }
 
-.barra_navegacion{
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.barra_navegacion {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(7, 1fr);
     height: 50px;
     background-color: var(--color-primario);
     font-family: var(--fuente-principal);
     color: var(--color-texto);
     align-items: center;
     text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.footer_navegacion {
+    background-color: var(--color-primario);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.footer {
+    color: var(--color-texto);
+    font-size: 14px;
+    font-family: var(--fuente-principal);
+    text-align: center;
+}
+
+.barra_inferior{
+    height: 20px;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.texto_b_inferior{
+    color: var(--color-texto);
+    font-size: 10px;
+    font-family: var(--fuente-principal);
+    text-align: center;
+}
+
+.derechos_reservados{
+    color: white;
+    font-size: 10px;
+    font-family: var(--fuente-principal);
+    text-align: center;
+    
 }
 
 #opciones_navegacion{
@@ -35,7 +87,7 @@
 }
 
 main{
-    height: 30px;
+    flex: 1;
 }
 
 
