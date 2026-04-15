@@ -1,0 +1,116 @@
+:root{
+  --primario:#3f326f;
+  --secundario:#756f9e;
+  --acento:#30b6b8;
+  --fondo:#f8f8fa;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Segoe UI',sans-serif;
+  min-height:100vh;
+  background:
+    linear-gradient(rgba(117,111,158,.7),rgba(117,111,158,.7)),
+    url("fondopantallapagina.avif") center/cover;
+}
+
+/* NAV */
+.encabezado{
+  position:fixed;top:0;width:100%;
+  backdrop-filter:blur(10px);
+  background:rgba(117,111,158,.6);
+}
+
+.navegacion ul{
+  display:flex;justify-content:flex-end;
+  list-style:none;
+  padding:15px 30px;
+  gap:15px;
+}
+
+.navegacion a{
+  color:#fff;text-decoration:none;
+  padding:8px 14px;border-radius:10px;
+  transition:.3s;
+}
+.navegacion a:hover{background:var(--acento)}
+
+/* MAIN */
+.principal{
+  display:flex;justify-content:center;align-items:center;
+  height:100vh;
+}
+
+/* TARJETA */
+.tarjeta{
+  background:rgba(248,248,250,.97);
+  padding:35px;
+  width:370px;
+  border-radius:20px;
+  box-shadow:0 20px 40px rgba(0,0,0,.4);
+  animation:fade .8s ease;
+}
+
+.tarjeta-encabezado{
+  text-align:center;
+  margin-bottom:20px;
+}
+.tarjeta-encabezado h1{color:var(--primario)}
+.tarjeta-encabezado p{color:var(--secundario)}
+
+/* FORM */
+.formulario fieldset{
+  border:none;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+legend{margin-bottom:10px;font-weight:bold;color:var(--primario)}
+label{font-size:14px}
+
+input{
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  transition:.3s;
+}
+input:focus{
+  outline:none;
+  border-color:var(--acento);
+  box-shadow:0 0 8px var(--acento);
+}
+
+/* BOTON */
+button{
+  margin:20px auto 0;
+  display:block;
+  width:100%;
+  max-width:200px;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:var(--primario);
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.3s;
+}
+button:hover{background:var(--acento)}
+
+/* PIE */
+.tarjeta-pie{
+  text-align:center;
+  margin-top:15px;
+}
+.tarjeta-pie a{
+  color:var(--acento);
+  text-decoration:none;
+}
+
+/* ANIMACION */
+@keyframes fade{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
