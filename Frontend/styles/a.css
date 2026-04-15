@@ -1,3 +1,9 @@
+/* 
+Manejar toda la estructura de la página con GRID y ya la informacion que vaya dentro de cada etiqueta con flex
+
+*/
+
+
 * {
   margin: 0;
   padding: 0;
@@ -14,7 +20,36 @@
         font-family: "League Spartan", sans-serif;
     --detalles: #40c4be;
     --detalles-hover: #30bfb8; 
+}
 
+.top-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px 20px;
+  border-bottom: 1px solid#110202;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(90deg, #c7c5f1, #c7c5f1, #c7c5f1);
+}
+
+.top-menu a {
+  color:#110202;
+  text-decoration: none;
+  font-weight: 500;
+  margin-right: 15px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  transition: 0.3s ease;
+}
+
+.top-menu a:hover {
+  background: #F0F7FF;
+  color:#110202;
+}
+
+body {
+  margin-top: 60px;
 }
 
 body {
