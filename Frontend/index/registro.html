@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro | Odontologia</title>
+    <link rel="stylesheet" href="registro.css">
+</head>
+<body>
+
+<header class="encabezado">
+    <nav class="navegacion">
+        <ul>
+            <li><a href="inicio.html">Inicio</a></li>
+            <li><a href="registro.html">Registrarse</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="principal">
+    <section class="seccion-registro">
+        <article class="tarjeta">
+
+            <header class="tarjeta-encabezado">
+                <h1>Crear cuenta</h1>
+                <p>Registrate para agendar tus citas</p>
+            </header>
+
+            <form id="formRegistro" class="formulario">
+                <fieldset>
+                    <legend>Informacion</legend>
+
+                    <label>Nombre completo</label>
+                    <input type="text" required>
+
+                    <label>Correo</label>
+                    <input type="email" required>
+
+                    <label>Contraseña</label>
+                    <input type="password" required>
+
+                    <label>Confirmar contraseña</label>
+                    <input type="password" required>
+                </fieldset>
+
+                <button type="submit">Registrarse</button>
+            </form>
+
+            <footer class="tarjeta-pie">
+                <p>Ya tienes cuenta? <a href="inicio.html">Inicia sesion</a></p>
+            </footer>
+
+        </article>
+    </section>
+</main>
+
+<script>
+document.getElementById("formRegistro").addEventListener("submit", function(e){
+    e.preventDefault();
+    alert("Registro completado");
+});
+</script>
+
+</body>
+</html>
