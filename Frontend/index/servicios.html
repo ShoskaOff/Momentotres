@@ -132,6 +132,18 @@
             <ul id="beneficios"></ul>
             <footer>
                 <p id="precio"></p>
+                <script>
+            function agendarServicio() {
+            
+            let nombreProducto = document.querySelector("#descripcion") ? document.querySelector("#descripcion").innerText : "Servicio";
+
+            
+            window.location.href = "citas.html?servicio=" + encodeURIComponent(nombreProducto);
+        }
+    </script>
+    <button onclick="agendarServicio()" id="agendarBtn">
+        Agendar Cita
+    </button>
                 <button onclick="cerrarDetalle()" id="cerrarBtn">Cerrar</button>
             </footer>
         </dialog>
@@ -267,6 +279,7 @@
         function cerrarDetalle() {
             document.getElementById("modalDetalle").close();
         }
+        
     </script>
 </body>
 </html>
