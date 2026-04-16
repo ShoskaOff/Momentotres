@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DENTOLOGY</title>
+    <link rel="stylesheet" href="/Frontend/styles/servicios.css">
+</head>
+<body>
+    <header class="site-header">
+    <section class="logo"></section>
+    <nav class="main-nav">
+        <a href="#">Servicios</a>
+        <a href="#">Catalogo</a>
+        <a href="#">Citas</a>
+        <a href="#">Trabaja con nosotros</a>
+        <a href="#">Contacto</a>
+        <a href="#">Inicio Sesion</a>
+    </nav>
+</header>
+
+    <main>
+        <section class="presentacion">
+            <h1 id="tituloPagina">Tratamientos Odontológicos</h1>
+            <nav class="idiomas">
+                <button onclick="cambiarIdioma('es')">ES</button>
+                <button onclick="cambiarIdioma('en')">EN</button>
+            </nav>
+        </section>
+
+        <section id="contenedorTratamientos" class="galeria-tratamientos">
+            <article>
+                <h2 id="t1">Blanqueamiento Dental</h2>
+                <p id="t1desc">Mejora el color de tus dientes.</p>
+                <button onclick="verDetalle('blanqueamiento')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t2">Limpieza Dental</h2>
+                <p id="t2desc">Elimina placa y sarro.</p>
+                <button onclick="verDetalle('limpieza')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t3">Exodoncia</h2>
+                <p id="t3desc">Extracción de dientes.</p>
+                <button onclick="verDetalle('exodoncia')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t4">Carillas Dentales</h2>
+                <p id="t4desc">Láminas estéticas frontales.</p>
+                <button onclick="verDetalle('carillas')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t5">Diseño de Sonrisa</h2>
+                <p id="t5desc">Transformación estética integral.</p>
+                <button onclick="verDetalle('disenoSonrisa')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t6">Obturaciones</h2>
+                <p id="t6desc">Restauración de caries con resina.</p>
+                <button onclick="verDetalle('obturaciones')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t7">Coronas Dentales</h2>
+                <p id="t7desc">Protección para dientes dañados.</p>
+                <button onclick="verDetalle('coronas')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t8">Endodoncia</h2>
+                <p id="t8desc">Tratamiento de conductos internos.</p>
+                <button onclick="verDetalle('endodoncia')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t9">Ortodoncia</h2>
+                <p id="t9desc">Corrección de alineación y mordida.</p>
+                <button onclick="verDetalle('ortodoncia')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t10">Periodoncia</h2>
+                <p id="t10desc">Cuidado de encías y soporte óseo.</p>
+                <button onclick="verDetalle('periodoncia')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t11">Implantes Dentales</h2>
+                <p id="t11desc">Sustitución de raíces perdidas.</p>
+                <button onclick="verDetalle('implantes')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t12">Cirugía de Cordales</h2>
+                <p id="t12desc">Extracción de muelas del juicio.</p>
+                <button onclick="verDetalle('cordales')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t13">Prótesis Dentales</h2>
+                <p id="t13desc">Reemplazo de piezas faltantes.</p>
+                <button onclick="verDetalle('protesis')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t14">Frenilectomía</h2>
+                <p id="t14desc">Cirugía de frenillos bucales.</p>
+                <button onclick="verDetalle('frenectomia')" class="btn-detalle">Ver detalle</button>
+            </article>
+
+            <article>
+                <h2 id="t15">Sellantes</h2>
+                <p id="t15desc">Protección preventiva contra caries.</p>
+                <button onclick="verDetalle('sellantes')" class="btn-detalle">Ver detalle</button>
+            </article>
+        </section>
+
+        <dialog id="modalDetalle">
+            <header>
+                <h2 id="titulo"></h2>
+            </header>
+            <figure>
+                <img id="imagen" src="" alt="Tratamiento">
+                <figcaption id="descripcionCorta"></figcaption>
+            </figure>
+            <p id="descripcion"></p>
+            <ul id="beneficios"></ul>
+            <footer>
+                <p id="precio"></p>
+                <button onclick="cerrarDetalle()" id="cerrarBtn">Cerrar</button>
+            </footer>
+        </dialog>
+    </main>
+
+    <footer class="pie-pagina">
+        <nav class="footer_navegacion">
+            <a href="#" class="contenido_footer">Política de Privacidad</a>
+            <a href="#" class="contenido_footer">Términos de Servicio</a>
+        </nav>
+        <section class="barra_inferior">
+            <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
+        </section>
+        <a href="mailto:soporte@dentology.com"></a>
+    </footer>
+
+    <script>
+        let idiomaActual = "es";
+        const textos = {
+            es: { tituloPagina: "Tratamientos Odontológicos", verDetalle: "Ver detalle", cerrar: "Cerrar" },
+            en: { tituloPagina: "Dental Treatments", verDetalle: "View details", cerrar: "Close" }
+        };
+        const tratamientos = {
+            blanqueamiento: {
+                es: { titulo: "Blanqueamiento Dental", corta: "Dientes más blancos", descripcion: "Aclara varios tonos del diente.", beneficios: ["Resultados rápidos", "Seguro", "Mejora estética"], precio: "Desde $300.000 COP" },
+                en: { titulo: "Teeth Whitening", corta: "Whiter teeth", descripcion: "Whitens several shades of your teeth.", beneficios: ["Fast results", "Safe", "Better appearance"], precio: "From $300.000 COP" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            limpieza: {
+                es: { titulo: "Limpieza Dental", corta: "Salud bucal", descripcion: "Elimina placa y sarro.", beneficios: ["Previene caries", "Mejor aliento", "Elimina sarro"], precio: "Desde $50.000 COP" },
+                en: { titulo: "Dental Cleaning", corta: "Oral health", descripcion: "Removes plaque and tartar.", beneficios: ["Prevents cavities", "Fresh breath", "Removes tartar"], precio: "From $50.000 COP" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            exodoncia: {
+                es: { titulo: "Exodoncia", corta: "Cirugía básica", descripcion: "Extracción de dientes dañados.", beneficios: ["Alivia el dolor", "Elimina infecciones"], precio: "Desde $150.000 COP" },
+                en: { titulo: "Tooth Extraction", corta: "Basic surgery", descripcion: "Removal of damaged teeth.", beneficios: ["Relieves pain", "Eliminates infections"], precio: "From $150.000 COP" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            carillas: {
+                es: { titulo: "Carillas Dentales", corta: "Estética dental", descripcion: "Láminas de porcelana o resina para mejorar la forma.", beneficios: ["Color perfecto", "Forma uniforme"], precio: "Consultar valoración" },
+                en: { titulo: "Dental Veneers", corta: "Cosmetic dentistry", descripcion: "Porcelain or resin sheets to improve shape.", beneficios: ["Perfect color", "Uniform shape"], precio: "Ask for evaluation" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            disenoSonrisa: {
+                es: { titulo: "Diseño de Sonrisa", corta: "Cambio total", descripcion: "Plan integral para mejorar tu sonrisa.", beneficios: ["Personalizado", "Alta estética"], precio: "Variable" },
+                en: { titulo: "Smile Design", corta: "Total change", descripcion: "Comprehensive plan to improve your smile.", beneficios: ["Customized", "High aesthetics"], precio: "Variable" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            obturaciones: {
+                es: { titulo: "Obturaciones", corta: "Restauración", descripcion: "Reparación de caries con resinas estéticas.", beneficios: ["Evita pérdida dental", "Luce natural"], precio: "Desde $80.000 COP" },
+                en: { titulo: "Fillings", corta: "Restoration", descripcion: "Repair of cavities with aesthetic resins.", beneficios: ["Prevents tooth loss", "Looks natural"], precio: "From $80.000 COP" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            coronas: {
+                es: { titulo: "Coronas Dentales", corta: "Protección", descripcion: "Fundas resistentes para dientes debilitados.", beneficios: ["Durabilidad", "Funcionalidad"], precio: "Variable" },
+                en: { titulo: "Dental Crowns", corta: "Protection", descripcion: "Resistant covers for weakened teeth.", beneficios: ["Durability", "Functionality"], precio: "Variable" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            endodoncia: {
+                es: { titulo: "Endodoncia", corta: "Salvar el diente", descripcion: "Tratamiento de nervios infectados.", beneficios: ["Elimina el dolor", "Mantiene la pieza natural"], precio: "Desde $350.000 COP" },
+                en: { titulo: "Root Canal", corta: "Save the tooth", descripcion: "Treatment of infected nerves.", beneficios: ["Ends pain", "Keeps natural tooth"], precio: "From $350.000 COP" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            ortodoncia: {
+                es: { titulo: "Ortodoncia", corta: "Alineación", descripcion: "Brackets o alineadores para dientes rectos.", beneficios: ["Mejor mordida", "Estética"], precio: "Mensualidades disponibles" },
+                en: { titulo: "Orthodontics", corta: "Alignment", descripcion: "Brackets or aligners for straight teeth.", beneficios: ["Better bite", "Aesthetics"], precio: "Monthly plans" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            periodoncia: {
+                es: { titulo: "Periodoncia", corta: "Cuidado de encías", descripcion: "Tratamiento para encías sangrantes o inflamadas.", beneficios: ["Evita caída de dientes", "Salud ósea"], precio: "Consultar precio" },
+                en: { titulo: "Periodontics", corta: "Gum care", descripcion: "Treatment for bleeding or swollen gums.", beneficios: ["Prevents tooth loss", "Bone health"], precio: "Consult price" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            implantes: {
+                es: { titulo: "Implantes Dentales", corta: "Piezas permanentes", descripcion: "Tornillos de titanio que actúan como raíz.", beneficios: ["Fijos y cómodos", "Larga duración"], precio: "Requiere valoración" },
+                en: { titulo: "Dental Implants", corta: "Permanent teeth", descripcion: "Titanium screws that act as a root.", beneficios: ["Fixed and comfy", "Long lasting"], precio: "Requires evaluation" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            cordales: {
+                es: { titulo: "Cirugía de Cordales", corta: "Muelas del juicio", descripcion: "Extracción quirúrgica de terceros molares.", beneficios: ["Evita apiñamiento", "Quita el dolor"], precio: "Desde $250.000 COP" },
+                en: { titulo: "Wisdom Teeth Surgery", corta: "Third molars", descripcion: "Surgical removal of third molars.", beneficios: ["Prevents crowding", "Relieves pain"], precio: "From $250.000 COP" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            protesis: {
+                es: { titulo: "Prótesis Dentales", corta: "Reemplazo", descripcion: "Estructuras para recuperar múltiples dientes.", beneficios: ["Recupera masticación", "Mejora habla"], precio: "Variable" },
+                en: { titulo: "Dental Prosthetics", corta: "Replacement", descripcion: "Structures to recover multiple teeth.", beneficios: ["Restores chewing", "Improves speech"], precio: "Variable" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            frenectomia: {
+                es: { titulo: "Frenectomía", corta: "Pequeña cirugía", descripcion: "Corrección de frenillos labiales o linguales.", beneficios: ["Mejor movilidad", "Cierre de espacios"], precio: "Consultar" },
+                en: { titulo: "Frenectomy", corta: "Minor surgery", descripcion: "Correction of labial or lingual frenums.", beneficios: ["Better mobility", "Closing gaps"], precio: "Consult" },
+                imagen: "https://via.placeholder.com/400x200"
+            },
+            sellantes: {
+                es: { titulo: "Sellantes", corta: "Prevención", descripcion: "Protección para fisuras de muelas sanas.", beneficios: ["Cero caries", "Fácil aplicación"], precio: "$40.000 por diente" },
+                en: { titulo: "Sealants", corta: "Prevention", descripcion: "Protection for pits of healthy molars.", beneficios: ["No cavities", "Easy application"], precio: "$40.000 per tooth" },
+                imagen: "https://via.placeholder.com/400x200"
+            }
+        };
+
+        function cambiarIdioma(idioma) {
+            idiomaActual = idioma;
+            document.getElementById("tituloPagina").textContent = textos[idioma].tituloPagina;
+            document.getElementById("cerrarBtn").textContent = textos[idioma].cerrar;
+            const botones = document.querySelectorAll(".btn-detalle");
+            botones.forEach(btn => btn.textContent = textos[idioma].verDetalle);
+            Object.keys(tratamientos).forEach((key, index) => {
+                const idNum = index + 1;
+                const h2 = document.getElementById(`t${idNum}`);
+                const p = document.getElementById(`t${idNum}desc`);
+                if(h2) h2.textContent = tratamientos[key][idioma].titulo;
+                if(p) p.textContent = tratamientos[key][idioma].descripcion;
+            });
+        }
+
+        function verDetalle(tipo) {
+            const t = tratamientos[tipo][idiomaActual];
+            document.getElementById("titulo").textContent = t.titulo;
+            document.getElementById("imagen").src = tratamientos[tipo].imagen;
+            document.getElementById("descripcionCorta").textContent = t.corta;
+            document.getElementById("descripcion").textContent = t.descripcion;
+            document.getElementById("precio").textContent = t.precio;
+            const lista = document.getElementById("beneficios");
+            lista.innerHTML = "";
+            t.beneficios.forEach(b => {
+                const li = document.createElement("li");
+                li.textContent = b;
+                lista.appendChild(li);
+            });
+            document.getElementById("modalDetalle").showModal();
+        }
+
+        function cerrarDetalle() {
+            document.getElementById("modalDetalle").close();
+        }
+    </script>
+</body>
+</html>
