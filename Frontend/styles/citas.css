@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --color-fondo: #F0F7FF;
+    --color-primario: #c7c5f1;
+    --color-texto: #110202;
+    --color-blanco: #ffffff;
+    --color-borde: #dddddd;
+    --color-detalles: #40c4be;
+    --color-boton-base: #0077cc;
+    --color-gradiente-1: #00b4db;
+    --color-gradiente-2: #0083b0;
+    --fuente-principal: "Inter", sans-serif;
+    --fuente-titulos: "League Spartan", sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding-top: 80px; 
+    min-height: 100vh;
+    background-color: var(--color-fondo);
+    font-family: var(--fuente-principal);
+    color: var(--color-texto);
+}
+
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    padding: 0 40px;
+    background-color: var(--color-primario);
+    border-bottom: 1px solid var(--color-texto);
+    z-index: 1001;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    width: 30px;
+    height: 30px;
+    background-color: var(--color-detalles);
+    border-radius: 50%;
+}
+
+.main-nav {
+    display: flex;
+    gap: 15px;
+}
+
+.main-nav a {
+    color: var(--color-texto);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 10px;
+    transition: 0.3s ease;
+}
+
+.main-nav a:hover {
+    background: var(--color-fondo);
+}
+
+#modalDetalle {
+    display: none;
+} 
+
+
+#formCita {
+    background: white;
+    padding: 25px;
+    width: 320px;
+    margin: 40px auto;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+#formCita h2 {
+    margin-bottom: 10px;
+}
+
+#formCita p {
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+
+#formCita input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--color-borde);
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: linear-gradient(45deg, var(--color-gradiente-1), var(--color-gradiente-2));
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+#historial {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.cita {
+    background: white;
+    margin: 10px auto;
+    padding: 12px;
+    width: 320px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
