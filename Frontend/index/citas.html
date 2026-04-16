@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Citas</title>
+    <link rel="stylesheet" href="/Frontend/styles/citas.css">
+    
+</head>
+<body>
+    <header class="site-header">
+    <section class="logo"></section>
+    <nav class="main-nav">
+        <a href="#">Servicios</a>
+        <a href="#">Catalogo</a>
+        <a href="#">Citas</a>
+        <a href="#">Trabaja con nosotros</a>
+        <a href="#">Contacto</a>
+        <a href="#">Inicio Sesion</a>
+    </nav>
+</header>
+
+<form id="formCita" class="formulario-estilo">
+    <h2>Agendar cita</h2>
+
+    <p id="servicioSeleccionado">Servicio: </p>
+
+    <input type="hidden" id="servicio">
+
+    <label>Fecha:</label>
+    <input type="date" id="fecha" required>
+
+    <label>Hora:</label>
+    <input type="time" id="hora" required>
+
+    <button type="submit">Confirmar</button>
+</form>
+
+<section id="historial">
+  <h2> Historial de citas</h2>
+  <section id="listaCitas"></section>
+</section>
+
+<script src="/Frontend/js/citas.js"></script>
+</body>
+</html>
