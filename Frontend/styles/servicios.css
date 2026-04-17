@@ -48,6 +48,7 @@ body {
 .logo {
     width: 30px;
     height: auto;
+    margin: 0 10px 0 40px;
 }
 
 .main-nav {
