@@ -11,7 +11,7 @@ Manejar toda la estructura de la página con GRID y ya la informacion que vaya d
 }
 
 :root{
-    --color-fondo: #F0F7FF;
+    --color-fondo: #f7f0ff;
     --color-primario: #c7c5f1;
     --color-texto: #110202;
     --fuente-principal: @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
