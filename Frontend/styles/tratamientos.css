@@ -35,22 +35,27 @@ header h1 {
   margin-bottom: 10px;
 }
 
-/* BOTÓN VOLVER */
-.btn-volver {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 10px 16px;
-  background: var(--detalles);
-  color: white;
-  text-decoration: none;
-  border-radius: 10px;
-  font-weight: 500;
-  transition: 0.3s;
+.contenedor-volver {
+    max-width: 900px;
+    margin: 40px auto 20px auto; 
+    padding: 0 20px;
+    text-align: center; 
 }
 
-.btn-volver:hover {
-  background: var(--detalles-hover);
-  transform: translateY(-2px);
+.btn-detalle {
+    display: inline-block;
+    padding: 10px 25px;
+    background: var(--detalles);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-detalle:hover {
+    background: var(--detalles-hover);
+    transform: translateY(-2px);
 }
 
 /* CONTENIDO PRINCIPAL */
