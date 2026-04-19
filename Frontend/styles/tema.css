@@ -13,6 +13,7 @@
     line-height: 1;
     transition: transform 0.2s ease;
 }
+
 #theme-toggle:hover{
     transform: scale(1.15);
 }
@@ -37,6 +38,10 @@ body.dark-mode{
 /* GLOBAL */
 /* ======================= */
 
+body{
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
 body.dark-mode{
     background:var(--color-fondo);
     color:var(--color-texto);
@@ -49,7 +54,8 @@ body.dark-mode h4,
 body.dark-mode p,
 body.dark-mode span,
 body.dark-mode label,
-body.dark-mode li{
+body.dark-mode li,
+body.dark-mode a{
     color:white;
 }
 
@@ -58,7 +64,8 @@ body.dark-mode li{
 /* ======================= */
 
 body.dark-mode .site-header,
-body.dark-mode .top-menu{
+body.dark-mode .top-menu,
+body.dark-mode header{
     background:var(--color-primario);
     border-bottom:1px solid white;
 }
@@ -79,7 +86,9 @@ body.dark-mode .top-menu a:hover{
 
 body.dark-mode article,
 body.dark-mode .cita,
-body.dark-mode .card{
+body.dark-mode .card,
+body.dark-mode section,
+body.dark-mode main ul li{
     background:#1e293b;
     color:white;
     border:1px solid #334155;
@@ -112,9 +121,24 @@ body.dark-mode textarea::placeholder{
 /* BOTONES */
 /* ======================= */
 
-body.dark-mode button{
+body.dark-mode button,
+body.dark-mode .btn-detalle,
+body.dark-mode #agendarBtn{
     background:linear-gradient(45deg,#2563eb,#0ea5e9);
     color:white;
+}
+
+body.dark-mode .btn-detalle:hover,
+body.dark-mode #agendarBtn:hover{
+    transform: translateY(-2px);
+}
+
+/* ======================= */
+/* IMAGENES */
+/* ======================= */
+
+body.dark-mode img{
+    box-shadow: 0 4px 12px rgba(255,255,255,0.08);
 }
 
 /* ======================= */
@@ -122,7 +146,8 @@ body.dark-mode button{
 /* ======================= */
 
 body.dark-mode .pie-pagina,
-body.dark-mode .footer_navegacion{
+body.dark-mode .footer_navegacion,
+body.dark-mode footer{
     background:#182330;
 }
 
