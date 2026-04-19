@@ -35,6 +35,14 @@
     </ul>
 
     <p class="precio">Planes mensuales</p>
+     <button id="agendarBtn" data-servicio="Ortodoncia">Agendar cita</button>
+  <script>
+    document.getElementById("agendarBtn").addEventListener("click", function() {
+    const servicio = this.getAttribute("data-servicio");
+
+    window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
+});
+  </script>
   </main>
 
 </body>

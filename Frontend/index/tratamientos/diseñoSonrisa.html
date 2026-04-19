@@ -35,6 +35,14 @@
   </ul>
 
   <p class="precio">Precio variable</p>
+    <button id="agendarBtn" data-servicio="Diseño de sonrisa">Agendar cita</button>
+  <script>
+    document.getElementById("agendarBtn").addEventListener("click", function() {
+    const servicio = this.getAttribute("data-servicio");
+
+    window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
+});
+  </script>
 </main>
 
 </body>
