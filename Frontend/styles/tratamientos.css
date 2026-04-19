@@ -132,6 +132,19 @@ main {
   animation: fadeIn 0.4s ease-in-out;
 }
 
+#agendarBtn {
+    background-color: #30bfb8;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#agendarBtn:hover {
+    background-color: #c7c5f1;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
