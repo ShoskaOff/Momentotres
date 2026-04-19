@@ -116,6 +116,8 @@ button {
 .btn-detalle {
     background: linear-gradient(135deg, var(--color-gradiente-1), var(--color-gradiente-2));
     padding: 12px;
+    color: white;
+    text-decoration: none;
 }
 
 .btn-detalle a {

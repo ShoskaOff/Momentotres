@@ -40,3 +40,28 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("agendarBtn").addEventListener("click", agendarServicio);
     document.getElementById("cerrarBtn").addEventListener("click", cerrarDetalle);
 });
+
+const botonTema = document.getElementById("theme-toggle");
+
+botonTema.addEventListener("click", ()=>{
+
+document.body.classList.toggle("dark-mode");
+
+if(document.body.classList.contains("dark-mode")){
+    localStorage.setItem("modo","oscuro");
+    botonTema.textContent = "☀️";
+}else{
+    localStorage.setItem("modo","claro");
+    botonTema.textContent = "🌙";
+}
+
+});
+
+window.onload = ()=>{
+
+if(localStorage.getItem("modo") === "oscuro"){
+    document.body.classList.add("dark-mode");
+    botonTema.textContent = "☀️";
+}
+
+};  

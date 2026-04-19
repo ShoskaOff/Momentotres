@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro | Odontologia</title>
     <link rel="stylesheet" href="/Frontend/styles/registro.css">
+        <link rel="stylesheet" href="/Frontend/styles/tema.css">
+        <link rel="icon" href="/Media/favicon.png" type="image/png">
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
 <body>
@@ -12,11 +14,13 @@
 <header class="encabezado">
     <nav class="navegacion">
         <ul>
-            <li>        <a href="/Frontend/index/lobby.html">Inicio</a></li>
-            <li>        <a href="/Frontend/index/servicios.html">Tratamientos</a></li>
-            <li>        <a href="/Frontend/index/citas.html">Citas</a></li>
-            <li>        <a href="/Frontend/index/contacto.html">Contacto</a></li>
-            <li>        <a href="/Frontend/index/inicio.html">Inicio Sesion</a></li>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="/Frontend/index/servicios.html">Tratamientos</a></li>
+            <li><a href="/Frontend/index/citas.html">Citas</a></li>
+            <li><a href="#">Trabaja con nosotros</a></li>
+            <li><a href="#">Contacto</a></li>
+            <li><a href="/Frontend/index/inicio.html">Inicio Sesion</a></li>
+            <li><a id="theme-toggle" type="button">🌙</a></li>
         </ul>
     </nav>
 </header>
@@ -64,6 +68,6 @@ document.getElementById("formRegistro").addEventListener("submit", function(e){
     alert("Registro completado");
 });
 </script>
-
+ <script src="/Frontend/js/tema.js"></script>
 </body>
 </html>
