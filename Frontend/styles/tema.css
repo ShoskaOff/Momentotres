@@ -1,0 +1,145 @@
+/* ======================= */
+/* BOTON TEMA */
+/* ======================= */
+
+#theme-toggle{
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    padding: 4px;
+    width: auto;
+    height: auto;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+#theme-toggle:hover{
+    transform: scale(1.15);
+}
+
+/* ======================= */
+/* VARIABLES DARK MODE */
+/* ======================= */
+
+body.dark-mode{
+    --color-fondo:#0f1720;
+    --color-primario:#182330;
+    --color-texto:#ffffff;
+    --color-blanco:#1f2937;
+    --color-borde:#334155;
+    --color-detalles:#38bdf8;
+    --color-boton-base:#0ea5e9;
+    --color-gradiente-1:#2563eb;
+    --color-gradiente-2:#0ea5e9;
+}
+
+/* ======================= */
+/* GLOBAL */
+/* ======================= */
+
+body.dark-mode{
+    background:var(--color-fondo);
+    color:var(--color-texto);
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode label,
+body.dark-mode li{
+    color:white;
+}
+
+/* ======================= */
+/* HEADER */
+/* ======================= */
+
+body.dark-mode .site-header,
+body.dark-mode .top-menu{
+    background:var(--color-primario);
+    border-bottom:1px solid white;
+}
+
+body.dark-mode .main-nav a,
+body.dark-mode .top-menu a{
+    color:white;
+}
+
+body.dark-mode .main-nav a:hover,
+body.dark-mode .top-menu a:hover{
+    background:#243447;
+}
+
+/* ======================= */
+/* TARJETAS */
+/* ======================= */
+
+body.dark-mode article,
+body.dark-mode .cita,
+body.dark-mode .card{
+    background:#1e293b;
+    color:white;
+    border:1px solid #334155;
+}
+
+/* ======================= */
+/* FORMULARIOS */
+/* ======================= */
+
+body.dark-mode form,
+body.dark-mode #formCita{
+    background:#1e293b;
+    color:white;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea{
+    background:#0f1720;
+    color:white;
+    border:1px solid #334155;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder{
+    color:#94a3b8;
+}
+
+/* ======================= */
+/* BOTONES */
+/* ======================= */
+
+body.dark-mode button{
+    background:linear-gradient(45deg,#2563eb,#0ea5e9);
+    color:white;
+}
+
+/* ======================= */
+/* FOOTER */
+/* ======================= */
+
+body.dark-mode .pie-pagina,
+body.dark-mode .footer_navegacion{
+    background:#182330;
+}
+
+body.dark-mode .barra_inferior{
+    background:black;
+}
+
+body.dark-mode .contenido_footer,
+body.dark-mode .derechos_reservados{
+    color:white;
+}
+
+/* ======================= */
+/* MODAL */
+/* ======================= */
+
+body.dark-mode dialog{
+    background:#1e293b;
+    color:white;
+}
