@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Citas</title>
@@ -7,42 +8,43 @@
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
+
 <body>
     <header class="site-header">
-    <figure class="logo" ><img src="/Media/Logo.png" alt="image/png"></figure>
-    <nav class="main-nav">
-    <a href="#">Inicio</a>
-    <a href="/Frontend/index/servicios.html">Tratamientos</a>
-    <a href="/Frontend/index/citas.html">Citas</a>
-    <a href="#">Trabaja con nosotros</a>
-    <a href="#">Contacto</a>
-    <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
-    <a id="theme-toggle" type="button">🌙</a>
-    </nav>
-</header>
+        <figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure>
+        <nav class="main-nav">
+            <a href="/Frontend/index/lobby.html">Inicio</a>
+            <a href="/Frontend/index/servicios.html">Tratamientos</a>
+            <a href="/Frontend/index/citas.html">Citas</a>
+            <a href="/Frontend/index/contacto.html">Contacto</a>
+            <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
+            <a id="theme-toggle" type="button">🌙</a>
+        </nav>
+    </header>
 
-<form id="formCita" class="formulario-estilo">
-    <h2>Agendar cita</h2>
+    <form id="formCita" class="formulario-estilo">
+        <h2>Agendar cita</h2>
 
-    <p id="servicioSeleccionado">Servicio: </p>
+        <p id="servicioSeleccionado">Servicio: </p>
 
-    <input type="hidden" id="servicio">
+        <input type="hidden" id="servicio">
 
-    <label>Fecha:</label>
-    <input type="date" id="fecha" required>
+        <label>Fecha:</label>
+        <input type="date" id="fecha" required>
 
-    <label>Hora:</label>
-    <input type="time" id="hora" required>
+        <label>Hora:</label>
+        <input type="time" id="hora" required>
 
-    <button type="submit">Confirmar</button>
-</form>
+        <button type="submit">Confirmar</button>
+    </form>
 
-<section id="historial">
-  <h2> Historial de citas</h2>
-  <section id="listaCitas"></section>
-</section>
+    <section id="historial">
+        <h2> Historial de citas</h2>
+        <section id="listaCitas"></section>
+    </section>
 
-<script src="/Frontend/js/citas.js"></script>
- <script src="/Frontend/js/tema.js"></script>
+    <script src="/Frontend/js/citas.js"></script>
+    <script src="/Frontend/js/tema.js"></script>
 </body>
+
 </html>

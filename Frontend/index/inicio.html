@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,59 +9,60 @@
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
+
 <body>
 
-<header class="encabezado">
-    <nav class="navegacion">
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="/Frontend/index/servicios.html">Tratamientos</a></li>
-            <li><a href="/Frontend/index/citas.html">Citas</a></li>
-            <li><a href="#">Trabaja con nosotros</a></li>
-            <li><a href="#">Contacto</a></li>
-            <li><a href="/Frontend/index/inicio.html">Inicio Sesion</a></li>
-            <li><a id="theme-toggle" type="button">🌙</a></li>
-        </ul>
-    </nav>
-</header>
+    <header class="encabezado">
+        <nav class="navegacion">
+            <ul>
+                <li> <a href="/Frontend/index/lobby.html">Inicio</a></li>
+                <li> <a href="/Frontend/index/servicios.html">Tratamientos</a></li>
+                <li> <a href="/Frontend/index/citas.html">Citas</a></li>
+                <li> <a href="/Frontend/index/contacto.html">Contacto</a></li>
+                <li> <a href="/Frontend/index/inicio.html">Inicio Sesion</a></li>
+                <li><a id="theme-toggle" type="button">🌙</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<main class="principal">
-    <section class="seccion-login">
-        <article class="tarjeta">
+    <main class="principal">
+        <section class="seccion-login">
+            <article class="tarjeta">
 
-            <header class="tarjeta-encabezado">
-                <h1>Bienvenido</h1>
-                <p>Accede a tus citas odontologicas</p>
-            </header>
+                <header class="tarjeta-encabezado">
+                    <h1>Bienvenido</h1>
+                    <p>Accede a tus citas odontologicas</p>
+                </header>
 
-            <form id="formLogin" class="formulario">
-                <fieldset>
-                    <legend>Datos de acceso</legend>
+                <form id="formLogin" class="formulario">
+                    <fieldset>
+                        <legend>Datos de acceso</legend>
 
-                    <label for="correo">Correo electronico</label>
-                    <input type="email" id="correo" required>
+                        <label for="correo">Correo electronico</label>
+                        <input type="email" id="correo" required>
 
-                    <label for="clave">Contrasena</label>
-                    <input type="password" id="clave" required>
-                </fieldset>
-                <button type="submit">Ingresar</button>
-            </form>
+                        <label for="clave">Contrasena</label>
+                        <input type="password" id="clave" required>
+                    </fieldset>
+                    <button type="submit">Ingresar</button>
+                </form>
 
-            <footer class="tarjeta-pie">
-                <p>No tienes cuenta? <a href="registro.html">Crear cuenta</a></p>
-            </footer>
+                <footer class="tarjeta-pie">
+                    <p>No tienes cuenta? <a href="registro.html">Crear cuenta</a></p>
+                </footer>
 
-        </article>
-    </section>
-</main>
+            </article>
+        </section>
+    </main>
 
-<script>
-document.getElementById("formLogin").addEventListener("submit", function(e){
-    e.preventDefault();
-    alert("Inicio de sesion correcto");
-});
-</script>
- <script src="/Frontend/js/tema.js"></script>
+    <script>
+        document.getElementById("formLogin").addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Inicio de sesion correcto");
+        });
+    </script>
+    <script src="/Frontend/js/tema.js"></script>
 
 </body>
+
 </html>
