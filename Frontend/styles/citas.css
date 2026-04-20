@@ -45,12 +45,6 @@ body {
     align-items: center;
 }
 
-.logo {
-    width: 30px;
-    height: auto;
-    margin: 0 10px 0 40px;
-}
-
 .main-nav {
     display: flex;
     gap: 15px;
@@ -146,4 +140,79 @@ button:hover {
     width: 320px;
     border-radius: 10px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+
+/* 💻 Pantallas Medianas (Laptops/Tablets horizontales) */
+@media (max-width: 992px) {
+    .formulario-estilo {
+        max-width: 450px; /* Reducimos ligeramente para que no se vea tan estirado */
+        margin: 40px auto;
+    }
+}
+
+/* 💊 Tablets verticales / iPad (max-width: 768px) */
+@media (max-width: 768px) {
+    main {
+        padding: 30px 15px;
+    }
+
+    .formulario-estilo {
+        max-width: 85%; /* El formulario ocupa más espacio lateral en tablets */
+        padding: 25px;
+    }
+
+    .formulario-estilo h2 {
+        font-size: 1.8rem;
+    }
+
+    .cita {
+        width: 90%; /* Las tarjetas del historial se ensanchan para leerse mejor */
+    }
+}
+
+/* 📱 Celulares / iPhone (max-width: 576px) */
+@media (max-width: 576px) {
+    main {
+        padding: 20px 10px; /* Menos espacio en los bordes del celular */
+    }
+
+    .formulario-estilo {
+        max-width: 95%;
+        padding: 20px 15px;
+        margin: 20px auto;
+        gap: 12px; /* Reducimos el espacio entre campos para que quepa todo */
+    }
+
+    .formulario-estilo h2 {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+
+    .formulario-estilo label {
+        font-size: 0.85rem;
+    }
+
+    .formulario-estilo input, 
+    .formulario-estilo select {
+        padding: 10px; /* Inputs un poco más compactos */
+        font-size: 0.9rem;
+    }
+
+    .formulario-estilo button {
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    /* Ajuste del Historial en Móvil */
+    #historial h2 {
+        font-size: 1.6rem;
+    }
+
+    .cita {
+        width: 100%; /* La tarjeta ocupa todo el ancho disponible */
+        padding: 15px;
+        font-size: 0.85rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
 }

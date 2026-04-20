@@ -155,3 +155,91 @@ main {
     transform: translateY(0);
   }
 }
+
+@media (max-width: 992px) {
+    main {
+        max-width: 800px;
+        padding: 20px;
+    }
+
+    main img {
+        max-width: 100%;
+        height: 350px; /* Un poco más alto en laptops pequeñas */
+    }
+}
+
+/* 💊 Tablets verticales / iPad */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    main img {
+        height: 300px; /* Mantenemos la uniformidad que definiste */
+    }
+
+    main p {
+        font-size: 1rem;
+        padding: 0 10px;
+    }
+
+    main ul {
+        max-width: 90%; /* La lista se expande en tablets */
+    }
+}
+
+/* 📱 Celulares / iPhone (Solución definitiva al desborde) */
+@media (max-width: 576px) {
+    header {
+        padding: 15px 10px;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    /* Ajuste de la imagen para que no se vea cortada ni estirada */
+    main img {
+        width: 100% !important;
+        height: 220px; /* Reducimos la altura para que quepa en la pantalla del celular */
+        object-fit: cover;
+        margin: 15px auto;
+    }
+
+    main {
+        padding: 10px;
+    }
+
+    main p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    /* Lista de beneficios en móvil */
+    main ul {
+        width: 100%;
+        max-width: none;
+    }
+
+    main ul li {
+        font-size: 0.9rem;
+        padding: 12px; /* Más espacio para facilitar la lectura */
+    }
+
+    .precio {
+        font-size: 1.2rem;
+        margin-top: 15px;
+    }
+
+    /* Botones más grandes para dedos (Tap Targets) */
+    #agendarBtn, .btn-detalle {
+        width: 100%; /* Botones de ancho completo en móvil para mejor UX */
+        padding: 14px;
+        font-size: 1rem;
+        margin-top: 15px;
+    }
+
+    .contenedor-volver {
+        margin: 20px auto;
+    }
+}

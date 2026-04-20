@@ -1,5 +1,3 @@
-/* Estilos para la sección de Contacto con HTML Semántico */
-
 .contacto-container {
     max-width: 800px;
     margin: 40px auto;
@@ -86,13 +84,72 @@
     opacity: 0.9;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
+
+
+/* 💻 Laptops y Tablets horizontales */
+@media (max-width: 992px) {
     .contacto-container {
-        padding: 15px;
+        max-width: 700px;
+        margin: 30px auto;
     }
-    
+}
+
+/* 💊 Tablets verticales / iPad */
+@media (max-width: 768px) {
+    .contacto-container {
+        padding: 0 15px;
+        margin: 20px auto;
+    }
+
     .titulo-contacto {
         font-size: 2rem;
+    }
+
+    .formulario-contacto {
+        padding: 25px;
+    }
+}
+
+/* 📱 Celulares / iPhone (Solución al desborde de 980px) */
+@media (max-width: 576px) {
+    .contacto-container {
+        margin: 10px auto;
+        padding: 5px;
+    }
+
+    .titulo-contacto {
+        font-size: 1.7rem;
+        margin-bottom: 5px;
+    }
+
+    .contacto-header p {
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+    }
+
+    .formulario-contacto {
+        width: 100% !important; /* Evita el ancho fijo de 800px */
+        max-width: 100vw;
+        padding: 20px 15px;
+        gap: 15px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .grupo-input label {
+        font-size: 0.85rem;
+    }
+
+    .grupo-input input, 
+    .grupo-input textarea {
+        font-size: 0.95rem;
+        padding: 10px;
+        width: 100% !important; /* Fuerza el ajuste al ancho del celular */
+    }
+
+    .btn-enviar {
+        padding: 12px;
+        font-size: 1rem;
+        margin-top: 5px;
     }
 }

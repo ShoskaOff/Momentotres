@@ -114,3 +114,142 @@ button:hover{background:var(--acento)}
   from{opacity:0;transform:translateY(20px)}
   to{opacity:1;transform:translateY(0)}
 }
+
+@media (max-width: 768px) {
+    .tarjeta {
+        width: 340px; /* Reducimos ligeramente el ancho */
+        padding: 25px;
+    }
+
+    .navegacion ul {
+        padding: 15px;
+        justify-content: center; /* Centramos el menú en tablets */
+    }
+}
+
+/* 📱 Celulares / iPhone (Solución de visualización) */
+@media (max-width: 576px) {
+    /* 1. Ajuste del Header */
+    .encabezado {
+        position: absolute; /* Cambiamos a absolute para evitar problemas de teclado en móvil */
+    }
+
+    .navegacion ul {
+        padding: 10px;
+        gap: 8px;
+        flex-wrap: wrap; /* Si hay muchos links, que bajen */
+        justify-content: center;
+    }
+
+    .navegacion a {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+    }
+
+    /* 2. Ajuste de la Tarjeta */
+    .principal {
+        padding-top: 80px; /* Espacio para que el menú no tape la tarjeta */
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .tarjeta {
+        width: 90%; /* La tarjeta ocupa el ancho del celular */
+        max-width: 350px;
+        padding: 20px;
+        margin: 20px 0;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* Sombra más ligera para móvil */
+    }
+
+    .tarjeta-encabezado h1 {
+        font-size: 1.5rem;
+    }
+
+    /* 3. Ajuste de Formulario */
+    input {
+        font-size: 16px; /* Evita que iOS haga zoom automático al tocar el input */
+        padding: 12px;
+    }
+
+    button {
+        max-width: 100%; /* Botón de ancho completo para facilitar el tap */
+        padding: 14px;
+    }
+
+    .tarjeta-pie {
+        font-size: 0.9rem;
+    }
+}
+
+
+/* 1. 💻 LAPTOPS / TABLETS HORIZONTALES (max-width: 992px) */
+@media (max-width: 992px) {
+    .tarjeta {
+        width: 350px; /* Ajuste preventivo para pantallas medianas */
+    }
+}
+
+/* 2. 💊 TABLETS VERTICALES / IPAD (max-width: 768px) */
+@media (max-width: 768px) {
+    .navegacion ul {
+        justify-content: center; /* Centramos el menú para que no se amontone a la derecha */
+        padding: 15px;
+    }
+
+    .tarjeta {
+        width: 320px;
+        padding: 25px;
+    }
+}
+
+/* 3. 📱 CELULARES / IPHONE (max-width: 576px) */
+@media (max-width: 576px) {
+    /* Ajuste de la Barra de Navegación */
+    .encabezado {
+        position: absolute; /* Evita que el teclado tape los inputs en iOS */
+    }
+
+    .navegacion ul {
+        gap: 8px;
+        padding: 10px 5px;
+    }
+
+    .navegacion a {
+        font-size: 0.8rem;
+        padding: 5px 8px;
+    }
+
+    /* Ajuste de la Tarjeta y el Contenedor Principal */
+    .principal {
+        padding: 100px 15px 40px; /* Espacio para que el header no pise la tarjeta */
+        height: auto;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start; /* Alineamos arriba para que el scroll sea natural */
+    }
+
+    .tarjeta {
+        width: 100% !important; /* Forzamos a ocupar el ancho del celular */
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 25px 20px;
+        border-radius: 15px;
+    }
+
+    /* Ajuste de Formulario */
+    .tarjeta-encabezado h1 {
+        font-size: 1.6rem;
+    }
+
+    input {
+        width: 100% !important;
+        font-size: 16px; /* Evita el zoom automático de iPhone al escribir */
+        padding: 12px;
+    }
+
+    button {
+        max-width: 100%; /* Botón de ancho completo para facilitar el toque */
+        padding: 14px;
+        margin-top: 15px;
+    }
+}
