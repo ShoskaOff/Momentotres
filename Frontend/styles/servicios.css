@@ -173,6 +173,7 @@ dialog[open] {
 }
 
 .barra_inferior {
+  width: 100%;
   height: 40px;
   display: flex;
   justify-content: center;
