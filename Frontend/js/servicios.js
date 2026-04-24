@@ -1,5 +1,16 @@
+const supabaseUrl = "https://jdofaujfqsyiwauwttcd.supabase.co";
+const supabaseKey = "sb_publishable_qS04TxbN_5PwBfJnAFS2Yg_L-NrgNLn";
 
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+async function prueba() {
+    const { data, error } = await supabase
+        .from("servicios")
+        .select("*");
 
+    console.log(data, error);
+}
+
+prueba();
 function verDetalle(tipo) {
     const t = tratamientos[tipo];
     document.getElementById("titulo").textContent = t.titulo;
