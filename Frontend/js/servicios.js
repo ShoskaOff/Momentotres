@@ -4,6 +4,7 @@ const supabase = createClient(
   "https://jdofaujfqsyiwauwttcd.supabase.co",
   "sb_publishable_qS04TxbN_5PwBfJnAFS2Yg_L-NrgNLn"
 );
+
 function verDetalle(tipo) {
     const t = tratamientos[tipo];
     document.getElementById("titulo").textContent = t.titulo;
