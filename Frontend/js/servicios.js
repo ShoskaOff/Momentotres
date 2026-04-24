@@ -2,15 +2,14 @@ const supabaseUrl = "https://jdofaujfqsyiwauwttcd.supabase.co";
 const supabaseKey = "sb_publishable_qS04TxbN_5PwBfJnAFS2Yg_L-NrgNLn";
 
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-async function prueba() {
-    const { data, error } = await supabase
-        .from("servicios")
-        .select("*");
 
-    console.log(data, error);
+async function testConexion() {
+    const { data, error } = await supabase.from("servicios").select("*");
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
 }
 
-prueba();
+testConexion();
 function verDetalle(tipo) {
     const t = tratamientos[tipo];
     document.getElementById("titulo").textContent = t.titulo;
