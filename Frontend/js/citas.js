@@ -1,89 +1,154 @@
-document.addEventListener("DOMContentLoaded", function () {
+import { supabase } from "../../Database/supabaseClient.js";
 
-const urlParams = new URLSearchParams(window.location.search);
+document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
 const nombreProducto = urlParams.get('servicio');
 
-if (nombreProducto) {
-    document.getElementById("servicioSeleccionado").innerText = "Servicio: " + nombreProducto;
-    document.getElementById("servicio").value = nombreProducto; 
-}
-  
-    
-   document.getElementById("formCita").addEventListener("submit", function (e) {
-    e.preventDefault();
+console.log("Servicio recibido:", nombreProducto);
 
+if (nombreProducto) {
+    document.getElementById("servicioSeleccionado").innerText =
+        "Servicio: " + nombreProducto;
+
+    document.getElementById("servicio").value = nombreProducto;
+}
+
+  const form = document.getElementById("formCita");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const { data: { user } } = await supabase.auth.getUser();
     let servicioVal = document.getElementById("servicio").value;
     let fecha = document.getElementById("fecha").value;
     let hora = document.getElementById("hora").value;
 
+    let fechaHora = `${fecha}T${hora}:00`;
+
     if (!servicioVal || !fecha || !hora) {
-        alert("Completa todos los campos");
-        return;
+      alert("Completa todos los campos");
+      return;
     }
 
-    let citas = JSON.parse(localStorage.getItem("citas")) || [];
+   const { data: rolData, error: rolError } = await supabase
+  .from("Roles")
+  .select("nombre")
+  .single();
 
-    //  validar citas 
-
-    let conflicto = citas.find(cita => 
-        cita.fecha === fecha && cita.hora === hora
-    );
-
-    if (conflicto) {
-        alert("Esta cita ya está ocupada ");
-        return;
-    }
-
-    
-    citas.push({
-        servicio: servicioVal,
-        fecha: fecha,
-        hora: hora
-    });
-
-    localStorage.setItem("citas", JSON.stringify(citas));
-
-    alert("Cita agendada con éxito ");
-
-    mostrarHistorial();
-});
-
- mostrarHistorial();
-});
-
-function mostrarHistorial() {
-    let lista = document.getElementById("listaCitas");
-    lista.innerHTML = "";
-
-    let citas = JSON.parse(localStorage.getItem("citas") || "[]");
-
-    if (citas.length === 0) {
-        lista.innerHTML = "<p>No hay citas aún</p>";
-        return;
-    }
-
-    citas.forEach((cita, index) => {
-        let articulo = document.createElement("article");
-        articulo.className = "cita";
-
-        articulo.innerHTML = `
-            <strong>${cita.servicio}</strong><br>
-             ${cita.fecha}<br>
-             ${cita.hora}<br><br>
-            <button onclick="cancelarCita(${index})"> Cancelar </button>
-        `;
-
-        lista.appendChild(articulo);
-    });
+if (rolError) {
+  console.log("Error obteniendo rol:", rolError);
+  alert("No se pudo verificar el rol del usuario");
+  return;
 }
 
+const esAdmin = rolData?.nombre === "admin";
 
-function cancelarCita(index) {
-    let citas = JSON.parse(localStorage.getItem("citas")) || [];
+if (!esAdmin) {
+  alert("Solo el administrador puede agendar citas");
+  return;
+}
 
-    if (confirm("¿Seguro que quieres cancelar esta cita?")) {
-        citas.splice(index, 1);
-        localStorage.setItem("citas", JSON.stringify(citas));
-        mostrarHistorial();
-    }
+console.log("Fecha:", fecha);
+console.log("Hora:", hora);
+console.log("fecha_hora:", fechaHora);
+
+
+if (error) {
+  console.log("ERROR DISPONIBILIDAD:");
+  console.log(JSON.stringify(error, null, 2));
+  alert("Error al verificar disponibilidad");
+  return;
+}
+
+if (existentes && existentes.length > 0) {
+  alert("Esta cita ya está ocupada");
+  return;
+}
+    
+   
+
+const { error: insertError } = await supabase.from("Citas").insert([
+  {
+    servicio_id: parseInt(servicioVal),
+    fecha_hora: fechaHora,
+    user_id: user.id
+  }
+]);
+
+if (insertError) {
+  console.log(JSON.stringify(insertError, null, 2));
+  alert("Error al guardar");
+  return;
+}
+
+    alert("Cita agendada con éxito");
+
+    mostrarHistorial();
+  });
+
+  mostrarHistorial();
+});
+
+async function mostrarHistorial() {
+  let lista = document.getElementById("listaCitas");
+  lista.innerHTML = "";
+
+  const { data, error } = await supabase
+    .from("Citas")
+    .select(`
+      *,
+      Servicio!Citas_servicio_id_fkey1(nombre)
+    `);
+
+  
+  if (error) {
+  console.error("ERROR COMPLETO:");
+  console.log(JSON.stringify(error, null, 2));
+  return;
+}
+
+  
+  if (!data || data.length === 0) {
+    lista.innerHTML = "<p>No hay citas aún</p>";
+    return;
+  }
+
+  data.forEach((cita) => {
+    let articulo = document.createElement("article");
+
+    articulo.innerHTML = `
+      <strong>${cita.Servicio?.nombre}</strong><br>
+      ${cita.fecha}<br>
+      ${cita.hora}<br>
+    `;
+
+    lista.appendChild(articulo);
+  });
+}
+
+window.cancelarCita = async (id) => {
+
+  if (!confirm("¿Seguro que quieres cancelar esta cita?")) return;
+
+  const { error } = await supabase
+    .from("Citas")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  mostrarHistorial();
+};
+
+async function actualizarCita(id) {
+  const nuevaFecha = prompt("Nueva fecha:");
+
+  await supabase
+    .from("Citas")
+    .update({ fecha: nuevaFecha })
+    .eq("id", id);
+
+  mostrarHistorial();
 }

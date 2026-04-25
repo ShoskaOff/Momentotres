@@ -1,9 +1,5 @@
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import { supabase } from "../../Database/supabaseClient.js";
 
-const supabase = createClient(
-  "https://jdofaujfqsyiwauwttcd.supabase.co",
-  "sb_publishable_qS04TxbN_5PwBfJnAFS2Yg_L-NrgNLn"
-);
 
 function verDetalle(tipo) {
     const t = tratamientos[tipo];
@@ -12,7 +8,9 @@ function verDetalle(tipo) {
     document.getElementById("descripcionCorta").textContent = t.corta;
     document.getElementById("descripcion").textContent = t.descripcion;
     document.getElementById("precio").textContent = t.precio;
+
     
+
     const lista = document.getElementById("beneficios");
     lista.innerHTML = "";
     t.beneficios.forEach(b => {
@@ -69,4 +67,64 @@ if(localStorage.getItem("modo") === "oscuro"){
     botonTema.textContent = "☀️";
 }
 
-};  
+}; 
+document.addEventListener("DOMContentLoaded", async () => {
+  const servicios = await getServicios();
+  console.log("SERVICIOS DESDE SUPABASE:", servicios);
+}); 
+
+export async function getServicios() {
+  const { data, error } = await supabase
+    .from("servicios")
+    .select("*");
+
+  if (error) {
+    console.error("Error obteniendo servicios:", error);
+    return [];
+  }
+
+  return data;
+}
+
+
+export async function crearServicio(servicio) {
+  const { data, error } = await supabase
+    .from("servicios")
+    .insert([servicio])
+    .select();
+
+  if (error) {
+    console.error("Error creando servicio:", error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function actualizarServicio(id, datos) {
+  const { data, error } = await supabase
+    .from("servicios")
+    .update(datos)
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    console.error("Error actualizando servicio:", error);
+    return null;
+  }
+
+  return data;
+}
+export async function eliminarServicio(id) {
+  const { error } = await supabase
+    .from("servicios")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error eliminando servicio:", error);
+    return false;
+  }
+
+  return true;
+}
