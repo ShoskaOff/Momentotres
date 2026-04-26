@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Citas</title>
-    <link rel="stylesheet" href="/Frontend/styles/citas.css">
+    <title>Mis Citas</title>
+
+    <link rel="stylesheet" href="/Frontend/styles/userpac.css">
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="stylesheet" href="/Frontend/styles/servicios.css">
 
@@ -15,20 +16,36 @@
 <body>
     <header class="site-header">
         <a href="/Frontend/index/lobby.html">
-            <figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure>
+            <figure class="logo"><img src="/Media/Logo.png"></figure>
         </a>
+
         <nav class="main-nav">
             <a href="/Frontend/index/lobby.html">Inicio</a>
             <a href="/Frontend/index/servicios.html">Tratamientos</a>
             <a href="/Frontend/index/citas.html">Citas</a>
             <a href="/Frontend/index/contacto.html">Contacto</a>
-            <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
-            <a id="theme-toggle" type="button">🌙</a>
-            <a id="carritoIcono" type="button"> 🛒</a>
+            <a href="/Frontend/index/inicio.html">Cerrar Sesión</a>
+            <a id="theme-toggle">🌙</a>
         </nav>
     </header>
 
+    <main>
+
+        <section class="bienvenida">
+            <h2>Mis Citas</h2>
+            <p>Aquí puedes ver todas tus citas agendadas</p>
+        </section>
+
+        <section class="contenedor-citas">
+            <div id="listaCitas"></div>
+        </section>
+
+    </main>
+
+    <!-- JS -->
+    <script type="module" src="/Frontend/js/userpac.js"></script>
     <script src="/Frontend/js/tema.js"></script>
+
     <footer class="pie-pagina">
         <nav class="footer_navegacion">
             <p class="contenido_footer">Términos de Servicio</p>
