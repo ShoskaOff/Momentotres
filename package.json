@@ -17,5 +17,12 @@
   "bugs": {
     "url": "https://github.com/ShoskaOff/Momentotres/issues"
   },
-  "homepage": "https://github.com/ShoskaOff/Momentotres#readme"
+  "homepage": "https://github.com/ShoskaOff/Momentotres#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3"
+  }
 }
