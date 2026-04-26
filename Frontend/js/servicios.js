@@ -65,66 +65,32 @@ window.onload = ()=>{
 if(localStorage.getItem("modo") === "oscuro"){
     document.body.classList.add("dark-mode");
     botonTema.textContent = "☀️";
+    
 }
 
 }; 
+ document.getElementById("btnAdmin").addEventListener("click", async () => {
+    document.getElementById("panelCRUD").showModal();
+    cargarCRUD();
+});
+window.cerrarPanel = function() {
+    document.getElementById("panelCRUD").close();
+};
+async function obtenerRol() {
+    const { data: user } = await supabase.auth.getUser();
+
+    const { data, error } = await supabase
+        .from("Roles")
+        .select("nombre")
+        .eq("id", user.user.id)
+        .single();
+
+    return data?.rol;
+}
 document.addEventListener("DOMContentLoaded", async () => {
-  const servicios = await getServicios();
-  console.log("SERVICIOS DESDE SUPABASE:", servicios);
-}); 
+    const rol = await obtenerRol();
 
-export async function getServicios() {
-  const { data, error } = await supabase
-    .from("servicios")
-    .select("*");
-
-  if (error) {
-    console.error("Error obteniendo servicios:", error);
-    return [];
-  }
-
-  return data;
-}
-
-
-export async function crearServicio(servicio) {
-  const { data, error } = await supabase
-    .from("servicios")
-    .insert([servicio])
-    .select();
-
-  if (error) {
-    console.error("Error creando servicio:", error);
-    return null;
-  }
-
-  return data;
-}
-
-export async function actualizarServicio(id, datos) {
-  const { data, error } = await supabase
-    .from("servicios")
-    .update(datos)
-    .eq("id", id)
-    .select();
-
-  if (error) {
-    console.error("Error actualizando servicio:", error);
-    return null;
-  }
-
-  return data;
-}
-export async function eliminarServicio(id) {
-  const { error } = await supabase
-    .from("servicios")
-    .delete()
-    .eq("id", id);
-
-  if (error) {
-    console.error("Error eliminando servicio:", error);
-    return false;
-  }
-
-  return true;
-}
+    if (rol !== "admin") {
+        document.getElementById("btnAdmin").style.display = "none";
+    }
+});

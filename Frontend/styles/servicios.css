@@ -89,8 +89,49 @@ main {
 .titulo-tratamientos {
   padding: 20px;
   text-align: center;
+} 
+#btnAdmin { background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    padding: 4px;
+    width: auto;
+    height: auto;
+    line-height: 1;
+    transition: transform 0.2s ease;
+
+}
+#btnAdmin:hover{
+    transform: scale(1.15);
+}
+#panelCRUD {
+    width: 80%;
+    border-radius: 15px;
+    padding: 20px;
 }
 
+#formServicio {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#listaCRUD {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+#listaCRUD article {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    background: white;
+}
+
+#listaCRUD button {
+    margin: 5px;
+}
 .tratamientos-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
