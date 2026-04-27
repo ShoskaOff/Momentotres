@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesion</title>
+    <title>Iniciar sesión</title>
+
     <link rel="stylesheet" href="/Frontend/styles/inicio.css">
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="stylesheet" href="/Frontend/styles/servicios.css">
@@ -14,71 +15,53 @@
 
 <body>
 
-    <header class="encabezado">
-        <nav class="navegacion">
-            <ul>
-                <li><a href="/Frontend/index/lobby.html">Inicio</a></li>
-                <li><a href="/Frontend/index/servicios.html">Tratamientos</a></li>
-                <li><a href="/Frontend/index/citas.html">Citas</a></li>
-                <li><a href="/Frontend/index/contacto.html">Contacto</a></li>
-                <li><a href="/Frontend/index/inicio.html">Inicio Sesion</a></li>
-                <li><a id="theme-toggle" type="button">🌙</a></li>
-            </ul>
-        </nav>
-    </header>
+<header class="encabezado">
+    <nav class="navegacion">
+        <ul>
+            <li><a href="/Frontend/index/lobby.html">Inicio</a></li>
+            <li><a href="/Frontend/index/servicios.html">Tratamientos</a></li>
+            <li><a href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a></li>
+            <li><a href="/Frontend/index/contacto.html">Contacto</a></li>
+            <li><a href="/Frontend/index/inicio.html">Inicio Sesión</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <main class="principal">
-        <section class="seccion-login">
-            <article class="tarjeta">
+<main class="principal">
+    <section class="seccion-login">
+        <article class="tarjeta">
 
-                <header class="tarjeta-encabezado">
-                    <h1>Bienvenido</h1>
-                    <p>Accede a tus citas odontologicas</p>
-                </header>
+            <header class="tarjeta-encabezado">
+                <h1>Bienvenido</h1>
+                <p>Accede a tus citas odontológicas</p>
+            </header>
 
-                <form id="formLogin" class="formulario">
-                    <fieldset>
-                        <legend>Datos de acceso</legend>
+            <form id="formLogin" class="formulario">
+                <fieldset>
+                    <legend>Datos de acceso</legend>
 
-                        <label for="correo">Correo electronico</label>
-                        <input type="email" id="correo" required>
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo" required>
 
-                        <label for="clave">Contrasena</label>
-                        <input type="password" id="clave" required>
-                    </fieldset>
-                    <button type="submit">Ingresar</button>
-                </form>
+                    <label for="clave">Contraseña</label>
+                    <input type="password" id="clave" required>
+                </fieldset>
 
-                <footer class="tarjeta-pie">
-                    <p>No tienes cuenta? <a href="/Frontend/index/registro.html">Crear cuenta</a></p>
-                </footer>
+                <button type="submit">Ingresar</button>
+            </form>
 
-            </article>
-        </section>
-    </main>
+        </article>
+    </section>
+</main>
 
-    <footer class="pie-pagina">
-        <nav class="footer_navegacion">
-            <p class="contenido_footer">Términos de Servicio</p>
-            <p class="contenido_footer">Política de Privacidad</p>
-        </nav>
-        <aside class="barra_inferior">
-            <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
-        </aside>
-    </footer>
-
-    
 <script type="module">
-
 import { supabase } from "../../Database/supabaseClient.js";
-document.getElementById("formLogin").addEventListener("submit", async function (e) {
+
+document.getElementById("formLogin").addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const correo = document.getElementById("correo").value;
     const clave = document.getElementById("clave").value;
-    
-    console.log("EMAIL:", correo);
-console.log("PASSWORD:", clave);
 
     const { data, error } = await supabase.auth.signInWithPassword({
         email: correo,
@@ -87,83 +70,31 @@ console.log("PASSWORD:", clave);
 
     if (error) {
         alert("Error al iniciar sesión");
-        console.error(error);
         return;
     }
 
-    alert("Inicio de sesión correcto");
+    // 🔥 OBTENER USUARIO LOGUEADO
+    const { data: userData } = await supabase.auth.getUser();
 
-    // 🔥 ahora sí existe sesión
-    iniciarSistema();
-});
+    const userId = userData.user.id;
 
-async function obtenerRol() {
-    const { data, error: errorAuth } = await supabase.auth.getUser();
-
-    console.log("AUTH:", data, errorAuth);
-
-    if (!data.user) {
-        console.error("No hay usuario autenticado");
-        return null;
-    }
-
-    const userId = data.user.id;
-    console.log("USER ID:", userId);
-
-    // 🔹 Buscar en Usuarios
-    const { data: usuario, error: errorUsuario } = await supabase
+    // 🔥 BUSCAR EN TU TABLA USUARIOS
+    const { data: usuario } = await supabase
         .from("Usuarios")
-        .select("*")
+        .select("rol_id")
         .eq("auth_uuid", userId)
-        .maybeSingle();
+        .single();
 
-    console.log("USUARIO BD:", usuario, errorUsuario);
-
-    if (!usuario) {
-        console.error("❌ Usuario NO existe en tabla Usuarios");
-        return null;
-    }
-
-    // 🔹 Buscar en Roles
-    const { data: rolData, error: errorRol } = await supabase
-        .from("Roles")
-        .select("*")
-        .eq("id", usuario.rol_id)
-        .maybeSingle();
-
-    console.log("ROL BD:", rolData, errorRol);
-
-    if (!rolData) {
-        console.error("❌ Rol NO existe en tabla Roles");
-        return null;
-    }
-
-    return rolData.nombre;
-}
-async function iniciarSistema() {
-
-    const rol = await obtenerRol(); 
-
-    console.log("ROL REAL:", rol);
-
-    if (!rol) {
-        alert("No se pudo obtener el rol");
-        return;
-    }
-
-    if (rol.toLowerCase() === "admin") {
-        alert("Bienvenido Administrador");
-        window.location.href = "/Frontend/index/servicios.html";
+    // 🔥 DECIDIR A DÓNDE VA
+    if (usuario.rol_id === 1) {
+        // 🛠️ ADMIN
+        window.location.href = "/Frontend/index/PaginaAdmin/admin.html";
     } else {
-        alert("Bienvenido Usuario");
-        window.location.href = "/Frontend/index/citas.html";
+        // 👤 USUARIO
+        window.location.href = "/Frontend/index/PaginaUsuario/usuario.html";
     }
-}
-
+});
 </script>
-    
-    <script src="/Frontend/js/tema.js"></script>
 
 </body>
-
 </html>
