@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Citas</title>
+
+    <link rel="stylesheet" href="/Frontend/styles/tema.css">
+    <link rel="stylesheet" href="/Frontend/styles/PaginaAdmin/admin.css">
+    <link rel="stylesheet" href="/Frontend/styles/userpac.css">
+    <link rel="icon" href="/Media/favicon.png" type="image/png">
+</head>
+
+<body>
+    
+    <button class="menu-hamburguesa" id="btnHamburguesa">☰</button>
+
+    <aside class="sidebar" id="sidebar">
+        <a href="/Frontend/index/lobby.html" class="logo-container">
+            <img src="/Media/Logo.png" alt="DENTOLOGY">
+        </a>
+        <nav class="main-nav">
+            <a href="/Frontend/index/lobby.html">Inicio</a>
+            <a href="/Frontend/index/servicios.html">Tratamientos</a>
+            <a href="/Frontend/index/PaginaUsuario/usuario.html" class="activo">Mis Citas</a>
+            <a href="/Frontend/index/contacto.html">Contacto</a>
+        </nav>
+        <section class="sidebar-footer">
+            <a id="btnCerrarSesion" href="/Frontend/index/inicio.html" type="button">🚪 Cerrar Sesión</a>
+        </section>
+    </aside>
+
+    <header class="admin-topbar">
+        <output id="info-usuario-logueado"></output>
+        <button id="theme-toggle" class="btn-tema" type="button" aria-label="Cambiar tema">🌙</button>
+    </header>
+
+    <main class="admin-content">
+        <header class="admin-header-section">
+            <h1>Panel de Paciente</h1>
+        </header>
+
+        <section id="gestion-citas-usuario" class="admin-section">
+            <header class="header-section">
+                <h2>Mis Citas Programadas</h2>
+            </header>
+            
+            <article id="listaCitas" class="crud-contenedor">
+                <!-- Aquí se cargarán las citas dinámicamente -->
+            </article>
+        </section>
+    </main>
+
+    <!-- JS -->
+    <script type="module" src="/Frontend/js/userpac.js"></script>
+    <script src="/Frontend/js/tema.js"></script>
+
+    <footer class="pie-pagina-admin">
+        <nav class="footer_navegacion">
+            <p class="contenido_footer">Términos de Servicio</p>
+            <p class="contenido_footer">Política de Privacidad</p>
+        </nav>
+        <aside class="barra_inferior">
+            <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
+        </aside>
+    </footer>
+</body>
+
+</html>

@@ -44,16 +44,25 @@
     </ul>
 
     <p class="precio">Desde $50.000 COP</p>
+    
     <button id="agendarBtn" data-servicio="limpieza dental">Agendar cita</button>
+
+    <div class="producto" data-id="limpieza" data-nombre="Limpieza Dental" data-precio="50000">
+        <button class="btn-agregar">Agregar al carrito</button>
+    </div>
+
+  </main>
+
+  <script src="/Frontend/js/tema.js"></script>
+
   <script>
     document.getElementById("agendarBtn").addEventListener("click", function() {
-    const servicio = this.getAttribute("data-servicio");
-
-    window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
-});
+      const servicio = this.getAttribute("data-servicio");
+      window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
+    });
   </script>
-  </main>
-<script src="/Frontend/js/tema.js"></script>
-</body>
 
+  <script src="/Frontend/index/carrito/carrito.js"></script>
+
+</body>
 </html>

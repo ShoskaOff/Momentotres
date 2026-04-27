@@ -12,7 +12,6 @@
 
 <body>
 
-
   <header class="site-header">
     <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure></a>
     <nav class="main-nav">
@@ -40,16 +39,24 @@
   </ul>
 
   <p class="precio">Desde $250.000 COP</p>
+  
   <button id="agendarBtn" data-servicio="cordales">Agendar cita</button>
-  <script>
-    document.getElementById("agendarBtn").addEventListener("click", function() {
-    const servicio = this.getAttribute("data-servicio");
 
-    window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
-});
-  </script>
+ <div class="producto" data-id="carillas" data-nombre="Carillas Dentales" data-precio="250000">
+    <button class="btn-agregar">Agregar al carrito</button>
+</div>
 </main>
+
 <script src="/Frontend/js/tema.js"></script>
+
+<script>
+  document.getElementById("agendarBtn").addEventListener("click", function() {
+    const servicio = this.getAttribute("data-servicio");
+    window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
+  });
+</script>
+
+<script src="/Frontend/index/carrito/carrito.js"></script>
 
 </body>
 </html>
