@@ -1,47 +1,72 @@
-import { supabase } from "../../Database/supabaseClient.js";
-
-
 function verDetalle(tipo) {
-    const t = tratamientos[tipo];
-    document.getElementById("titulo").textContent = t.titulo;
-    document.getElementById("imagen").src = t.imagen;
-    document.getElementById("descripcionCorta").textContent = t.corta;
-    document.getElementById("descripcion").textContent = t.descripcion;
-    document.getElementById("precio").textContent = t.precio;
+    const t = tratamientos?.[tipo];
 
-    
+    if (!t) {
+        alert("Tratamiento no encontrado");
+        return;
+    }
+
+    document.getElementById("titulo").textContent = t.titulo || "";
+    document.getElementById("imagen").src = t.imagen || "";
+    document.getElementById("descripcionCorta").textContent = t.corta || "";
+    document.getElementById("descripcion").textContent = t.descripcion || "";
+    document.getElementById("precio").textContent = t.precio || "";
 
     const lista = document.getElementById("beneficios");
     lista.innerHTML = "";
-    t.beneficios.forEach(b => {
+
+    (t.beneficios || []).forEach(b => {
         const li = document.createElement("li");
         li.textContent = b;
         lista.appendChild(li);
     });
-    
-    document.getElementById("modalDetalle").showModal();
+
+    const modal = document.getElementById("modalDetalle");
+    if (modal) modal.showModal();
 }
 
 function cerrarDetalle() {
-    document.getElementById("modalDetalle").close();
+    document.getElementById("modalDetalle")?.close();
 }
 
-function agendarServicio() {
-    const titulo = document.getElementById("titulo").textContent;
-    window.location.href = `citas.html?servicio=${encodeURIComponent(titulo)}`;
+
+function agendarServicio(servicio) {
+
+    if (!servicio || !servicio.id) {
+        alert("Servicio no encontrado");
+        return;
+    }
+
+    window.location.href =
+        `/Frontend/index/citas.html?servicioId=${servicio.id}`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+
     const btnDetalles = document.querySelectorAll(".btn-detalle");
-    btnDetalles.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            const tratamiento = e.currentTarget.getAttribute("data-tratamiento");
-            verDetalle(tratamiento);
-        });
+    const agendarBtn = document.getElementById("agendarBtn");
+    const cerrarBtn = document.getElementById("cerrarBtn");
+    const botonTema = document.getElementById("theme-toggle");
+
+
+    agendarBtn?.addEventListener("click", () => {
+
+        // tomamos el ID desde el botón activo o del DOM
+        const id = agendarBtn.dataset.id;
+
+        if (!id) {
+            alert("Servicio no encontrado");
+            return;
+        }
+
+        agendarServicio({ id });
     });
 
-    document.getElementById("agendarBtn").addEventListener("click", agendarServicio);
-    document.getElementById("cerrarBtn").addEventListener("click", cerrarDetalle);
+
+    cerrarBtn?.addEventListener("click", cerrarDetalle);
+
+
+
 });
 
 const botonTema = document.getElementById("theme-toggle");
@@ -69,28 +94,3 @@ if(localStorage.getItem("modo") === "oscuro"){
 }
 
 }; 
- document.getElementById("btnAdmin").addEventListener("click", async () => {
-    document.getElementById("panelCRUD").showModal();
-    cargarCRUD();
-});
-window.cerrarPanel = function() {
-    document.getElementById("panelCRUD").close();
-};
-async function obtenerRol() {
-    const { data: user } = await supabase.auth.getUser();
-
-    const { data, error } = await supabase
-        .from("Roles")
-        .select("nombre")
-        .eq("id", user.user.id)
-        .single();
-
-    return data?.rol;
-}
-document.addEventListener("DOMContentLoaded", async () => {
-    const rol = await obtenerRol();
-
-    if (rol !== "admin") {
-        document.getElementById("btnAdmin").style.display = "none";
-    }
-});

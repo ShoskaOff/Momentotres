@@ -16,11 +16,11 @@
     <header class="encabezado">
         <nav class="navegacion">
             <ul>
-                <li> <a href="/Frontend/index/lobby.html">Inicio</a></li>
-                <li> <a href="/Frontend/index/servicios.html">Tratamientos</a></li>
-                <li> <a href="/Frontend/index/citas.html">Citas</a></li>
-                <li> <a href="/Frontend/index/contacto.html">Contacto</a></li>
-                <li> <a href="/Frontend/index/inicio.html">Inicio Sesion</a></li>
+                <li><a href="/Frontend/index/lobby.html">Inicio</a></li>
+                <li><a href="/Frontend/index/servicios.html">Tratamientos</a></li>
+                <li><a href="/Frontend/index/citas.html">Citas</a></li>
+                <li><a href="/Frontend/index/contacto.html">Contacto</a></li>
+                <li><a href="/Frontend/index/inicio.html">Inicio Sesion</a></li>
                 <li><a id="theme-toggle" type="button">🌙</a></li>
             </ul>
         </nav>
@@ -49,19 +49,82 @@
                 </form>
 
                 <footer class="tarjeta-pie">
-                    <p>No tienes cuenta? <a href="registro.html">Crear cuenta</a></p>
+                    <p>No tienes cuenta? <a href="/Frontend/index/registro.html">Crear cuenta</a></p>
                 </footer>
 
             </article>
         </section>
     </main>
 
-    <script>
-        document.getElementById("formLogin").addEventListener("submit", function (e) {
-            e.preventDefault();
-            alert("Inicio de sesion correcto");
+<script type="module">
+import { supabase } from "/Frontend/js/supabase.js";
+
+const UUID_ADMIN = "c0e114ae-73d9-4d93-bfa8-82f25240de8e";
+const UUID_DOCTOR = "bff0af15-fc96-42df-a0b0-bc977411a7b8";
+
+document.addEventListener("DOMContentLoaded", () => {
+    const formLogin = document.getElementById("formLogin");
+
+    if (!formLogin) {
+        console.error("No se encontró formLogin");
+        return;
+    }
+
+    formLogin.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const correo = document.getElementById("correo").value.trim();
+        const clave = document.getElementById("clave").value.trim();
+
+        if (!correo || !clave) {
+            alert("Completa todos los campos");
+            return;
+        }
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: correo,
+            password: clave
         });
-    </script>
+
+        if (error || !data.user) {
+            console.error(error);
+            alert("Correo o contraseña incorrectos o usuario sin confirmar");
+            return;
+        }
+
+        const authUUID = data.user.id;
+
+        const { data: usuarioData, error: usuarioError } = await supabase
+            .from("Usuarios")
+            .select("id, rol_id")
+            .eq("auth_uuid", authUUID)
+            .single();
+
+        if (usuarioError || !usuarioData) {
+            console.error(usuarioError);
+            alert("Usuario no encontrado en tabla Usuarios");
+            return;
+        }
+
+        localStorage.setItem("usuario_id", usuarioData.id);
+        localStorage.setItem("auth_uuid", authUUID);
+        localStorage.setItem("rol_id", usuarioData.rol_id);
+
+        if (authUUID === UUID_ADMIN) {
+            window.location.href = "/Frontend/index/admin.html";
+            return;
+        }
+
+        if (authUUID === UUID_DOCTOR) {
+            window.location.href = "/Frontend/index/odontologo.html";
+            return;
+        }
+
+        window.location.href = "/Frontend/index/lobby.html";
+    });
+});
+</script>
+
     <script src="/Frontend/js/tema.js"></script>
 
 </body>
