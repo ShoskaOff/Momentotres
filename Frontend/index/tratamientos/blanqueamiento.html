@@ -13,9 +13,8 @@
 
 <body>
 
-
   <header class="site-header">
-    <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure></a>
+    <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="Logo"></figure></a>
     <nav class="main-nav">
         <a href="/Frontend/index/lobby.html">Inicio</a>
         <a href="/Frontend/index/servicios.html">Tratamientos</a>
@@ -26,12 +25,12 @@
     </nav>
   </header>
 
-
   <main>
     <h1>Blanqueamiento Dental</h1>
     <section class="contenedor-volver">
-      <a href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
+      <a href="/Frontend/index/servicios.html" class="btn-detalle">Volver</a>
     </section>
+    
     <img src="/Media/img/blanqueamiento.jpeg" alt="Blanqueamiento dental">
     <p>Dientes más blancos en pocas sesiones.</p>
     <p>Aclara varios tonos del diente de forma segura.</p>
@@ -43,17 +42,25 @@
     </ul>
 
     <p class="precio">Desde $300.000 COP</p>
+    
     <button id="agendarBtn" data-servicio="Blanqueamiento dental">Agendar cita</button>
-  <script>
-    document.getElementById("agendarBtn").addEventListener("click", function() {
-    const servicio = this.getAttribute("data-servicio");
 
-    window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
-});
-  </script>
+    <div class="producto" data-id="blanqueamiento" data-nombre="Blanqueamiento Dental" data-precio="300000">
+        <button class="btn-agregar">Agregar al carrito</button>
+    </div>
   </main>
+
   <script src="/Frontend/js/tema.js"></script>
+  
+  <script>
+    // Script del botón Agendar
+    document.getElementById("agendarBtn").addEventListener("click", function() {
+        const servicio = this.getAttribute("data-servicio");
+        window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
+    });
+  </script>
+
+  <script src="/Frontend/index/carrito/carrito.js"></script>
 
 </body>
-
 </html>

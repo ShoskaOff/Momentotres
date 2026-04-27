@@ -1,0 +1,32 @@
+.carrito-container {
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.item-carrito {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 15px !important;
+    border-bottom: 1px solid var(--secondary) !important;
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    margin-bottom: 10px !important;
+    border-radius: 8px !important;
+}
+
+.item-carrito button {
+    cursor: pointer;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    background-color: #40c4be;
+    color: white;
+}
+
+.item-carrito > button:last-child {
+    background-color: #40c4be;
+    
+}

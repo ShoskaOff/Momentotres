@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,6 @@
 
 <body>
 
-
   <header class="site-header">
     <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure></a>
     <nav class="main-nav">
@@ -22,32 +22,43 @@
         <a href="/Frontend/index/contacto.html">Contacto</a>
         <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
         <a id="theme-toggle" type="button">🌙</a>
-        
     </nav>
   </header>
-<main>
-  <h1>Frenilectomía</h1>
-  <section class="contenedor-volver">
-    <a href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
-  </section>
-  <img src="/Media/img/frenilectomia.jpeg" alt="Frenilectomía">
-  <p>Cirugía de frenillos.</p>
 
-  <ul>
-    <li>Mejor movilidad</li>
-    <li>Cierra espacios</li>
-  </ul>
+  <main>
+    <h1>Frenilectomía</h1>
+    <section class="contenedor-volver">
+      <a href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
+    </section>
+    
+    <img src="/Media/img/frenilectomia.jpeg" alt="Frenilectomía">
+    <p>Cirugía de frenillos.</p>
 
-  <p class="precio">Consultar</p>
-   <button id="agendarBtn" data-servicio="frenilectomia">Agendar cita</button>
+    <ul>
+      <li>Mejor movilidad</li>
+      <li>Cierra espacios</li>
+    </ul>
+
+    <p class="precio">Consultar</p>
+    
+    <button id="agendarBtn" data-servicio="frenilectomia">Agendar cita</button>
+
+    <div class="producto" data-id="frenilectomia" data-nombre="Frenilectomía" data-precio="20000">
+        <button class="btn-agregar">Agregar al carrito</button>
+    </div>
+
+  </main>
+
+  <script src="/Frontend/js/tema.js"></script>
+  
   <script>
     document.getElementById("agendarBtn").addEventListener("click", function() {
-    const servicio = this.getAttribute("data-servicio");
-
-    window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
-});
+      const servicio = this.getAttribute("data-servicio");
+      window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
+    });
   </script>
-</main>
-<script src="/Frontend/js/tema.js"></script>
+
+  <script src="/Frontend/index/carrito/carrito.js"></script>
+
 </body>
 </html>
