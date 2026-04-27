@@ -38,7 +38,21 @@
   color: var(--color-texto);
   margin-bottom: 40px;
 }
+#btnAdmin { 
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    padding: 4px;
+    width: auto;
+    height: auto;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
 
+#btnAdmin:hover{
+    transform: scale(1.15);
+}
 .destacados-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

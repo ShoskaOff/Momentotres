@@ -92,21 +92,6 @@ main {
   text-align: center;
 } 
 
-#btnAdmin { 
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 22px;
-    padding: 4px;
-    width: auto;
-    height: auto;
-    line-height: 1;
-    transition: transform 0.2s ease;
-}
-
-#btnAdmin:hover{
-    transform: scale(1.15);
-}
 
 #panelCRUD {
     width: 80%;
