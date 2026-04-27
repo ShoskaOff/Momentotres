@@ -1,33 +1,45 @@
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", ()=>{ 
 
-const boton = document.getElementById("theme-toggle");
+    const boton = document.getElementById("theme-toggle");
+    const logo = document.querySelector(".logo img"); // 👈 NUEVO
 
-if(localStorage.getItem("tema") === "oscuro"){
-    document.body.classList.add("dark-mode");
+    const logoClaro = "/Media/Logo.png";              // 👈 NUEVO
+    const logoOscuro = "/Media/Logo Blanco.png";      // 👈 NUEVO
 
-    if(boton){
-        boton.textContent = "☀️";
+    // ===============================
+    // EXISTE TEMA GUARDADO
+    // ===============================
+    if(localStorage.getItem("tema") === "oscuro"){
+        document.body.classList.add("dark-mode");
+
+        if(boton) boton.textContent = "☀️";
+        if(logo) logo.src = logoOscuro; // 👈 CAMBIA LOGO INICIAL
+    }else{
+        if(boton) boton.textContent = "🌙";
+        if(logo) logo.src = logoClaro; // 👈 CAMBIA LOGO INICIAL
     }
-}else{
+
+    // ===============================
+    // BOTÓN PARA CAMBIAR TEMA
+    // ===============================
     if(boton){
-        boton.textContent = "🌙";
+        boton.addEventListener("click", ()=>{
+
+            document.body.classList.toggle("dark-mode");
+
+            // Si se activó modo oscuro
+            if(document.body.classList.contains("dark-mode")){
+                boton.textContent = "☀️";
+                localStorage.setItem("tema","oscuro");
+                if(logo) logo.src = logoOscuro; // 👈 CAMBIA AL LOGO BLANCO
+            }
+            else{ // Si vuelve a modo claro
+                boton.textContent = "🌙";
+                localStorage.setItem("tema","claro");
+                if(logo) logo.src = logoClaro; // 👈 VUELVE AL LOGO NORMAL
+            }
+
+        });
     }
-}
-
-if(boton){
-    boton.addEventListener("click", ()=>{
-
-        document.body.classList.toggle("dark-mode");
-
-        if(document.body.classList.contains("dark-mode")){
-            boton.textContent = "☀️";
-            localStorage.setItem("tema","oscuro");
-        }else{
-            boton.textContent = "🌙";
-            localStorage.setItem("tema","claro");
-        }
-
-    });
-}
 
 });
