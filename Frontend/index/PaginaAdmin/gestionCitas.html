@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Citas - DENTOLOGY</title>
+    <link rel="stylesheet" href="/Frontend/styles/tema.css">
+    <link rel="stylesheet" href="/Frontend/styles/PaginaAdmin/admin.css">
+    <link rel="icon" href="/Media/favicon.png" type="image/png">
+</head>
+
+<body>
+    
+    <button class="menu-hamburguesa" id="btnHamburguesa">☰</button>
+
+    <aside class="sidebar" id="sidebar">
+        <a href="/Frontend/index/PaginaAdmin/admin.html" class="logo-container">
+            <img src="/Media/Logo.png" alt="DENTOLOGY">
+        </a>
+        <nav class="main-nav">
+            <a href="/Frontend/index/PaginaAdmin/admin.html">Panel de Administración</a>
+            <a href="/Frontend/index/PaginaAdmin/gestionCitas.html" class="activo">Gestión de Citas</a>
+            <a href="/Frontend/index/PaginaAdmin/gestionUsuario.html">Gestión de Usuarios</a>
+        </nav>
+        <section class="sidebar-footer">
+            <a id="btnCerrarSesion" type="button">🚪 Cerrar Sesión</a>
+        </section>
+    </aside>
+
+    <header class="admin-topbar">
+        <output id="info-admin-logueado"></output>
+        <button id="theme-toggle" class="btn-tema" type="button" aria-label="Cambiar tema">🌙</button>
+    </header>
+
+    <main class="admin-content">
+        <header class="admin-header-section">
+            <h1>Gestión de Citas</h1>
+        </header>
+
+        <section class="admin-filtros">
+            <input type="search" id="buscarCita" placeholder="Buscar por paciente o documento..." class="input-busqueda">
+            <input type="date" id="filtroFechaCita" class="select-filtro" aria-label="Filtrar por fecha">
+            <select id="filtroEstadoCita" class="select-filtro" aria-label="Filtrar por estado">
+                <option value="todas">Todos los estados</option>
+                <option value="pendiente">Pendientes</option>
+                <option value="confirmada">Confirmadas</option>
+                <option value="completada">Completadas</option>
+                <option value="cancelada">Canceladas</option>
+            </select>
+        </section>
+
+        <section class="admin-section">
+            <article id="crud-tabla-gestion-citas" class="crud-contenedor"></article>
+        </section>
+
+        <dialog id="modalDetalleCita" class="modal-crud"></dialog>
+
+    </main>
+
+    <footer class="pie-pagina-admin">
+        <p>©DENTOLOGY. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="/Frontend/js/tema.js"></script>
+    <script src="/Frontend/js/admin.js"></script>
+</body>
+
+</html>

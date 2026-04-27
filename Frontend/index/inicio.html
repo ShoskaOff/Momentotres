@@ -7,6 +7,7 @@
     <title>Iniciar sesion</title>
     <link rel="stylesheet" href="/Frontend/styles/inicio.css">
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
+    <link rel="stylesheet" href="/Frontend/styles/servicios.css">
     <link rel="stylesheet" href="/Frontend/styles/responsive.css">
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
@@ -56,75 +57,111 @@
         </section>
     </main>
 
+    <footer class="pie-pagina">
+        <nav class="footer_navegacion">
+            <p class="contenido_footer">Términos de Servicio</p>
+            <p class="contenido_footer">Política de Privacidad</p>
+        </nav>
+        <aside class="barra_inferior">
+            <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
+        </aside>
+    </footer>
+
+    
 <script type="module">
-import { supabase } from "/Frontend/js/supabase.js";
 
-const UUID_ADMIN = "c0e114ae-73d9-4d93-bfa8-82f25240de8e";
-const UUID_DOCTOR = "bff0af15-fc96-42df-a0b0-bc977411a7b8";
+import { supabase } from "../../Database/supabaseClient.js";
+document.getElementById("formLogin").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-document.addEventListener("DOMContentLoaded", () => {
-    const formLogin = document.getElementById("formLogin");
+    const correo = document.getElementById("correo").value;
+    const clave = document.getElementById("clave").value;
+    
+    console.log("EMAIL:", correo);
+console.log("PASSWORD:", clave);
 
-    if (!formLogin) {
-        console.error("No se encontró formLogin");
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email: correo,
+        password: clave
+    });
+
+    if (error) {
+        alert("Error al iniciar sesión");
+        console.error(error);
         return;
     }
 
-    formLogin.addEventListener("submit", async function (e) {
-        e.preventDefault();
+    alert("Inicio de sesión correcto");
 
-        const correo = document.getElementById("correo").value.trim();
-        const clave = document.getElementById("clave").value.trim();
-
-        if (!correo || !clave) {
-            alert("Completa todos los campos");
-            return;
-        }
-
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: correo,
-            password: clave
-        });
-
-        if (error || !data.user) {
-            console.error(error);
-            alert("Correo o contraseña incorrectos o usuario sin confirmar");
-            return;
-        }
-
-        const authUUID = data.user.id;
-
-        const { data: usuarioData, error: usuarioError } = await supabase
-            .from("Usuarios")
-            .select("id, rol_id")
-            .eq("auth_uuid", authUUID)
-            .single();
-
-        if (usuarioError || !usuarioData) {
-            console.error(usuarioError);
-            alert("Usuario no encontrado en tabla Usuarios");
-            return;
-        }
-
-        localStorage.setItem("usuario_id", usuarioData.id);
-        localStorage.setItem("auth_uuid", authUUID);
-        localStorage.setItem("rol_id", usuarioData.rol_id);
-
-        if (authUUID === UUID_ADMIN) {
-            window.location.href = "/Frontend/index/admin.html";
-            return;
-        }
-
-        if (authUUID === UUID_DOCTOR) {
-            window.location.href = "/Frontend/index/odontologo.html";
-            return;
-        }
-
-        window.location.href = "/Frontend/index/lobby.html";
-    });
+    // 🔥 ahora sí existe sesión
+    iniciarSistema();
 });
-</script>
 
+async function obtenerRol() {
+    const { data, error: errorAuth } = await supabase.auth.getUser();
+
+    console.log("AUTH:", data, errorAuth);
+
+    if (!data.user) {
+        console.error("No hay usuario autenticado");
+        return null;
+    }
+
+    const userId = data.user.id;
+    console.log("USER ID:", userId);
+
+    // 🔹 Buscar en Usuarios
+    const { data: usuario, error: errorUsuario } = await supabase
+        .from("Usuarios")
+        .select("*")
+        .eq("auth_uuid", userId)
+        .maybeSingle();
+
+    console.log("USUARIO BD:", usuario, errorUsuario);
+
+    if (!usuario) {
+        console.error("❌ Usuario NO existe en tabla Usuarios");
+        return null;
+    }
+
+    // 🔹 Buscar en Roles
+    const { data: rolData, error: errorRol } = await supabase
+        .from("Roles")
+        .select("*")
+        .eq("id", usuario.rol_id)
+        .maybeSingle();
+
+    console.log("ROL BD:", rolData, errorRol);
+
+    if (!rolData) {
+        console.error("❌ Rol NO existe en tabla Roles");
+        return null;
+    }
+
+    return rolData.nombre;
+}
+async function iniciarSistema() {
+
+    const rol = await obtenerRol(); 
+
+    console.log("ROL REAL:", rol);
+
+    if (!rol) {
+        alert("No se pudo obtener el rol");
+        return;
+    }
+
+    if (rol.toLowerCase() === "admin") {
+        alert("Bienvenido Administrador");
+        window.location.href = "/Frontend/index/servicios.html";
+    } else {
+        alert("Bienvenido Usuario");
+        window.location.href = "/Frontend/index/citas.html";
+    }
+}
+
+</script>
+    
     <script src="/Frontend/js/tema.js"></script>
 
 </body>

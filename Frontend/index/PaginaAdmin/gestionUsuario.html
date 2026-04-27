@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - DENTOLOGY</title>
+    <link rel="stylesheet" href="/Frontend/styles/tema.css">
+    <link rel="stylesheet" href="/Frontend/styles/PaginaAdmin/admin.css">
+    <link rel="icon" href="/Media/favicon.png" type="image/png">
+</head>
+
+<body>
+    
+    <button class="menu-hamburguesa" id="btnHamburguesa">☰</button>
+
+    <aside class="sidebar" id="sidebar">
+        <a href="/Frontend/index/PaginaAdmin/admin.html" class="logo-container">
+            <img src="/Media/Logo.png" alt="DENTOLOGY">
+        </a>
+        <nav class="main-nav">
+            <a href="/Frontend/index/PaginaAdmin/admin.html">Panel de Administración</a>
+            <a href="/Frontend/index/PaginaAdmin/gestionCitas.html">Gestión de Citas</a>
+            <a href="/Frontend/index/PaginaAdmin/gestionUsuario.html" class="activo">Gestión de Usuarios</a>
+        </nav>
+        <section class="sidebar-footer">
+            <a id="btnCerrarSesion" type="button">🚪 Cerrar Sesión</a>
+        </section>
+    </aside>
+
+    <header class="admin-topbar">
+        <output id="info-admin-logueado"></output>
+        <button id="theme-toggle" class="btn-tema" type="button" aria-label="Cambiar tema">🌙</button>
+    </header>
+
+    <main class="admin-content">
+        <header class="admin-header-section">
+            <h1>Gestión de Usuarios y Roles</h1>
+        </header>
+
+        <section class="admin-filtros">
+            <input type="search" id="buscarUsuario" placeholder="Buscar por nombre o correo..." class="input-busqueda">
+            <select id="filtroRol" class="select-filtro" aria-label="Filtrar por rol">
+                <option value="todos">Todos los roles</option>
+                <option value="paciente">Pacientes</option>
+                <option value="admin">Administradores</option>
+            </select>
+        </section>
+
+        <section class="admin-section">
+            <article id="crud-tabla-usuarios" class="crud-contenedor"></article>
+        </section>
+
+        <dialog id="modalUsuario" class="modal-crud"></dialog>
+
+    </main>
+
+    <footer class="pie-pagina-admin">
+        <p>©DENTOLOGY. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="/Frontend/js/tema.js"></script>
+    <script src="/Frontend/js/admin.js"></script>
+</body>
+
+</html>

@@ -5,15 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Citas</title>
-
+    <link rel="stylesheet" href="/Frontend/styles/servicios.css">
     <link rel="stylesheet" href="/Frontend/styles/citas.css">
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
-    <link rel="stylesheet" href="/Frontend/styles/servicios.css">
+    
 
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
 
 <body>
+    <header class="site-header">
+        <a href="/Frontend/index/lobby.html">
+            <figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure>
+        </a>
+        <nav class="main-nav">
+            <a href="/Frontend/index/lobby.html">Inicio</a>
+            <a href="/Frontend/index/servicios.html">Tratamientos</a>
+            <a href="/Frontend/index/citas.html">Citas</a>
+            <a href="/Frontend/index/contacto.html">Contacto</a>
+            <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
+            <a id="theme-toggle" type="button">🌙</a>
+            <a href="/Frontend/index/carrito/carritoo.html" id="carritoIcono">🛒</a>
+        </nav>
+    </header>
 
 <header class="site-header">
     <a href="/Frontend/index/lobby.html">
@@ -45,21 +59,17 @@
     <label>Fecha:</label>
     <input type="date" id="fecha" required>
 
-    <label>Hora:</label>
-    <input type="time" id="hora" required>
+    <footer class="pie-pagina">
+        <nav class="footer_navegacion">
+            <p class="contenido_footer">Términos de Servicio</p>
+            <p class="contenido_footer">Política de Privacidad</p>
+        </nav>
+        <aside class="barra_inferior">
+            <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
+        </aside>
+    </footer>
 
-    <button type="submit">Confirmar</button>
-</form>
-
-<section id="historial">
-    <h2>Historial de citas</h2>
-    <section id="listaCitas"></section>
-</section>
-
-</main>
-
-<script type="module" src="../js/citas.js"></script>
-<script src="/Frontend/js/tema.js"></script>
-
+    <script type="module" src="../js/citas.js"></script>
+    <script src="/Frontend/js/tema.js"></script>
 </body>
 </html>

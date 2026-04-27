@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,6 @@
 
 <body>
 
-
   <header class="site-header">
     <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure></a>
     <nav class="main-nav">
@@ -24,29 +24,40 @@
         <a id="theme-toggle" type="button">🌙</a>
     </nav>
   </header>
-<main>
-  <h1>Exodoncia</h1>
-  <section class="contenedor-volver">
-    <a href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
-  </section >
-  <img src="/Media/img/exodoncia.jpeg" alt="Exodoncia">
-  <p>Extracción de dientes dañados.</p>
 
-  <ul>
-    <li>Alivia el dolor</li>
-    <li>Elimina infecciones</li>
-  </ul>
+  <main>
+    <h1>Exodoncia</h1>
+    <section class="contenedor-volver">
+      <a href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
+    </section>
+    
+    <img src="/Media/img/exodoncia.jpeg" alt="Exodoncia">
+    <p>Extracción de dientes dañados.</p>
 
-  <p class="precio">Desde $150.000 COP</p>
-  <button id="agendarBtn" data-servicio="Exodoncia">Agendar cita</button>
+    <ul>
+      <li>Alivia el dolor</li>
+      <li>Elimina infecciones</li>
+    </ul>
+
+    <p class="precio">Desde $150.000 COP</p>
+    
+    <button id="agendarBtn" data-servicio="Exodoncia">Agendar cita</button>
+
+    <div class="producto" data-id="exodoncia" data-nombre="Exodoncia" data-precio="150000">
+        <button class="btn-agregar">Agregar al carrito</button>
+    </div>
+  </main>
+
+  <script src="/Frontend/js/tema.js"></script>
+
   <script>
     document.getElementById("agendarBtn").addEventListener("click", function() {
-    const servicio = this.getAttribute("data-servicio");
-
-    window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
-});
+      const servicio = this.getAttribute("data-servicio");
+      window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
+    });
   </script>
-</main>
-<script src="/Frontend/js/tema.js"></script>
+
+  <script src="/Frontend/index/carrito/carrito.js"></script>
+
 </body>
 </html>

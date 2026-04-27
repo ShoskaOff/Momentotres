@@ -9,11 +9,9 @@
   <link rel="stylesheet" href="/Frontend/styles/tratamientos.css">
   <link rel="stylesheet" href="/Frontend/styles/tema.css">
   <link rel="stylesheet" href="/Frontend/styles/responsive.css">
-  <a id="theme-toggle" type="button">🌙</a>
 </head>
 
 <body>
-
 
   <header class="site-header">
     <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure></a>
@@ -26,11 +24,13 @@
         <a id="theme-toggle" type="button">🌙</a>
     </nav>
   </header>
+
   <main>
     <h1>Sellantes</h1>
     <section class="contenedor-volver">
       <a href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
     </section>
+    
     <img src="/Media/img/sellante.jpeg" alt="Sellantes">
     <p>Protección contra caries.</p>
 
@@ -40,26 +40,35 @@
     </ul>
 
     <p class="precio">$40.000 por diente</p>
+    
     <button id="agendarBtn" data-servicio="Sellantes">Agendar cita</button>
+
+    <div class="producto" data-id="sellantes" data-nombre="Sellantes" data-precio="40000">
+        <button class="btn-agregar">Agregar al carrito</button>
+    </div>
+
+  </main>
+
+  <footer>
+    <aside class="contenido_footer">
+        <p>Política de Privacidad</p>
+        <p>Términos de Servicio</p>
+    </aside>
+    <aside class="barra_inferior">
+         <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
+    </aside>
+  </footer>
+
+  <script src="/Frontend/js/tema.js"></script>
+  
   <script>
     document.getElementById("agendarBtn").addEventListener("click", function() {
-    const servicio = this.getAttribute("data-servicio");
-
-    window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
-});
+      const servicio = this.getAttribute("data-servicio");
+      window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
+    });
   </script>
-  </main>
-  <footer>
-        <aside class="contenido_footer">
-            <p>Política de Privacidad</p>
-            <p>Términos de Servicio</p>
-        </aside>
-        <aside class="barra_inferior">
-             <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
-        </aside>
-    </footer>
-    <script src="/Frontend/js/tema.js"></script>
+
+  <script src="/Frontend/index/carrito/carrito.js"></script>
 
 </body>
-
 </html>
