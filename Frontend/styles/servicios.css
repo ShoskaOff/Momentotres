@@ -22,8 +22,8 @@
 }
 
 body {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background-color: var(--color-fondo);
   font-family: var(--fuente-principal);
@@ -84,13 +84,16 @@ main {
   margin-top: 100px;
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .titulo-tratamientos {
   padding: 20px;
   text-align: center;
 } 
-#btnAdmin { background: transparent;
+
+#btnAdmin { 
+    background: transparent;
     border: none;
     cursor: pointer;
     font-size: 22px;
@@ -99,11 +102,12 @@ main {
     height: auto;
     line-height: 1;
     transition: transform 0.2s ease;
-
 }
+
 #btnAdmin:hover{
     transform: scale(1.15);
 }
+
 #panelCRUD {
     width: 80%;
     border-radius: 15px;
@@ -132,6 +136,7 @@ main {
 #listaCRUD button {
     margin: 5px;
 }
+
 .tratamientos-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -198,6 +203,7 @@ dialog[open] {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .footer_navegacion {
@@ -240,7 +246,7 @@ figure {
 
 @media (max-width: 768px) {
   .site-header {
-    position: sticky; /* Cambiado para mejor estabilidad en móviles */
+    position: sticky; 
     height: 80px;
   }
 
@@ -258,11 +264,11 @@ figure {
   }
 
   main {
-    margin-top: 0; /* Con sticky ya no hace falta el margin-top */
+    margin-top: 0; 
   }
 
   .tratamientos-grid {
-    grid-template-columns: 1fr; /* Una sola columna en tablets/móvil */
+    grid-template-columns: 1fr; 
   }
 }
 

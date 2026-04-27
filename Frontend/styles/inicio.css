@@ -7,8 +7,11 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 
+/* FLEXBOX APLICADO AL BODY */
 body{
   font-family:'Segoe UI',sans-serif;
+  display: flex;
+  flex-direction: column;
   min-height:100vh;
   background:
     linear-gradient(rgba(63,50,111,.7),rgba(63,50,111,.7)),
@@ -20,6 +23,7 @@ body{
   position:fixed;top:0;width:100%;
   backdrop-filter:blur(10px);
   background:rgba(63,50,111,.6);
+  z-index: 1000;
 }
 
 .navegacion ul{
@@ -36,10 +40,13 @@ body{
 }
 .navegacion a:hover{background:var(--acento)}
 
-/* MAIN */
+/* MAIN - FLEX 1 PARA EMPUJAR EL FOOTER */
 .principal{
-  display:flex;justify-content:center;align-items:center;
-  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex: 1; /* Ocupa el espacio sobrante */
+  padding-top: 60px; /* Evita que el header fije tape la tarjeta */
 }
 
 /* TARJETA */
@@ -64,7 +71,7 @@ body{
   border:none;
   display:flex;
   flex-direction:column;
-  gap:10px; /* espacio entre elementos */
+  gap:10px;
 }
 
 legend{margin-bottom:10px;font-weight:bold;color:var(--primario)}
@@ -84,7 +91,7 @@ input:focus{
 
 /* BOTON */
 button{
-  margin:20px auto 0; /* centrado correcto */
+  margin:20px auto 0;
   display:block;
   width:100%;
   max-width:200px;
@@ -99,7 +106,7 @@ button{
 }
 button:hover{background:var(--primario)}
 
-/* PIE */
+/* PIE DE TARJETA */
 .tarjeta-pie{
   text-align:center;
   margin-top:15px;
@@ -109,81 +116,64 @@ button:hover{background:var(--primario)}
   text-decoration:none;
 }
 
+/* ========================================= */
+/* ESTILOS DEL FOOTER INTEGRADOS AL TEMA LOGIN */
+/* ========================================= */
+.pie-pagina {
+  background-color: rgba(63, 50, 111, 0.9) !important; /* Usa el primario con un poco de transparencia */
+  width: 100%;
+  margin-top: auto; /* Seguro adicional de Flexbox */
+}
+
+.footer_navegacion {
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.barra_inferior {
+  background-color: rgba(0, 0, 0, 0.3) !important; /* Fondo más oscuro para los derechos */
+}
+
+.contenido_footer, .derechos_reservados {
+  color: var(--fondo-claro) !important;
+}
+
 /* ANIMACION */
 @keyframes fade{
   from{opacity:0;transform:translateY(20px)}
   to{opacity:1;transform:translateY(0)}
 }
 
-
-/* 1. 💻 LAPTOPS / TABLETS HORIZONTALES (max-width: 992px) */
+/* RESPONSIVE */
 @media (max-width: 992px) {
-    .tarjeta {
-        width: 350px; /* Ajuste preventivo para pantallas medianas */
-    }
+    .tarjeta { width: 350px; }
 }
 
-/* 2. 💊 TABLETS VERTICALES / IPAD (max-width: 768px) */
 @media (max-width: 768px) {
-    .navegacion ul {
-        justify-content: center; /* Centramos el menú para que no se amontone a la derecha */
-        padding: 15px;
-    }
-
-    .tarjeta {
-        width: 320px;
-        padding: 25px;
-    }
+    .navegacion ul { justify-content: center; padding: 15px; }
+    .tarjeta { width: 320px; padding: 25px; }
 }
 
-/* 3. 📱 CELULARES / IPHONE (max-width: 576px) */
 @media (max-width: 576px) {
-    /* Ajuste de la Barra de Navegación */
-    .encabezado {
-        position: absolute; /* Evita que el teclado tape los inputs en iOS */
-    }
-
-    .navegacion ul {
-        gap: 8px;
-        padding: 10px 5px;
-    }
-
-    .navegacion a {
-        font-size: 0.8rem;
-        padding: 5px 8px;
-    }
-
-    /* Ajuste de la Tarjeta y el Contenedor Principal */
+    .encabezado { position: absolute; }
+    .navegacion ul { gap: 8px; padding: 10px 5px; }
+    .navegacion a { font-size: 0.8rem; padding: 5px 8px; }
+    
     .principal {
-        padding: 100px 15px 40px; /* Espacio para que el header no pise la tarjeta */
-        height: auto;
-        min-height: 100vh;
+        padding: 100px 15px 40px;
         display: flex;
-        align-items: flex-start; /* Alineamos arriba para que el scroll sea natural */
+        align-items: flex-start;
     }
-
+    
     .tarjeta {
-        width: 100% !important; /* Forzamos a ocupar el ancho del celular */
+        width: 100% !important;
         max-width: 100%;
         margin: 0 auto;
         padding: 25px 20px;
         border-radius: 15px;
     }
-
-    /* Ajuste de Formulario */
-    .tarjeta-encabezado h1 {
-        font-size: 1.6rem;
-    }
-
-    input {
-        width: 100% !important;
-        font-size: 16px; /* Evita el zoom automático de iPhone al escribir */
-        padding: 12px;
-    }
-
-    button {
-        max-width: 100%; /* Botón de ancho completo para facilitar el toque */
-        padding: 14px;
-        margin-top: 15px;
-    }
+    
+    .tarjeta-encabezado h1 { font-size: 1.6rem; }
+    input { width: 100% !important; font-size: 16px; padding: 12px; }
+    button { max-width: 100%; padding: 14px; margin-top: 15px; }
 }

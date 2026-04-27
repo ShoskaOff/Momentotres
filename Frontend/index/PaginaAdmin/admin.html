@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrativo - DENTOLOGY</title>
+    <link rel="stylesheet" href="/Frontend/styles/tema.css">
+    <link rel="stylesheet" href="/Frontend/styles/PaginaAdmin/admin.css">
+    <link rel="icon" href="/Media/favicon.png" type="image/png">
+</head>
+
+<body>
+    
+    <button class="menu-hamburguesa" id="btnHamburguesa">☰</button>
+
+    <aside class="sidebar" id="sidebar">
+        <a href="#" class="logo-container">
+            <img src="/Media/Logo.png" alt="DENTOLOGY">
+        </a>
+        <nav class="main-nav">
+            <a href="/Frontend/index/lobby.html">Pagina</a>
+            <a href="/Frontend/index/PaginaAdmin/admin.html">Panel de Administración</a>
+            <a href="/Frontend/index/PaginaAdmin/gestionCitas.html">Gestión de Citas</a>
+            <a href="/Frontend/index/PaginaAdmin/gestionUsuario.html">Gestión de Usuarios</a>
+        </nav>
+        <section class="sidebar-footer">
+            <a id="btnCerrarSesion" type="button">🚪 Cerrar Sesión</a>
+        </section>
+    </aside>
+
+    <header class="admin-topbar">
+        <output id="info-admin-logueado"></output>
+        <button id="theme-toggle" class="btn-tema" type="button" aria-label="Cambiar tema">🌙</button>
+    </header>
+
+    <main class="admin-content">
+        <header class="admin-header-section">
+            <h1>Panel de Administración</h1>
+        </header>
+
+        <section id="gestion-servicios" class="admin-section">
+            <header class="header-section">
+                <h2>Catálogo de Servicios</h2>
+                <button class="btn-primario" id="btnNuevoServicio">+ Nuevo Servicio</button>
+            </header>
+            
+            <article id="crud-contenedor-servicios" class="crud-contenedor"></article>
+            
+        </section>
+
+        <section id="gestion-citas" class="admin-section">
+            <header class="header-section">
+                <h2>Citas Programadas</h2>
+            </header>
+            
+            <article id="crud-contenedor-citas" class="crud-contenedor"></article>
+            
+        </section>
+    </main>
+
+    <footer class="pie-pagina-admin">
+        <p>©DENTOLOGY. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="/Frontend/js/tema.js"></script>
+    <script src="/Frontend/js/admin.js"></script>
+</body>
+
+</html>
