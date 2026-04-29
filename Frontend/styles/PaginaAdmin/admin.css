@@ -182,13 +182,24 @@ body {
 }
 
 .crud-contenedor {
-    min-height: 150px;
-    border: 2px dashed var(--color-borde);
-    border-radius: 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+
+.tarjeta-servicio {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--color-borde);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fafafa;
+    flex-direction: column;
+    gap: 10px;
+    word-wrap: break-word;
 }
 
 .menu-hamburguesa {
@@ -308,4 +319,117 @@ body {
         align-items: flex-start;
         gap: 15px;
     }
+}
+#crud-contenedor-servicios {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    
+
+    max-height: 320px; 
+    overflow: hidden;  
+    transition: max-height 0.4s ease;
+}
+
+#crud-contenedor-servicios.expandido {
+    max-height: 2000px; 
+}
+#gestion-servicios {
+    position: relative;
+    
+}
+
+#btnToggleServicios {
+    margin-top: 20px;
+    align-self: flex-end;
+
+    background: linear-gradient(to right, var(--color-gradiente-1), var(--color-gradiente-2));
+    color: var(--color-blanco);
+    border: none;
+
+    padding: 10px 20px;
+    border-radius: 8px;
+
+    cursor: pointer;
+    font-weight: 600;
+
+    transition: opacity 0.3s ease;
+}
+
+#btnToggleServicios:hover {
+    opacity: 0.85;
+}
+#gestion-servicios {
+    display: flex;
+    flex-direction: column;
+}
+
+#panelCRUD {
+    border: none;
+    border-radius: 12px;
+
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+
+    background: var(--color-blanco);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+    font-family: var(--fuente-principal);
+}
+
+#panelCRUD::backdrop {
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(3px);
+}
+
+
+#formServicio {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+#formServicio input,
+#formServicio textarea {
+    padding: 10px;
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+    font-family: var(--fuente-principal);
+}
+
+
+#formServicio button[type="submit"] {
+    margin-top: 10px;
+    background: linear-gradient(to right, var(--color-gradiente-1), var(--color-gradiente-2));
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+#panelCRUD {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.btn-secundario {
+    background: linear-gradient(to right, var(--color-gradiente-1), var(--color-gradiente-2));
+    color: var(--color-blanco);
+
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: opacity 0.3s ease;
+}
+
+.btn-secundario:hover {
+    opacity: 0.8;
 }
