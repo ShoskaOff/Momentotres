@@ -3,7 +3,6 @@ import { supabase } from "../../Database/supabaseClient.js";
 document.addEventListener("DOMContentLoaded", async () => {
 
     const form = document.getElementById("formCita");
-    const listaCitas = document.getElementById("listaCitas");
     const servicioInput = document.getElementById("servicio");
     const servicioTexto = document.getElementById("servicioSeleccionado");
     const fechaInput = document.getElementById("fecha");
