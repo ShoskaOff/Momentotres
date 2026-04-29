@@ -14,6 +14,7 @@ async function cargarServicios() {
                 <h3>${s.nombre}</h3>
                 <p>${s.descripcion}</p>
                 <p><strong>$${s.precio}</strong></p>
+                ${s.imagen_url ? `<img src="${s.imagen_url}" alt="${s.nombre}" style="max-width:200px;">` : ''}
             </article>
         `).join('');
     }
