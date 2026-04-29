@@ -1,234 +1,79 @@
-import { supabase } from "./supabase.js";
+// Cambia esto en admin.js
+import { supabase as db } from '../../Database/supabaseClient.js'; 
 
-document.addEventListener("DOMContentLoaded", async () => {
-    const listaUsuarios = document.getElementById("listaUsuarios");
-    const listaServicios = document.getElementById("listaServicios");
-    const listaCitas = document.getElementById("listaCitas");
-    const listaNotificaciones = document.getElementById("listaNotificaciones");
-    const btnCerrarSesion = document.getElementById("btnCerrarSesion");
 
-    const { data: authData, error: authError } = await supabase.auth.getUser();
 
-    if (authError || !authData.user) {
-        window.location.href = "/Frontend/index/inicio.html";
-        return;
-    }
+document.addEventListener('DOMContentLoaded', async () => {
+    // ID corregido para que coincida con tu HTML (<article id="crud-contenedor-servicios">)
+    const contenedor = document.getElementById('crud-contenedor-servicios');
+    const form = document.getElementById("formServicio");
+    const panel = document.getElementById("panelCRUD");
+    const btnNuevo = document.getElementById("btnNuevoServicio");
 
-    async function cargarUsuarios() {
-        if (!listaUsuarios) return;
-
-        const { data, error } = await supabase
-            .from("Usuarios")
-            .select("*")
-            .order("id", { ascending: false });
-
-        if (error) {
-            console.error(error);
-            listaUsuarios.innerHTML = "<p>Error cargando usuarios</p>";
-            return;
-        }
-
-        listaUsuarios.innerHTML = "";
-
-        if (!data || data.length === 0) {
-            listaUsuarios.innerHTML = "<p>No hay usuarios</p>";
-            return;
-        }
-
-        data.forEach((usuario) => {
-            const div = document.createElement("div");
-
-            div.innerHTML = `
-                <p>Usuario ID: ${usuario.id}</p>
-                <p>Rol ID: ${usuario.rol_id}</p>
-                <button class="eliminar-usuario" data-id="${usuario.id}">
-                    Eliminar
-                </button>
-                <hr>
-            `;
-
-            listaUsuarios.appendChild(div);
-        });
-
-        document.querySelectorAll(".eliminar-usuario").forEach((btn) => {
-            btn.addEventListener("click", async function () {
-                const id = this.dataset.id;
-
-                const { error } = await supabase
-                    .from("Usuarios")
-                    .delete()
-                    .eq("id", id);
-
-                if (error) {
-                    console.error(error);
-                    alert("Error eliminando usuario");
-                    return;
-                }
-
-                cargarUsuarios();
-            });
-        });
-    }
-
+    // --- 1. FUNCIÓN PARA CARGAR SERVICIOS ---
     async function cargarServicios() {
-        if (!listaServicios) return;
+        if (!contenedor) return;
 
-        const { data, error } = await supabase
-            .from("servicios")
-            .select("*")
-            .order("id", { ascending: false });
+        try {
+            const { data: servicios, error } = await db
+                .from('servicios')
+                .select('*')
+                .order('nombre', { ascending: true });
 
-        if (error) {
-            console.error(error);
-            listaServicios.innerHTML = "<p>Error cargando servicios</p>";
-            return;
+            if (error) throw error;
+
+            if (!servicios || servicios.length === 0) {
+                contenedor.innerHTML = '<p>No hay tratamientos disponibles.</p>';
+                return;
+            }
+
+            contenedor.innerHTML = servicios.map(s => `
+                <div class="tarjeta-servicio">
+                    <h3>${s.nombre}</h3>
+                    <p>${s.descripcion || 'Consulta con nuestros especialistas.'}</p>
+                    <span class="precio">$${s.precio ? s.precio.toLocaleString() : '0'}</span>
+                    
+
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error("Error cargando servicios:", error);
+            contenedor.innerHTML = '<p>Error al cargar los tratamientos.</p>';
         }
+    }
 
-        listaServicios.innerHTML = "";
+    // --- 2. LÓGICA DE AGREGAR SERVICIO ---
+    if (form) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-        if (!data || data.length === 0) {
-            listaServicios.innerHTML = "<p>No hay servicios</p>";
-            return;
-        }
+            const nuevoServicio = {
+                nombre: document.getElementById("nombre").value,
+                precio: parseFloat(document.getElementById("precio").value),
+                // Ajustado a 'descripcion' sin tilde para coincidir con tu HTML
+                descripcion: document.getElementById("descripcion").value,
+                
+                
+            };
 
-        data.forEach((servicio) => {
-            const div = document.createElement("div");
+            const { error } = await db.from('servicios').insert([nuevoServicio]);
 
-            div.innerHTML = `
-                <p>${servicio.nombre || ""}</p>
-                <p>Precio: ${servicio.precio || 0}</p>
-                <button class="eliminar-servicio" data-id="${servicio.id}">
-                    Eliminar
-                </button>
-                <hr>
-            `;
-
-            listaServicios.appendChild(div);
-        });
-
-        document.querySelectorAll(".eliminar-servicio").forEach((btn) => {
-            btn.addEventListener("click", async function () {
-                const id = this.dataset.id;
-
-                const { error } = await supabase
-                    .from("servicios")
-                    .delete()
-                    .eq("id", id);
-
-                if (error) {
-                    console.error(error);
-                    alert("Error eliminando servicio");
-                    return;
-                }
-
-                cargarServicios();
-            });
+            if (error) {
+                alert("Error al guardar: " + error.message);
+                console.error(error);
+            } else {
+                alert("¡Servicio agregado con éxito!");
+                form.reset();
+                if (panel) panel.close();
+                cargarServicios(); // Recarga la lista
+            }
         });
     }
 
-    async function cargarCitas() {
-        if (!listaCitas) return;
-
-        const { data, error } = await supabase
-            .from("Citas")
-            .select("*")
-            .order("id", { ascending: false });
-
-        if (error) {
-            console.error(error);
-            listaCitas.innerHTML = "<p>Error cargando citas</p>";
-            return;
-        }
-
-        listaCitas.innerHTML = "";
-
-        if (!data || data.length === 0) {
-            listaCitas.innerHTML = "<p>No hay citas</p>";
-            return;
-        }
-
-        data.forEach((cita) => {
-            const div = document.createElement("div");
-
-            div.innerHTML = `
-                <p>Cita #${cita.id}</p>
-                <p>${cita.fecha_hora || ""}</p>
-                <button class="eliminar-cita" data-id="${cita.id}">
-                    Eliminar
-                </button>
-                <hr>
-            `;
-
-            listaCitas.appendChild(div);
-        });
-
-        document.querySelectorAll(".eliminar-cita").forEach((btn) => {
-            btn.addEventListener("click", async function () {
-                const id = this.dataset.id;
-
-                const { error } = await supabase
-                    .from("Citas")
-                    .delete()
-                    .eq("id", id);
-
-                if (error) {
-                    console.error(error);
-                    alert("Error eliminando cita");
-                    return;
-                }
-
-                cargarCitas();
-            });
-        });
+    // --- 3. EVENTOS DE UI ---
+    if (btnNuevo && panel) {
+        btnNuevo.addEventListener("click", () => panel.showModal());
     }
 
-    async function cargarNotificaciones() {
-        if (!listaNotificaciones) return;
-
-        const { data, error } = await supabase
-            .from("Notificaciones")
-            .select("*")
-            .order("id", { ascending: false });
-
-        if (error) {
-            console.error(error);
-            listaNotificaciones.innerHTML = "<p>Error cargando notificaciones</p>";
-            return;
-        }
-
-        listaNotificaciones.innerHTML = "";
-
-        if (!data || data.length === 0) {
-            listaNotificaciones.innerHTML = "<p>No hay notificaciones</p>";
-            return;
-        }
-
-        data.forEach((n) => {
-            const div = document.createElement("div");
-            div.innerHTML = `<p>${n.mensaje || ""}</p><hr>`;
-            listaNotificaciones.appendChild(div);
-        });
-    }
-
-    if (btnCerrarSesion) {
-        btnCerrarSesion.addEventListener("click", async () => {
-            await supabase.auth.signOut();
-
-            localStorage.removeItem("usuario_id");
-            localStorage.removeItem("rol_id");
-            localStorage.removeItem("auth_uuid");
-
-            window.location.href = "/Frontend/index/inicio.html";
-        });
-    }
-
-    await cargarUsuarios();
-    await cargarServicios();
-    await cargarCitas();
-    await cargarNotificaciones();
-});const btnHamburguesa = document.getElementById('btnHamburguesa');
-const sidebar = document.getElementById('sidebar');
-
-btnHamburguesa.addEventListener('click', () => {
-    sidebar.classList.toggle('activa');
+    cargarServicios();
 });

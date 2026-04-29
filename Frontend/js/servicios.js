@@ -1,96 +1,86 @@
-function verDetalle(tipo) {
-    const t = tratamientos?.[tipo];
+import { supabase } from '../../Database/supabaseClient.js';
 
-    if (!t) {
-        alert("Tratamiento no encontrado");
-        return;
+// --- 1. CARGA DE SERVICIOS (Página principal) ---
+async function cargarServicios() {
+    const contenedor = document.querySelector('.contenedor-servicios');
+    if (!contenedor) return;
+
+    const { data, error } = await supabase.from('servicios').select('*');
+    if (error) { console.error("Error:", error.message); return; }
+
+    if (data) {
+        contenedor.innerHTML = data.map(s => `
+            <article>
+                <h3>${s.nombre}</h3>
+                <p>${s.descripcion}</p>
+                <p><strong>$${s.precio}</strong></p>
+            </article>
+        `).join('');
+    }
+}
+
+// --- 2. LÓGICA CRUD (Panel Admin) ---
+async function cargarCRUD() {
+    const lista = document.getElementById("listaCRUD");
+    if (!lista) return;
+
+    const { data } = await supabase.from('servicios').select('*');
+    lista.innerHTML = data.map(s => `
+        <article style="border:1px solid #ccc; padding:5px; margin-bottom:5px;">
+            ${s.nombre} - $${s.precio}
+            <button onclick="editarServicio('${s.id}', '${s.nombre}', ${s.precio}, '${s.descripcion}', '${s.imagen}')">Editar</button>
+        </article>
+    `).join('');
+}
+
+// --- 3. GUARDAR SERVICIO ---
+async function guardarServicio(e) {
+    e.preventDefault();
+    const id = document.getElementById("servicioId").value;
+    const nombre = document.getElementById("nombre").value;
+    const precio = document.getElementById("precio").value;
+    const descripcion = document.getElementById("descripcion").value;
+    const imagen = document.getElementById("imagen").value;
+
+    if (id) {
+        await supabase.from('servicios').update({ nombre, precio, descripcion, imagen }).eq('id', id);
+    } else {
+        await supabase.from('servicios').insert([{ nombre, precio, descripcion, imagen }]);
     }
 
-    document.getElementById("titulo").textContent = t.titulo || "";
-    document.getElementById("imagen").src = t.imagen || "";
-    document.getElementById("descripcionCorta").textContent = t.corta || "";
-    document.getElementById("descripcion").textContent = t.descripcion || "";
-    document.getElementById("precio").textContent = t.precio || "";
-
-    const lista = document.getElementById("beneficios");
-    lista.innerHTML = "";
-
-    (t.beneficios || []).forEach(b => {
-        const li = document.createElement("li");
-        li.textContent = b;
-        lista.appendChild(li);
-    });
-
-    const modal = document.getElementById("modalDetalle");
-    if (modal) modal.showModal();
+    document.getElementById("formServicio").reset();
+    document.getElementById("servicioId").value = "";
+    cargarServicios();
+    cargarCRUD();
 }
 
-function cerrarDetalle() {
-    document.getElementById("modalDetalle")?.close();
-}
+// --- 4. INICIALIZACIÓN ÚNICA ---
+document.addEventListener("DOMContentLoaded", async () => {
+    // Carga inicial
+    await cargarServicios();
 
+    // Evento del formulario
+    const form = document.getElementById("formServicio");
+    if (form) form.addEventListener("submit", guardarServicio);
 
-function agendarServicio(servicio) {
-
-    if (!servicio || !servicio.id) {
-        alert("Servicio no encontrado");
-        return;
+    // Lógica Admin
+    const btnAdmin = document.getElementById("btnAdmin");
+    if (btnAdmin) {
+        btnAdmin.addEventListener("click", () => {
+            document.getElementById("panelCRUD").showModal();
+            cargarCRUD();
+        });
     }
-
-    window.location.href =
-        `/Frontend/index/citas.html?servicioId=${servicio.id}`;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const btnDetalles = document.querySelectorAll(".btn-detalle");
-    const agendarBtn = document.getElementById("agendarBtn");
-    const cerrarBtn = document.getElementById("cerrarBtn");
-    const botonTema = document.getElementById("theme-toggle");
-
-
-    agendarBtn?.addEventListener("click", () => {
-
-        // tomamos el ID desde el botón activo o del DOM
-        const id = agendarBtn.dataset.id;
-
-        if (!id) {
-            alert("Servicio no encontrado");
-            return;
-        }
-
-        agendarServicio({ id });
-    });
-
-
-    cerrarBtn?.addEventListener("click", cerrarDetalle);
-
-
-
 });
 
-const botonTema = document.getElementById("theme-toggle");
+// Función global para el botón editar
+window.editarServicio = (id, nombre, precio, descripcion, imagen) => {
+    document.getElementById("servicioId").value = id;
+    document.getElementById("nombre").value = nombre;
+    document.getElementById("precio").value = precio;
+    document.getElementById("descripcion").value = descripcion;
+    document.getElementById("imagen").value = imagen;
+};
 
-botonTema.addEventListener("click", ()=>{
-
-document.body.classList.toggle("dark-mode");
-
-if(document.body.classList.contains("dark-mode")){
-    localStorage.setItem("modo","oscuro");
-    botonTema.textContent = "☀️";
-}else{
-    localStorage.setItem("modo","claro");
-    botonTema.textContent = "🌙";
-}
-
-});
-
-window.onload = ()=>{
-
-if(localStorage.getItem("modo") === "oscuro"){
-    document.body.classList.add("dark-mode");
-    botonTema.textContent = "☀️";
-    
-}
-
-}; 
+// Función global para cerrar
+window.cerrarPanel = () => document.getElementById("panelCRUD").close();

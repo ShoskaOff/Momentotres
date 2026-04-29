@@ -284,3 +284,12 @@ figure {
     gap: 5px;
   }
 }
+/* Esto asegura que el contenedor donde inyectamos los datos se vea */
+.contenedor-servicios {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+  min-height: 200px; /* Para que no colapse si no hay datos */
+}

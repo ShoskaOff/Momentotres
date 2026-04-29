@@ -59,12 +59,27 @@
         </section>
     </main>
 
+    <dialog id="panelCRUD">
+    <h2>Gestión de Servicios</h2>
+    <form id="formServicio">
+        <input type="hidden" id="servicioId">
+        <label>Nombre</label> <input type="text" id="nombre" required>
+        <label>Precio</label> <input type="number" id="precio" required>
+        <label>Descripción</label> <textarea id="descripcion"></textarea>
+        <label>Imagen (URL)</label> <input type="text" id="imagen">
+        <input type="file" id="imagenInput" accept="image/*">
+        <button type="submit">Guardar</button>
+        <button type="button" onclick="document.getElementById('panelCRUD').close()">Cerrar</button>
+    </form>
+</dialog>
+
     <footer class="pie-pagina-admin">
         <p>©DENTOLOGY. Todos los derechos reservados.</p>
     </footer>
 
+    <script type="module" src="/frontend/js/admin.js"></script>
     <script src="/Frontend/js/tema.js"></script>
-    <script src="/Frontend/js/admin.js"></script>
+    
 </body>
 
 </html>
