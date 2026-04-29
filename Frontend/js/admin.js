@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <h3>${s.nombre}</h3>
                     <p>${s.descripcion || 'Consulta con nuestros especialistas.'}</p>
                     <span class="precio">$${s.precio ? s.precio.toLocaleString() : '0'}</span>
-                    
+                    ${s.imagen_url ? `<img src="${s.imagen_url}" alt="${s.nombre}" class="imagen-servicio">` : ''}
 
                 </div>
             `).join('');
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 precio: parseFloat(document.getElementById("precio").value),
                 // Ajustado a 'descripcion' sin tilde para coincidir con tu HTML
                 descripcion: document.getElementById("descripcion").value,
-                
+                imagen_url: document.getElementById("imagen_url").value
                 
             };
 
