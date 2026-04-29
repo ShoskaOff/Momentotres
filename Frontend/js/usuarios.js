@@ -1,21 +1,20 @@
-import { supabase } from "../../Database/supabaseClient.js";
+import { supabase } from "/Frontend/js/supabase.js";
 
-// ==========================
-// 🔐 LOGIN (AGREGADO)
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formLogin");
 
-  // Si no existe el form, no hace nada (permite reutilizar este archivo)
   if (!form) return;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const correo = document.getElementById("correo").value;
-    const clave = document.getElementById("clave").value;
+    const correo = document.getElementById("correo").value.trim();
+    const clave = document.getElementById("clave").value.trim();
 
-    console.log("EMAIL:", correo);
-    console.log("PASSWORD:", clave);
+    if (!correo || !clave) {
+      alert("Completa todos los campos");
+      return;
+    }
 
     // 🔐 LOGIN
     const { error: loginError } = await supabase.auth.signInWithPassword({
@@ -31,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log("✅ Login exitoso");
 
-    // 🔥 OBTENER USUARIO
+    // 🔥 OBTENER USUARIO AUTH
     const { data: userData, error: userError } = await supabase.auth.getUser();
 
     if (userError || !userData.user) {
@@ -41,20 +40,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const userId = userData.user.id;
 
-    // 🔥 IMPORTANTE: RESPETA EL NOMBRE REAL DE TU TABLA
-    const { data: usuario, error: usuarioError } = await supabase
-      .from("Usuarios") // 👈 OJO: mayúscula
+    console.log("🔎 USER ID:", userId);
+
+    // 🔥 BUSCAR EN BD
+    let { data: usuario, error: usuarioError } = await supabase
+      .from("Usuarios")
       .select("rol_id")
       .eq("auth_uuid", userId)
       .maybeSingle();
 
-    if (usuarioError || !usuario) {
-      console.error(usuarioError);
-      alert("Usuario no registrado en BD");
+    if (usuarioError) {
+      console.error("❌ Error BD:", usuarioError);
+      alert("Error consultando base de datos");
       return;
     }
 
-    // 🔥 REDIRECCIÓN
+    // 🔥 SI NO EXISTE → CREAR AUTOMÁTICAMENTE
+    if (!usuario) {
+      console.warn("⚠ Usuario no encontrado en BD, creando...");
+
+      const { error: insertError } = await supabase
+        .from("Usuarios")
+        .insert([
+          {
+            auth_uuid: userId,
+            rol_id: 2
+          }
+        ]);
+
+      if (insertError) {
+        console.error("❌ Error creando usuario:", insertError);
+        alert("Error sincronizando usuario con base de datos");
+        return;
+      }
+
+      // 🔁 volver a consultar
+      const { data: nuevoUsuario, error: reloadError } = await supabase
+        .from("Usuarios")
+        .select("rol_id")
+        .eq("auth_uuid", userId)
+        .maybeSingle();
+
+      if (reloadError || !nuevoUsuario) {
+        alert("No se pudo validar usuario");
+        return;
+      }
+
+      usuario = nuevoUsuario;
+    }
+
+    console.log("✅ Usuario validado:", usuario);
+
+    // 🔥 REDIRECCIÓN POR ROL
     if (usuario.rol_id === 1) {
       window.location.href = "/Frontend/index/PaginaAdmin/admin.html";
     } else {
@@ -62,23 +99,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-// ==========================
-// 📦 TUS FUNCIONES (NO SE TOCAN)
-export async function getUsuarios() {
-  return await supabase
-    .from("Usuarios") // 👈 corregido
-    .select("*, roles(nombre)");
-}
-
-export async function crearUsuario(usuario) {
-  return await supabase.from("Usuarios").insert([usuario]);
-}
-
-export async function actualizarUsuario(id, datos) {
-  return await supabase.from("Usuarios").update(datos).eq("id", id);
-}
-
-export async function eliminarUsuario(id) {
-  return await supabase.from("Usuarios").delete().eq("id", id);
-}
