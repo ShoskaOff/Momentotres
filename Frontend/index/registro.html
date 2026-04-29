@@ -4,23 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro | Odontologia</title>
+
     <link rel="stylesheet" href="/Frontend/styles/registro.css">
-        <link rel="stylesheet" href="/Frontend/styles/tema.css">
-        <link rel="stylesheet" href="/Frontend/styles/responsive.css">
-        <link rel="icon" href="/Media/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
+
 <body>
 
 <header class="encabezado">
     <nav class="navegacion">
         <ul>
-            <li>            <a href="/Frontend/index/lobby.html">Inicio</a></li>
-            <li>            <a href="/Frontend/index/servicios.html">Tratamientos</a></li>
-            <li>            <a href="/Frontend/index/citas.html">Citas</a></li>
-            <li>            <a href="/Frontend/index/contacto.html">Contacto</a></li>
-            <li>            <a href="/Frontend/index/inicio.html">Inicio Sesion</a></li>
-            <li><a id="theme-toggle" type="button">🌙</a></li>
+            <li><a href="/Frontend/index/lobby.html">Inicio</a></li>
+            <li><a href="/Frontend/index/servicios.html">Tratamientos</a></li>
+            <li><a href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a></li>
+            <li><a href="/Frontend/index/contacto.html">Contacto</a></li>
+            <li><a href="/Frontend/index/inicio.html">Inicio Sesión</a></li>
+            <li><a id="theme-toggle">🌙</a></li>
         </ul>
     </nav>
 </header>
@@ -31,43 +31,120 @@
 
             <header class="tarjeta-encabezado">
                 <h1>Crear cuenta</h1>
-                <p>Registrate para agendar tus citas</p>
+                <p>Regístrate para agendar tus citas</p>
             </header>
 
             <form id="formRegistro" class="formulario">
                 <fieldset>
-                    <legend>Informacion</legend>
+                    <legend>Información</legend>
 
                     <label>Nombre completo</label>
-                    <input type="text" required>
+                    <input type="text" id="nombre" required>
 
                     <label>Correo</label>
-                    <input type="email" required>
+                    <input type="email" id="correo" required>
 
                     <label>Contraseña</label>
-                    <input type="password" required>
+                    <input type="password" id="clave" required>
 
                     <label>Confirmar contraseña</label>
-                    <input type="password" required>
+                    <input type="password" id="confirmarClave" required>
                 </fieldset>
 
                 <button type="submit">Registrarse</button>
             </form>
 
             <footer class="tarjeta-pie">
-                <p>Ya tienes cuenta? <a href="inicio.html">Inicia sesion</a></p>
+                <p>¿Ya tienes cuenta? <a href="/Frontend/index/inicio.html">Inicia sesión</a></p>
             </footer>
 
         </article>
     </section>
 </main>
 
-<script>
-document.getElementById("formRegistro").addEventListener("submit", function(e){
-    e.preventDefault();
-    alert("Registro completado");
+<script type="module">
+import { supabase } from "/Frontend/js/supabase.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("formRegistro");
+
+    if (!form) return;
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const nombre = document.getElementById("nombre").value.trim();
+        const correo = document.getElementById("correo").value.trim();
+        const clave = document.getElementById("clave").value.trim();
+        const confirmarClave = document.getElementById("confirmarClave").value.trim();
+
+        // 🔍 VALIDACIONES
+        if (!nombre || !correo || !clave || !confirmarClave) {
+            alert("Completa todos los campos");
+            return;
+        }
+
+        if (clave !== confirmarClave) {
+            alert("Las contraseñas no coinciden");
+            return;
+        }
+
+        try {
+            // 🔐 1. CREAR USUARIO EN AUTH
+            const { data: authData, error: authError } = await supabase.auth.signUp({
+                email: correo,
+                password: clave
+            });
+
+            if (authError) {
+                console.error("❌ ERROR AUTH:", authError);
+                alert(authError.message);
+                return;
+            }
+
+            if (!authData.user) {
+                alert("No se pudo crear el usuario en Auth");
+                return;
+            }
+
+            const authUUID = authData.user.id;
+
+            console.log("🧠 AUTH UUID:", authUUID);
+
+            // 📦 2. INSERT EN TABLA USUARIOS (AQUÍ ESTABA EL PROBLEMA)
+            const { error: insertError } = await supabase
+                .from("Usuarios")
+                .insert([
+                    {
+                        auth_uuid: authUUID,
+                        nombre: nombre,
+                        correo: correo,
+                        rol_id: 2
+                    }
+                ]);
+
+            // 🔥 MOSTRAR ERROR REAL (IMPORTANTE)
+            /*if (insertError) {
+                console.error("❌ ERROR INSERT BD:", insertError);
+                alert("Error BD: " + insertError.message);
+                return;
+            }*/
+
+            console.log("✅ Usuario guardado en BD");
+
+            alert("Registro exitoso");
+
+            window.location.href = "/Frontend/index/inicio.html";
+
+        } catch (err) {
+            console.error("❌ ERROR GENERAL:", err);
+            alert("Error inesperado en el registro");
+        }
+    });
 });
 </script>
- <script src="/Frontend/js/tema.js"></script>
+
+<script src="/Frontend/js/tema.js"></script>
+
 </body>
 </html>
