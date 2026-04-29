@@ -71,15 +71,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             cargarCRUD();
         });
     }
-
-    // Tema
-    const botonTema = document.getElementById("theme-toggle");
-    if(botonTema) {
-        botonTema.addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
-            localStorage.setItem("modo", document.body.classList.contains("dark-mode") ? "oscuro" : "claro");
-        });
-    }
 });
 
 // Función global para el botón editar
