@@ -32,8 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <h3>${s.nombre}</h3>
                     <p>${s.descripcion || 'Consulta con nuestros especialistas.'}</p>
                     <span class="precio">$${s.precio ? s.precio.toLocaleString() : '0'}</span>
-                    ${s.imagen_url ? `<img src="${s.imagen_url}" alt="${s.nombre}" class="imagen-servicio">` : ''}
-
+                   
                 </div>
             `).join('');
         } catch (error) {
