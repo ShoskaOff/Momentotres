@@ -1,16 +1,32 @@
-// Cambia esto en admin.js
+
 import { supabase as db } from '../../Database/supabaseClient.js'; 
 
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // ID corregido para que coincida con tu HTML (<article id="crud-contenedor-servicios">)
+  
     const contenedor = document.getElementById('crud-contenedor-servicios');
     const form = document.getElementById("formServicio");
     const panel = document.getElementById("panelCRUD");
     const btnNuevo = document.getElementById("btnNuevoServicio");
 
-    // --- 1. FUNCIÓN PARA CARGAR SERVICIOS ---
+    const btnToggle = document.getElementById("btnToggleServicios");
+
+let expandido = false;
+
+if (btnToggle && contenedor) {
+    btnToggle.addEventListener("click", () => {
+        expandido = !expandido;
+
+        contenedor.classList.toggle("expandido");
+
+        btnToggle.textContent = expandido
+            ? "Ocultar servicios"
+            : "ver mas ";
+    });
+}
+
+   
     async function cargarServicios() {
         if (!contenedor) return;
 
@@ -28,13 +44,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             contenedor.innerHTML = servicios.map(s => `
-                <div class="tarjeta-servicio">
+                <section class="tarjeta-servicio">
                     <h3>${s.nombre}</h3>
                     <p>${s.descripcion || 'Consulta con nuestros especialistas.'}</p>
                     <span class="precio">$${s.precio ? s.precio.toLocaleString() : '0'}</span>
                     
 
-                </div>
+                </section>
             `).join('');
         } catch (error) {
             console.error("Error cargando servicios:", error);
@@ -42,18 +58,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- 2. LÓGICA DE AGREGAR SERVICIO ---
     if (form) {
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
-
+            form.classList.add("gestion_servicios");
             const nuevoServicio = {
                 nombre: document.getElementById("nombre").value,
                 precio: parseFloat(document.getElementById("precio").value),
-                // Ajustado a 'descripcion' sin tilde para coincidir con tu HTML
-                descripcion: document.getElementById("descripcion").value,
-                
-                
+                descripcion: document.getElementById("descripcion").value, 
             };
 
             const { error } = await db.from('servicios').insert([nuevoServicio]);
@@ -70,7 +82,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- 3. EVENTOS DE UI ---
     if (btnNuevo && panel) {
         btnNuevo.addEventListener("click", () => panel.showModal());
     }
