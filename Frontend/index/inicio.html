@@ -15,17 +15,22 @@
 
 <body>
 
-<header class="encabezado">
-    <nav class="navegacion">
-        <ul>
-            <li><a href="/Frontend/index/lobby.html">Inicio</a></li>
-            <li><a href="/Frontend/index/servicios.html">Tratamientos</a></li>
-            <li><a href="/Frontend/index/citas.html">Citas</a></li>
-            <li><a href="/Frontend/index/contacto.html">Contacto</a></li>
-            <li><a href="/Frontend/index/inicio.html">Inicio Sesión</a></li>
-        </ul>
-    </nav>
-</header>
+    <header class="site-header">
+        <a href="/Frontend/index/lobby.html">
+            <figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure>
+        </a>
+        <nav class="main-nav">
+            <a href="/Frontend/index/lobby.html">Inicio</a>
+            <a href="/Frontend/index/servicios.html">Tratamientos</a>
+            <a href="/Frontend/index/citas.html">Citas</a>
+            <a href="/Frontend/index/contacto.html">Contacto</a>
+            <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
+            
+            <a id="theme-toggle" type="button">🌙</a>
+            <a id="btnAdmin" type="button" href="/Frontend/index/PaginaAdmin/admin.html">
+            </a>
+        </nav>
+    </header>
 
 <main class="principal">
     <section class="seccion-login">
@@ -62,6 +67,7 @@
 </main>
 
 <script type="module" src="/Frontend/js/usuarios.js"></script>
+ <script src="/Frontend/js/tema.js"></script>
 
 </body>
 </html>
