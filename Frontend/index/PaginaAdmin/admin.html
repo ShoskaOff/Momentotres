@@ -14,6 +14,7 @@
     
     <button class="menu-hamburguesa" id="btnHamburguesa">☰</button>
 
+
     <aside class="sidebar" id="sidebar">
         <a href="/Frontend/index/lobby.html" class="logo">
             <img src="/Media/Logo.png" alt="DENTOLOGY">
@@ -40,14 +41,17 @@
         </header>
 
         <section id="gestion-servicios" class="admin-section">
-            <header class="header-section">
-                <h2>Catálogo de Servicios</h2>
-                <button class="btn-primario" id="btnNuevoServicio">+ Nuevo Servicio</button>
-            </header>
-            
-            <article id="crud-contenedor-servicios" class="crud-contenedor"></article>
-            
-        </section>
+    <header class="header-section">
+        <h2>Catálogo de Servicios</h2>
+        <button class="btn-primario" id="btnNuevoServicio">+ Nuevo Servicio</button>
+    </header>
+    
+    <article id="crud-contenedor-servicios" class="crud-contenedor"></article>
+
+    <button id="btnToggleServicios" class="btn-ver">
+        Ver mas +
+    </button>
+</section>
 
         <section id="gestion-citas" class="admin-section">
             <header class="header-section">
@@ -69,7 +73,9 @@
         <label>Imagen (URL)</label> <input type="text" id="imagen">
         <input type="file" id="imagenInput" accept="image/*">
         <button type="submit">Guardar</button>
-        <button type="button" onclick="document.getElementById('panelCRUD').close()">Cerrar</button>
+        <button type="button" class="btn-secundario" onclick="document.getElementById('panelCRUD').close()">
+    Cerrar
+</button>
     </form>
 </dialog>
 

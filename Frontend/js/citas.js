@@ -1,103 +1,187 @@
 import { supabase } from "../../Database/supabaseClient.js";
 
-document.addEventListener("DOMContentLoaded", async () => {
+// 🔥 Cambia esto a true si quieres ver TODAS las citas (debug)
+const DEBUG_VER_TODAS = true;
+
+document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const nombreProducto = urlParams.get('servicio');
+
+    if (nombreProducto) {
+        const texto = document.getElementById("servicioSeleccionado");
+        const input = document.getElementById("servicio");
+
+        if (texto) texto.innerText = "Servicio: " + nombreProducto;
+        if (input) input.value = nombreProducto;
+    }
 
     const form = document.getElementById("formCita");
-    const servicioInput = document.getElementById("servicio");
-    const servicioTexto = document.getElementById("servicioSeleccionado");
-    const fechaInput = document.getElementById("fecha");
-    const horaInput = document.getElementById("hora");
 
-    const { data: authData } = await supabase.auth.getUser();
+    if (form) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-    if (!authData?.user) {
-        window.location.href = "/Frontend/index/inicio.html";
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (!user) {
+                alert("Debes iniciar sesión");
+                return;
+            }
+
+            let servicioVal = document.getElementById("servicio")?.value;
+            let fecha = document.getElementById("fecha")?.value;
+            let hora = document.getElementById("hora")?.value;
+
+            if (!servicioVal || !fecha || !hora) {
+                alert("Completa todos los campos");
+                return;
+            }
+
+            let fechaHora = new Date(`${fecha}T${hora}`).toISOString();
+
+            // 🔍 Verificar disponibilidad usando 'id' (Nombre actual en image_815088.png)
+            const { data: existentes, error: errorDispo } = await supabase
+                .from("Citas")
+                .select("id")
+                .eq("fecha_hora", fechaHora);
+
+            if (errorDispo) {
+                console.error("Error disponibilidad:", errorDispo);
+                alert("Error al verificar disponibilidad");
+                return;
+            }
+
+            if (existentes.length > 0) {
+                alert("Horario ocupado");
+                return;
+            }
+
+            // ✅ INSERTAR
+            const { error } = await supabase
+                .from("Citas")
+                .insert([{
+                    servicio_id: parseInt(servicioVal),
+                    fecha_hora: fechaHora,
+                    usuario_id: user.id 
+                }]);
+
+            if (error) {
+                console.error("Error insert:", error);
+                alert("Error al guardar");
+                return;
+            }
+
+            alert("Cita creada correctamente");
+            form.reset();
+            mostrarHistorial();
+        });
+    }
+
+    mostrarHistorial();
+});
+
+// 🔥 HISTORIAL (CORREGIDO)
+async function mostrarHistorial() {
+    let lista = document.getElementById("listaCitas");
+    if (!lista) return;
+
+    lista.innerHTML = "Cargando...";
+
+    // 1. Intentamos obtener al usuario
+    const { data: { user } } = await supabase.auth.getUser();
+
+    // 2. Si no hay usuario y no estamos en modo debug, detenemos todo
+    if (!user && !DEBUG_VER_TODAS) {
+        lista.innerHTML = "Debes iniciar sesión";
         return;
     }
 
-    const { data: usuarioData } = await supabase
-        .from("Usuarios")
-        .select("id")
-        .eq("auth_uuid", authData.user.id)
-        .single();
+    // 3. Preparamos la consulta base
+    let query = supabase.from("Citas").select("*");
 
-    const usuarioId = usuarioData?.id;
+    // 4. Aplicamos la lógica de filtrado (Punto 2 del Sprint)
+    if (!DEBUG_VER_TODAS && user) {
+        query = query.eq("usuario_id", user.id); 
+    }
 
+    // 5. Ejecutamos la consulta final
+    const { data, error } = await query;
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const servicioId = urlParams.get("servicioId");
-
-    if (!servicioId) {
-        alert("No se recibió servicio. Vuelve a tratamientos.");
+    if (error) {
+        console.error("Error fetch:", error);
+        lista.innerHTML = "Error cargando citas";
         return;
     }
 
-    const { data: servicio, error } = await supabase
-        .from("servicios")
-        .select("id, nombre")
-        .eq("id", servicioId)
-        .single();
-
-    if (error || !servicio) {
-        console.error(error);
-        alert("Servicio no encontrado en la base de datos");
+    if (!data || data.length === 0) {
+        lista.innerHTML = "No hay citas";
         return;
     }
 
-    servicioInput.value = servicio.id;
-    servicioTexto.textContent = `Servicio: ${servicio.nombre}`;
+    lista.innerHTML = "";
 
+    data.forEach((cita) => {
+        if (!cita) return;
 
-    form?.addEventListener("submit", async (e) => {
-        e.preventDefault();
+        let articulo = document.createElement("article");
+        articulo.className = "cita-item";
 
-        const fecha = fechaInput.value;
-        const hora = horaInput.value;
-
-        if (!fecha || !hora) {
-            alert("Completa todos los campos");
-            return;
-        }
-
-        const { error: citaError } = await supabase
-            .from("Citas")
-            .insert([{
-                usuario_id: usuarioId,
-                servicio_id: servicio.id,
-                fecha_hora: `${fecha} ${hora}`
-            }]);
-
-        if (citaError) {
-            console.error(citaError);
-            alert("Error al crear cita");
-            return;
-        }
-
-        alert("Cita creada correctamente");
-        location.reload();
-    });
-
-
-    const { data } = await supabase
-        .from("Citas")
-        .select("*, servicios(nombre)")
-        .eq("usuario_id", usuarioId)
-        .order("id", { ascending: false });
-
-    listaCitas.innerHTML = "";
-
-    data?.forEach(cita => {
-        const div = document.createElement("div");
-
-        div.innerHTML = `
-            <article>
-                <strong>#${cita.id}</strong><br>
-                Servicio: ${cita.servicios?.nombre || "N/A"}<br>
-                ${cita.fecha_hora}
-            </article>
+        // 🛠️ CAMBIO CLAVE: Usamos 'id' en lugar de 'identificación'
+        articulo.innerHTML = `
+            <p><strong>ID:</strong> ${cita.id ?? "N/A"}</p>
+            <p><strong>Fecha:</strong> ${
+                cita.fecha_hora
+                    ? new Date(cita.fecha_hora).toLocaleString()
+                    : "Sin fecha"
+            }</p>
+            <button onclick="cancelarCita(${cita.id})">Cancelar</button>
+            <button onclick="actualizarCita(${cita.id})">Editar</button>
             <hr>
         `;
 
-        listaCitas.appendChild(div);
+        lista.appendChild(articulo);
     });
-});
+}
+
+// 🔥 CANCELAR
+window.cancelarCita = async (id) => {
+    if (!confirm("¿Cancelar cita?")) return;
+
+    const { error } = await supabase
+        .from("Citas")
+        .delete()
+        .eq("id", id); // Corregido a 'id'
+
+    if (error) {
+        console.error("Error delete:", error);
+        alert("Error al eliminar");
+        return;
+    }
+
+    mostrarHistorial();
+};
+
+// 🔥 ACTUALIZAR
+window.actualizarCita = async (id) => {
+    const nuevaFecha = prompt("Nueva fecha (YYYY-MM-DD HH:MM)");
+    if (!nuevaFecha) return;
+
+    try {
+        const fechaISO = new Date(nuevaFecha).toISOString();
+
+        const { error } = await supabase
+            .from("Citas")
+            .update({ fecha_hora: fechaISO })
+            .eq("id", id); // Corregido a 'id'
+
+        if (error) {
+            console.error("Error update:", error);
+            alert("Error al actualizar");
+            return;
+        }
+
+        mostrarHistorial();
+    } catch (e) {
+        alert("Formato de fecha inválido");
+    }
+};

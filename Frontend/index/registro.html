@@ -9,17 +9,18 @@
         <link rel="icon" href="/Media/favicon.png" type="image/png">
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
+
 <body>
 
 <header class="encabezado">
     <nav class="navegacion">
         <ul>
-            <li>            <a href="/Frontend/index/lobby.html">Inicio</a></li>
-            <li>            <a href="/Frontend/index/servicios.html">Tratamientos</a></li>
-            <li>            <a href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a></li>
-            <li>            <a href="/Frontend/index/contacto.html">Contacto</a></li>
-            <li>            <a href="/Frontend/index/inicio.html">Inicio Sesion</a></li>
-            <li><a id="theme-toggle" type="button">🌙</a></li>
+            <li><a href="/Frontend/index/lobby.html">Inicio</a></li>
+            <li><a href="/Frontend/index/servicios.html">Tratamientos</a></li>
+            <li><a href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a></li>
+            <li><a href="/Frontend/index/contacto.html">Contacto</a></li>
+            <li><a href="/Frontend/index/inicio.html">Inicio Sesión</a></li>
+            <li><a id="theme-toggle">🌙</a></li>
         </ul>
     </nav>
 </header>
@@ -30,15 +31,15 @@
 
             <header class="tarjeta-encabezado">
                 <h1>Crear cuenta</h1>
-                <p>Registrate para agendar tus citas</p>
+                <p>Regístrate para agendar tus citas</p>
             </header>
 
             <form id="formRegistro" class="formulario">
                 <fieldset>
-                    <legend>Informacion</legend>
+                    <legend>Información</legend>
 
                     <label>Nombre completo</label>
-                    <input type="text" required>
+                    <input type="text" id="nombre" required>
 
                     <label>Correo</label>
                     <input type="email" id="correo" required>
@@ -47,20 +48,19 @@
                     <input type="password" id="clave" required>
 
                     <label>Confirmar contraseña</label>
-                    <input type="password" required>
+                    <input type="password" id="confirmarClave" required>
                 </fieldset>
 
                 <button type="submit">Registrarse</button>
             </form>
 
             <footer class="tarjeta-pie">
-                <p>Ya tienes cuenta? <a href="inicio.html">Inicia sesion</a></p>
+                <p>¿Ya tienes cuenta? <a href="/Frontend/index/inicio.html">Inicia sesión</a></p>
             </footer>
 
         </article>
     </section>
 </main>
-
 
 <script type="module">
 import { supabase } from "/Frontend/js/supabase.js";
