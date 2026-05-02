@@ -1,35 +1,33 @@
 import { supabase } from "../../Database/supabaseClient.js";
 
-// 🔥 Cambia esto a true si quieres ver TODAS las citas (debug)
-const DEBUG_VER_TODAS = true;
+// 1. CONFIGURACIÓN DE RUTAS (ID y carpeta verificados según tus capturas)
+const URL_BASE_STORAGE = "https://jdofaujfqsyiwauwttcd.supabase.co/storage/v1/object/public/Imagenes/Carpeta%20Servicios/";
 
 document.addEventListener("DOMContentLoaded", async () => {
+    // GESTIÓN DE PARÁMETROS URL
     const urlParams = new URLSearchParams(window.location.search);
     const nombreProducto = urlParams.get('servicio');
 
     if (nombreProducto) {
         const texto = document.getElementById("servicioSeleccionado");
         const input = document.getElementById("servicio");
-
         if (texto) texto.innerText = "Servicio: " + nombreProducto;
         if (input) input.value = nombreProducto;
     }
 
+    // FORMULARIO PARA AGENDAR CITA
     const form = document.getElementById("formCita");
-
     if (form) {
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            // 1. Obtener usuario autenticado
             const { data: { user } } = await supabase.auth.getUser();
-
             if (!user) {
                 alert("Debes iniciar sesión para agendar una cita");
                 return;
             }
 
-            let servicioNombre = document.getElementById("servicio")?.value;
+            let servicioNombre = document.getElementById("servicio")?.value?.trim();
             let fecha = document.getElementById("fecha")?.value;
             let hora = document.getElementById("hora")?.value;
 
@@ -38,159 +36,115 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return;
             }
 
-            // 2. BUSCAR EL ID DEL SERVICIO (Traducción de texto a número)
-            const { data: servicioData, error: errorServicio } = await supabase
+            const { data: sData } = await supabase
                 .from("servicios")
                 .select("id")
                 .ilike("nombre", `%${servicioNombre}%`)
                 .single();
 
-            if (errorServicio || !servicioData) {
-                console.error("Servicio no encontrado:", errorServicio);
-                alert("Error: No se pudo encontrar el ID del servicio '" + servicioNombre + "'");
+            if (!sData) {
+                alert("Servicio no encontrado.");
                 return;
             }
 
-            const servicioIdReal = servicioData.id;
-            let fechaHora = new Date(`${fecha}T${hora}`).toISOString();
+            const fechaHoraISO = new Date(`${fecha}T${hora}`).toISOString();
 
-            // 3. VERIFICAR DISPONIBILIDAD
-            const { data: existentes, error: errorDispo } = await supabase
-                .from("Citas")
-                .select("id")
-                .eq("fecha_hora", fechaHora);
-
-            if (errorDispo) {
-                console.error("Error disponibilidad:", errorDispo);
-                alert("Error al verificar disponibilidad: " + errorDispo.message);
-                return;
-            }
-
-            if (existentes.length > 0) {
-                alert("Lo sentimos, este horario ya está ocupado");
-                return;
-            }
-
-            // 4. ✅ INSERTAR (Con diagnóstico de errores detallado)
             const { error: errorInsert } = await supabase
                 .from("Citas")
                 .insert([{
-                    servicio_id: servicioIdReal, 
-                    fecha_hora: fechaHora,
+                    servicio_id: sData.id, 
+                    fecha_hora: fechaHoraISO,
                     usuario_id: user.id 
                 }]);
 
             if (errorInsert) {
-                console.error("Error detallado de Supabase:", errorInsert);
-                // Esta alerta nos dirá el motivo real (RLS, columna inexistente, etc.)
-                alert("Error de Base de Datos: " + errorInsert.message + " (Código: " + errorInsert.code + ")");
-                return;
+                alert("Error al agendar: " + errorInsert.message);
+            } else {
+                alert("¡Cita agendada correctamente!");
+                form.reset();
+                mostrarHistorial();
             }
-
-            alert("¡Cita creada correctamente!");
-            form.reset();
-            mostrarHistorial();
         });
     }
 
     mostrarHistorial();
 });
 
-// --- FUNCIONES DE HISTORIAL Y GESTIÓN (Mantenidas intactas) ---
-
+// 2. FUNCIÓN PARA MOSTRAR EL HISTORIAL
 async function mostrarHistorial() {
     let lista = document.getElementById("listaCitas");
     if (!lista) return;
 
-    lista.innerHTML = "Cargando...";
+    lista.innerHTML = "<p style='color: white; text-align: center;'>Cargando historial de citas...</p>";
 
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user && !DEBUG_VER_TODAS) {
-        lista.innerHTML = "Debes iniciar sesión para ver tus citas";
-        return;
-    }
-
-    let query = supabase.from("Citas").select("*");
-
-    if (!DEBUG_VER_TODAS && user) {
-        query = query.eq("usuario_id", user.id); 
-    }
-
-    const { data, error } = await query;
+    const { data, error } = await supabase
+        .from("Citas")
+        .select(`
+            *,
+            paciente:Usuarios (nombre, correo),
+            servicio:servicios (nombre, imagen_url)
+        `)
+        .order('fecha_hora', { ascending: true });
 
     if (error) {
-        console.error("Error fetch:", error);
-        lista.innerHTML = "Error cargando citas";
+        console.error("Error en Supabase:", error);
+        lista.innerHTML = `<p style='color: #ff4444;'>Error al cargar el historial.</p>`;
         return;
     }
 
+    pintarCitas(data, lista);
+}
+
+// 3. FUNCIÓN PARA DIBUJAR LAS TARJETAS
+function pintarCitas(data, lista) {
     if (!data || data.length === 0) {
-        lista.innerHTML = "No tienes citas agendadas";
+        lista.innerHTML = "<p style='color: white; text-align: center;'>No tienes citas registradas.</p>";
         return;
     }
 
     lista.innerHTML = "";
-
     data.forEach((cita) => {
-        if (!cita) return;
+        const infoPaciente = cita.paciente || {};
+        const infoServicio = cita.servicio || {};
+        
+        const nombrePaciente = infoPaciente.nombre || "Paciente";
+        const nombreServicio = infoServicio.nombre || "Tratamiento";
+        
+        // CORRECCIÓN: Usamos 'imagen_url' que es el nombre real de tu columna
+        const imgNombre = infoServicio.imagen_url;
+        const imgPath = imgNombre 
+            ? URL_BASE_STORAGE + imgNombre 
+            : "../../../Media/Logo.png";
 
         let articulo = document.createElement("article");
-        articulo.className = "cita-item";
-        articulo.style = "border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 8px;";
+        articulo.style = "display: flex; gap: 20px; align-items: center; padding: 15px; background: white; border-radius: 12px; margin-bottom: 15px; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.1);";
 
         articulo.innerHTML = `
-            <p><strong>ID Cita:</strong> ${cita.id}</p>
-            <p><strong>Fecha y Hora:</strong> ${
-                cita.fecha_hora
-                    ? new Date(cita.fecha_hora).toLocaleString()
-                    : "Sin fecha"
-            }</p>
-            <button onclick="cancelarCita(${cita.id})" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Cancelar</button>
-            <button onclick="actualizarCita(${cita.id})" style="background: #3498db; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Editar</button>
-        `;
+            <img src="${imgPath}" alt="${nombreServicio}" 
+                 style="width: 110px; height: 110px; object-fit: cover; border-radius: 10px;"
+                 onerror="this.src='../../../Media/Logo.png';">
+            
+            <div style="flex-grow: 1;">
+                <h3 style="margin: 0 0 10px 0; color: #2196F3;">${nombreServicio}</h3>
+                <p style="margin: 3px 0;"><strong>👤 Paciente:</strong> ${nombrePaciente}</p>
+                <p style="margin: 3px 0;"><strong>📅 Fecha:</strong> ${new Date(cita.fecha_hora).toLocaleDateString()}</p>
+                <p style="margin: 3px 0;"><strong>⏰ Hora:</strong> ${new Date(cita.fecha_hora).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+            </div>
 
+            <div>
+                <button onclick="cancelarCita(${cita.id})" 
+                        style="background: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                    Eliminar
+                </button>
+            </div>
+        `;
         lista.appendChild(articulo);
     });
 }
 
 window.cancelarCita = async (id) => {
-    if (!confirm("¿Estás seguro de que deseas cancelar esta cita?")) return;
-
-    const { error } = await supabase
-        .from("Citas")
-        .delete()
-        .eq("id", id);
-
-    if (error) {
-        console.error("Error delete:", error);
-        alert("Error al eliminar la cita");
-        return;
-    }
-
-    mostrarHistorial();
-};
-
-window.actualizarCita = async (id) => {
-    const nuevaFecha = prompt("Ingresa la nueva fecha y hora (Formato: YYYY-MM-DD HH:MM)");
-    if (!nuevaFecha) return;
-
-    try {
-        const fechaISO = new Date(nuevaFecha).toISOString();
-
-        const { error } = await supabase
-            .from("Citas")
-            .update({ fecha_hora: fechaISO })
-            .eq("id", id);
-
-        if (error) {
-            console.error("Error update:", error);
-            alert("Error al actualizar la cita");
-            return;
-        }
-
-        mostrarHistorial();
-    } catch (e) {
-        alert("El formato de fecha no es válido. Usa: YYYY-MM-DD HH:MM");
-    }
+    if (!confirm("¿Eliminar esta cita?")) return;
+    const { error } = await supabase.from("Citas").delete().eq("id", id);
+    if (error) alert("Error al eliminar");
+    else mostrarHistorial();
 };

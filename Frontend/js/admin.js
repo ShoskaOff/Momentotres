@@ -1,7 +1,11 @@
 import { supabase as db } from '../../Database/supabaseClient.js';
 
+// 1. CONFIGURACIÓN DE RUTA (ID verificado: jdofaujfqsyiwauwttcd)
+const URL_BASE_STORAGE = "https://jdofaujfqsyiwauwttcd.supabase.co/storage/v1/object/public/Imagenes/Carpeta%20Servicios/";
+
 document.addEventListener('DOMContentLoaded', async () => {
     const contenedor = document.getElementById('crud-contenedor-servicios');
+    const contenedorCitas = document.getElementById('crud-contenedor-citas');
     const form = document.getElementById("formServicio");
     const panel = document.getElementById("panelCRUD");
     const btnNuevo = document.getElementById("btnNuevoServicio");
@@ -10,7 +14,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let expandido = false;
 
-    // --- 1. LÓGICA DEL BOTÓN TOGGLE (VER MÁS) ---
     if (btnToggle && contenedor) {
         btnToggle.addEventListener("click", () => {
             expandido = !expandido;
@@ -19,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- 2. CARGAR SERVICIOS (READ) ---
+    // --- 2. CARGAR SERVICIOS (CORREGIDO PARA IMÁGENES) ---
     async function cargarServicios() {
         if (!contenedor) return;
         try {
@@ -35,9 +38,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            contenedor.innerHTML = servicios.map(s => `
+            contenedor.innerHTML = servicios.map(s => {
+                // Si la columna imagen_url tiene el nombre del archivo, le pegamos la URL base
+                // Si está vacía, usamos el logo por defecto
+                const imgFinal = s.imagen_url 
+                    ? URL_BASE_STORAGE + s.imagen_url 
+                    : "../../../Media/Logo.png";
+
+                return `
                 <section class="tarjeta-servicio">
-                    <img src="${s.imagen_url || 'https://via.placeholder.com/150?text=Sin+Imagen'}" alt="${s.nombre}" style="width:100px; height:100px; object-fit:cover;">
+                    <img src="${imgFinal}" alt="${s.nombre}" 
+                         style="width:100px; height:100px; object-fit:cover; border-radius:8px;"
+                         onerror="this.src='../../../Media/Logo.png';">
                     <h3>${s.nombre}</h3>
                     <p>${s.descripcion || 'Consulta con nuestros especialistas.'}</p>
                     <span class="precio">$${s.precio ? s.precio.toLocaleString() : '0'}</span>
@@ -46,116 +58,140 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <button class="btn-borrar" data-id="${s.id}" style="color:red;">🗑️ Borrar</button>
                     </div>
                 </section>
-            `).join('');
+            `}).join('');
 
-            // ASIGNAR EVENTOS A LOS BOTONES GENERADOS
-            document.querySelectorAll('.btn-editar').forEach(b => {
+            document.querySelectorAll('#crud-contenedor-servicios .btn-editar').forEach(b => {
                 b.onclick = () => prepararEdicion(b.dataset.id);
             });
-            document.querySelectorAll('.btn-borrar').forEach(b => {
+            document.querySelectorAll('#crud-contenedor-servicios .btn-borrar').forEach(b => {
                 b.onclick = () => eliminarServicio(b.dataset.id);
             });
 
         } catch (error) {
             console.error("Error cargando servicios:", error);
-            contenedor.innerHTML = '<p>Error al cargar los tratamientos.</p>';
         }
     }
 
-    // --- 3. ELIMINAR (DELETE) ---
-    async function eliminarServicio(id) {
-        if (!confirm("¿Seguro que quieres eliminar este servicio?")) return;
-        const { error } = await db.from('servicios').delete().eq('id', id);
-        if (error) alert("Error: " + error.message);
-        else cargarServicios();
+    // --- 3. CARGAR CITAS ---
+    async function cargarCitasAdmin() {
+        if (!contenedorCitas) return;
+        try {
+            let { data: citas, error } = await db
+                .from('Citas')
+                .select(`
+                    id,
+                    fecha_hora,
+                    Usuarios:Usuarios!Citas_usuario_id_fkey1 ( nombre, correo ),
+                    servicios:servicio_id ( nombre )
+                `)
+                .order('fecha_hora', { ascending: true });
+
+            if (error) throw error;
+
+            contenedorCitas.innerHTML = citas.map(c => `
+                <section class="tarjeta-servicio"> 
+                    <div class="info-cita">
+                        <h3>Paciente: ${c.Usuarios?.nombre || 'Sin nombre'}</h3>
+                        <p><strong>Servicio:</strong> ${c.servicios?.nombre || 'No encontrado'}</p>
+                        <p><strong>Fecha:</strong> ${new Date(c.fecha_hora).toLocaleString()}</p>
+                        <p><small>${c.Usuarios?.correo || ''}</small></p>
+                    </div>
+                    <div class="acciones">
+                        <button class="btn-editar" onclick="reprogramarCita(${c.id}, '${c.fecha_hora}')">✏️ Reprogramar</button>
+                        <button class="btn-borrar" onclick="eliminarCitaAdmin(${c.id})" style="color:red;">🗑️ Cancelar</button>
+                    </div>
+                </section>
+            `).join('');
+        } catch (error) {
+            console.error("Error citas:", error);
+        }
     }
 
-    // --- 4. PREPARAR EDICIÓN (UPDATE - Llenar Form) ---
-    async function prepararEdicion(id) {
-        const { data: s, error } = await db.from('servicios').select('*').eq('id', id).single();
-        if (error) return;
-
-        inputId.value = s.id;
-        document.getElementById("nombre").value = s.nombre;
-        document.getElementById("precio").value = s.precio;
-        document.getElementById("descripcion").value = s.descripcion;
-        panel.showModal();
-    }
-
-    // --- 5. GUARDAR (CREATE O UPDATE) ---
+    // --- 4. GUARDAR / EDITAR (CON SUBIDA DE ARCHIVOS) ---
     if (form) {
-       form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const id = inputId.value;
-    const file = document.getElementById("imagenInput")?.files[0];
-    // Capturamos la URL que el usuario pudo haber pegado manualmente
-    const urlEscrita = document.getElementById("imagen").value; 
-    let imageUrl = "";
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const id = inputId.value;
+            const file = document.getElementById("imagenInput")?.files[0];
+            let nombreArchivoParaBD = "";
 
-    // --- LÓGICA DE PRIORIDAD DE IMAGEN ---
-    
-    // 1. Si el usuario seleccionó un archivo local, lo subimos a Supabase Storage
-    if (file) {
-        const fileName = `${Date.now()}_${file.name}`;
-        const { data: uploadData, error: upError } = await db.storage
-            .from('Imagenes') // Nombre exacto de tu bucket
-            .upload(fileName, file);
-        
-        if (upError) {
-            alert("Error subiendo imagen: " + upError.message);
-            return; // Detenemos si hay error en la subida
-        } else {
-            imageUrl = db.storage.from('Imagenes').getPublicUrl(fileName).data.publicUrl;
-        }
-    } 
-    // 2. Si no hay archivo pero hay algo escrito en el campo de texto, usamos esa URL directamente
-    else if (urlEscrita) {
-        imageUrl = urlEscrita;
-    }
+            // Si el usuario sube un archivo nuevo
+            if (file) {
+                const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
+                const { error: upError } = await db.storage
+                    .from('Imagenes')
+                    .upload(`Carpeta Servicios/${fileName}`, file);
+                
+                if (!upError) {
+                    nombreArchivoParaBD = fileName;
+                } else {
+                    console.error("Error subida:", upError);
+                }
+            }
 
-    // --- PREPARACIÓN DE DATOS ---
-    const datos = {
-        nombre: document.getElementById("nombre").value,
-        precio: parseFloat(document.getElementById("precio").value),
-        descripcion: document.getElementById("descripcion").value
-    };
-    
-    // Solo enviamos la imagen si se generó una URL (por archivo o por texto)
-    if (imageUrl) {
-        datos.imagen_url = imageUrl; // Usamos el nombre exacto de tu columna en Supabase
-    }
+            const datos = {
+                nombre: document.getElementById("nombre").value,
+                precio: parseFloat(document.getElementById("precio").value),
+                descripcion: document.getElementById("descripcion").value
+            };
+            
+            // Solo actualizamos la imagen si se subió algo nuevo
+            if (nombreArchivoParaBD) datos.imagen_url = nombreArchivoParaBD;
 
-    // --- GUARDAR EN BASE DE DATOS ---
-    let res;
-    if (id) {
-        // Modo Edición
-        res = await db.from('servicios').update(datos).eq('id', id);
-    } else {
-        // Modo Creación
-        res = await db.from('servicios').insert([datos]);
-    }
+            const res = id 
+                ? await db.from('servicios').update(datos).eq('id', id)
+                : await db.from('servicios').insert([datos]);
 
-    if (res.error) {
-        alert("Error al guardar: " + res.error.message);
-    } else {
-        alert(id ? "¡Servicio actualizado con éxito!" : "¡Servicio creado con éxito!");
-        
-        // Limpieza y cierre
-        form.reset();
-        inputId.value = "";
-        panel.close();
-        cargarServicios(); // Refrescamos la lista para ver los cambios
-    }
-});
-    }
-
-    if (btnNuevo && panel) {
-        btnNuevo.addEventListener("click", () => {
-            form.reset();
-            inputId.value = "";
-            panel.showModal();
+            if (res.error) alert("Error: " + res.error.message);
+            else {
+                alert("Guardado correctamente");
+                form.reset();
+                panel.close();
+                cargarServicios();
+            }
         });
     }
 
+    // Funciones globales
+    window.eliminarCitaAdmin = async (id) => {
+        if (!confirm("¿Cancelar cita?")) return;
+        await db.from('Citas').delete().eq('id', id);
+        cargarCitasAdmin();
+    };
+
+    window.reprogramarCita = async (id, fechaActual) => {
+        const nuevaFecha = prompt("Nueva fecha (YYYY-MM-DD HH:MM):", new Date(fechaActual).toISOString().slice(0,16));
+        if (!nuevaFecha) return;
+        await db.from('Citas').update({ fecha_hora: new Date(nuevaFecha).toISOString() }).eq('id', id);
+        cargarCitasAdmin();
+    };
+
+    if (btnNuevo) {
+        btnNuevo.onclick = () => {
+            form.reset();
+            inputId.value = "";
+            panel.showModal();
+        };
+    }
+
+    async function eliminarServicio(id) {
+        if (confirm("¿Eliminar servicio?")) {
+            await db.from('servicios').delete().eq('id', id);
+            cargarServicios();
+        }
+    }
+
+    async function prepararEdicion(id) {
+        const { data: s } = await db.from('servicios').select('*').eq('id', id).single();
+        if (s) {
+            inputId.value = s.id;
+            document.getElementById("nombre").value = s.nombre;
+            document.getElementById("precio").value = s.precio;
+            document.getElementById("descripcion").value = s.descripcion;
+            panel.showModal();
+        }
+    }
+
     cargarServicios();
+    cargarCitasAdmin();
 });
