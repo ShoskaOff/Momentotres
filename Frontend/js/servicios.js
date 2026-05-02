@@ -3,11 +3,15 @@ import { supabase } from '../../Database/supabaseClient.js';
 // 1. URL BASE PARA IMÁGENES (ID: jdofaujfqsyiwauwttcd)
 const URL_BASE_STORAGE = "https://jdofaujfqsyiwauwttcd.supabase.co/storage/v1/object/public/Imagenes/Carpeta%20Servicios/";
 
-// --- 1. CARGA DE SERVICIOS (Vista Pública) ---
+// --- 1. CARGA DE SERVICIOS (Vista Pública: Lobby y Tratamientos) ---
 async function cargarServicios() {
-    const contenedor = document.querySelector('.contenedor-servicios');
-    if (!contenedor) return;
+    // Buscamos ambos posibles contenedores
+    const contenedorGeneral = document.querySelector('.contenedor-servicios:not(#servicios-destacados)');
+    const contenedorLobby = document.getElementById('servicios-destacados');
+    
+    if (!contenedorGeneral && !contenedorLobby) return;
 
+    // Traemos los datos de la base de datos
     const { data, error } = await supabase.from('servicios').select('*').order('nombre', { ascending: true });
     
     if (error) { 
@@ -16,31 +20,59 @@ async function cargarServicios() {
     }
 
     if (data) {
-        contenedor.innerHTML = data.map(s => {
-            // Lógica para rutas de archivos HTML locales
-            const nombreDB = s.nombre
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "");
+        // Si existe el contenedor del Lobby, le enviamos solo los primeros 3
+        if (contenedorLobby) {
+            const destacados = data.slice(0, 3);
+            contenedorLobby.innerHTML = generarHTMLTarjetas(destacados, true);
+        }
 
-            let nombreArchivo = "";
-            if (nombreDB.includes("diseno") || nombreDB.includes("sonrisa")) {
-                nombreArchivo = "diseñoSonrisa";
-            } else if (nombreDB.includes("frenectomia") || nombreDB.includes("frenilectomia")) {
-                nombreArchivo = "frenilectomia";
-            } else if (nombreDB.includes("cordales")) {
-                nombreArchivo = "cordales";
-            } else {
-                nombreArchivo = nombreDB.split(' ')[0];
-            }
+        // Si existe el contenedor de la página de servicios, le enviamos todos
+        if (contenedorGeneral) {
+            contenedorGeneral.innerHTML = generarHTMLTarjetas(data, false);
+        }
+    }
+}
 
-            const rutaArchivo = `./tratamientos/${nombreArchivo}.html`;
+// Función auxiliar para generar el HTML (Evita repetir código)
+function generarHTMLTarjetas(servicios, esLobby) {
+    return servicios.map(s => {
+        // Lógica para rutas de archivos HTML locales
+        const nombreDB = s.nombre
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
 
-            // CORRECCIÓN DE IMAGEN: Concatenar URL de Supabase + nombre en la DB
-            const imgFinal = s.imagen_url 
-                ? URL_BASE_STORAGE + s.imagen_url 
-                : "../../../Media/Logo.png";
+        let nombreArchivo = "";
+        if (nombreDB.includes("diseno") || nombreDB.includes("sonrisa")) {
+            nombreArchivo = "diseñoSonrisa";
+        } else if (nombreDB.includes("frenectomia") || nombreDB.includes("frenilectomia")) {
+            nombreArchivo = "frenilectomia";
+        } else if (nombreDB.includes("cordales")) {
+            nombreArchivo = "cordales";
+        } else {
+            nombreArchivo = nombreDB.split(' ')[0];
+        }
 
+        // Ajuste de ruta según la ubicación del HTML
+        const rutaArchivo = esLobby 
+            ? `/Frontend/index/tratamientos/${nombreArchivo}.html` 
+            : `./tratamientos/${nombreArchivo}.html`;
+
+        const imgFinal = s.imagen_url 
+            ? URL_BASE_STORAGE + s.imagen_url 
+            : "../../../Media/Logo.png";
+
+        // Estilo específico para el Lobby o para la lista general
+        if (esLobby) {
+            return `
+                <article>
+                    <img src="${imgFinal}" alt="${s.nombre}" onerror="this.src='/Media/Logo.png';">
+                    <h3>${s.nombre}</h3>
+                    <p>${s.descripcion ? s.descripcion.substring(0, 60) + '...' : 'Tu sonrisa es nuestra prioridad.'}</p>
+                    <a href="${rutaArchivo}" class="btn-detalle">Ver detalle</a>
+                </article>
+            `;
+        } else {
             return `
                 <article class="servicio-card" style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px;">
                     <a href="${rutaArchivo}" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 20px;">
@@ -58,8 +90,8 @@ async function cargarServicios() {
                     </a>
                 </article>
             `;
-        }).join('');
-    }
+        }
+    }).join('');
 }
 
 // --- 2. CARGA DEL CRUD (Panel Administrativo) ---
@@ -92,7 +124,7 @@ async function guardarServicio(e) {
     const nombre = document.getElementById("nombre").value;
     const precio = document.getElementById("precio").value;
     const descripcion = document.getElementById("descripcion").value;
-    const imagen_url = document.getElementById("imagen").value; // Nombre del archivo (ej: limpieza.png)
+    const imagen_url = document.getElementById("imagen").value;
 
     const objetoServicio = { 
         nombre, 

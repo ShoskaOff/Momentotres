@@ -1,10 +1,8 @@
 import { supabase } from "../../Database/supabaseClient.js";
 
-// 1. CONFIGURACIÓN DE RUTAS (ID y carpeta verificados según tus capturas)
 const URL_BASE_STORAGE = "https://jdofaujfqsyiwauwttcd.supabase.co/storage/v1/object/public/Imagenes/Carpeta%20Servicios/";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // GESTIÓN DE PARÁMETROS URL
     const urlParams = new URLSearchParams(window.location.search);
     const nombreProducto = urlParams.get('servicio');
 
@@ -15,7 +13,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (input) input.value = nombreProducto;
     }
 
-    // FORMULARIO PARA AGENDAR CITA
     const form = document.getElementById("formCita");
     if (form) {
         form.addEventListener("submit", async (e) => {
@@ -36,6 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return;
             }
 
+            // 1. Obtener ID del servicio
             const { data: sData } = await supabase
                 .from("servicios")
                 .select("id")
@@ -48,6 +46,27 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const fechaHoraISO = new Date(`${fecha}T${hora}`).toISOString();
+
+            // --- NUEVA VALIDACIÓN DE DISPONIBILIDAD ---
+            // --- NUEVA VALIDACIÓN DE DISPONIBILIDAD (Rango de 3 horas) ---
+
+// 1. Calculamos los límites de tiempo
+            const inicioRango = new Date(new Date(`${fecha}T${hora}`).getTime() - (3 * 60 * 60 * 1000)).toISOString();
+            const finRango = new Date(new Date(`${fecha}T${hora}`).getTime() + (3 * 60 * 60 * 1000)).toISOString();
+
+// 2. Consultamos si hay alguna cita en ese intervalo
+            const { data: citasEnRango, error: errorCheck } = await supabase
+              .from("Citas")
+              .select("id, fecha_hora")
+               .gt("fecha_hora", inicioRango) // Mayor que (hora seleccionada - 3h)
+                .lt("fecha_hora", finRango)    // Menor que (hora seleccionada + 3h)
+             .limit(1); // Con que encuentre una es suficiente
+
+            if (citasEnRango && citasEnRango.length > 0) {
+                 alert("El doctor no está disponible. Las citas deben tener un margen de 3 horas entre sí.");
+                 return;
+    }
+// --- FIN DE VALIDACIÓN ---
 
             const { error: errorInsert } = await supabase
                 .from("Citas")
@@ -70,7 +89,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     mostrarHistorial();
 });
 
-// 2. FUNCIÓN PARA MOSTRAR EL HISTORIAL
+// El resto de funciones (mostrarHistorial, pintarCitas, cancelarCita) permanecen igual
 async function mostrarHistorial() {
     let lista = document.getElementById("listaCitas");
     if (!lista) return;
@@ -78,32 +97,29 @@ async function mostrarHistorial() {
     lista.innerHTML = "<p style='color: white; text-align: center;'>Cargando historial de citas...</p>";
 
     const { data, error } = await supabase
-  .from("Citas")
-  .select(`
-    *,
-    paciente:Usuarios!Citas_usuario_id_fkey (
-      nombre,
-      correo
-    ),
-    servicio:servicios (
-      nombre,
-      imagen_url
-    )
-  `)
-  .order('fecha_hora', { ascending: true });
-   if (error) {
-    console.error("Error en Supabase:", error);
-    lista.innerHTML = `<p style='color: #ff4444;'>Error al cargar el historial.</p>`;
+        .from("Citas")
+        .select(`
+            *,
+            paciente:Usuarios!Citas_usuario_id_fkey1 (
+                nombre,
+                correo
+            ),
+            servicio:servicios (
+                nombre,
+                imagen_url
+            )
+        `)
+        .order('fecha_hora', { ascending: true });
+
+    if (error) {
+        console.error("Error en Supabase:", error);
+        lista.innerHTML = `<p style='color: #ff4444;'>Error al cargar el historial.</p>`;
         return;
-}
-        
-    
-    
+    }
 
     pintarCitas(data, lista);
 }
 
-// 3. FUNCIÓN PARA DIBUJAR LAS TARJETAS
 function pintarCitas(data, lista) {
     if (!data || data.length === 0) {
         lista.innerHTML = "<p style='color: white; text-align: center;'>No tienes citas registradas.</p>";
@@ -114,15 +130,10 @@ function pintarCitas(data, lista) {
     data.forEach((cita) => {
         const infoPaciente = cita.paciente || {};
         const infoServicio = cita.servicio || {};
-        
         const nombrePaciente = infoPaciente.nombre || "Paciente";
         const nombreServicio = infoServicio.nombre || "Tratamiento";
-        
-        // CORRECCIÓN: Usamos 'imagen_url' que es el nombre real de tu columna
         const imgNombre = infoServicio.imagen_url;
-        const imgPath = imgNombre 
-            ? URL_BASE_STORAGE + imgNombre 
-            : "../../../Media/Logo.png";
+        const imgPath = imgNombre ? URL_BASE_STORAGE + imgNombre : "../../../Media/Logo.png";
 
         let articulo = document.createElement("article");
         articulo.style = "display: flex; gap: 20px; align-items: center; padding: 15px; background: white; border-radius: 12px; margin-bottom: 15px; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.1);";

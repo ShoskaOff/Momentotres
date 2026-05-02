@@ -4,76 +4,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Citas</title>
+    <title>Dentology - Agendar Cita</title>
+    
+    <!-- Estilos -->
     <link rel="stylesheet" href="/Frontend/styles/servicios.css">
     <link rel="stylesheet" href="/Frontend/styles/citas.css">
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     
-
+    <!-- Favicon -->
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
 
 <body>
+    <!-- Encabezado Unificado -->
     <header class="site-header">
         <a href="/Frontend/index/lobby.html">
-            <figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure>
+            <figure class="logo">
+                <img src="/Media/Logo.png" alt="Dentology Logo">
+            </figure>
         </a>
         <nav class="main-nav">
             <a href="/Frontend/index/lobby.html">Inicio</a>
             <a href="/Frontend/index/servicios.html">Tratamientos</a>
-            <a href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a>
+            <a href="/Frontend/index/citas.html" class="active">Citas</a>
             <a href="/Frontend/index/contacto.html">Contacto</a>
-            <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
-            <a id="theme-toggle" type="button">🌙</a>
+            <a href="/Frontend/index/inicio.html">Inicio Sesión</a>
+            <a id="theme-toggle" style="cursor: pointer;">🌙</a>
             <a href="/Frontend/index/carrito/carritoo.html" id="carritoIcono">🛒</a>
         </nav>
     </header>
 
-<header class="site-header">
-    <a href="/Frontend/index/lobby.html">
-        <figure class="logo">
-            <img src="/Media/Logo.png" alt="logo">
-        </figure>
-    </a>
+    <main>
+        <!-- Formulario de Agendamiento -->
+        <section class="contenedor-formulario">
+            <form id="formCita" class="formulario-estilo">
+                <h2>Agendar tu Cita</h2>
 
-    <nav class="main-nav">
-        <a href="/Frontend/index/lobby.html">Inicio</a>
-        <a href="/Frontend/index/servicios.html">Tratamientos</a>
-        <a href="/Frontend/index/citas.html">Citas</a>
-        <a href="/Frontend/index/contacto.html">Contacto</a>
-        <a href="/Frontend/index/inicio.html">Inicio Sesión</a>
-        <a id="theme-toggle">🌙</a>
-    </nav>
-</header>
+                <p id="servicioSeleccionado" style="font-weight: bold; color: #2196F3;">Servicio: Seleccione un tratamiento</p>
+                
+                <!-- Input oculto para el ID o nombre del servicio -->
+                <input type="hidden" id="servicio">
 
-<main>
+                <div class="campo">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" id="fecha" required>
+                </div>
 
-<form id="formCita" class="formulario-estilo">
-    <h2>Agendar cita</h2>
+                <div class="campo">
+                    <label for="hora">Hora:</label>
+                    <!-- step="1800" sugiere intervalos de 30 minutos al usuario -->
+                    <input type="time" id="hora" step="1800" required>
+                </div>
+                
+                <button type="submit" class="btn-agendar">Confirmar Cita</button>
+            </form>
+        </section>
 
-    <p id="servicioSeleccionado">Servicio: </p>
+        <!-- Sección de Historial (Donde se pintarán las citas) -->
+        <section class="contenedor-historial">
+            <h2 style="text-align: center; color: white; margin-top: 40px;">Mis Citas Programadas</h2>
+            <div id="listaCitas">
+                <!-- Se llena dinámicamente desde citas.js -->
+            </div>
+        </section>
+    </main>
 
-    <input type="hidden" id="servicio">
-
-    <label>Fecha:</label>
-    <input type="date" id="fecha" required>
-    <label>Hora:</label>
-    <input type="time" id="hora" required>
-    
-    <button type="submit">Agendar</button>
-    
-</form>
-<footer class="pie-pagina">
+    <footer class="pie-pagina">
         <nav class="footer_navegacion">
             <p class="contenido_footer">Términos de Servicio</p>
             <p class="contenido_footer">Política de Privacidad</p>
         </nav>
         <aside class="barra_inferior">
-            <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
+            <p class="derechos_reservados">©2026 DENTOLOGY. Todos los derechos reservados.</p>
         </aside>
     </footer>
 
+    <!-- Scripts -->
     <script type="module" src="/Frontend/js/citas.js"></script>
     <script src="/Frontend/js/tema.js"></script>
+
+    <script>
+        // Validación extra: No permitir seleccionar fechas pasadas en el calendario
+        const fechaInput = document.getElementById('fecha');
+        const hoy = new Date().toISOString().split('T')[0];
+        fechaInput.setAttribute('min', hoy);
+    </script>
 </body>
 </html>

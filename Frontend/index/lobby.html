@@ -1,91 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Estilos -->
     <link rel="stylesheet" href="/Frontend/styles/lobby.css">
     <link rel="stylesheet" href="/Frontend/styles/servicios.css">
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="stylesheet" href="/Frontend/styles/responsive.css">
+    
     <link rel="icon" href="/Media/favicon.png" type="image/png">
-    <script src="/Frontend/js/servicios.js"></script>
+    
+    <!-- Scripts: Importante el type="module" para que funcione Supabase -->
+    <script type="module" src="/Frontend/js/servicios.js"></script>
     <script src="/Frontend/js/tema.js"></script>
-    <title>Inicio</title>
+    
+    <title>Dentology - Inicio</title>
 </head>
 
 <body>
     <header class="site-header">
         <a href="/Frontend/index/lobby.html">
-            <figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure>
+            <figure class="logo">
+                <img src="/Media/Logo.png" alt="Dentology Logo">
+            </figure>
         </a>
         <nav class="main-nav">
-            <a href="/Frontend/index/lobby.html">Inicio</a>
+            <a href="/Frontend/index/lobby.html" class="active">Inicio</a>
             <a href="/Frontend/index/servicios.html">Tratamientos</a>
             <a href="/Frontend/index/citas.html">Citas</a>
             <a href="/Frontend/index/contacto.html">Contacto</a>
-            <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
+            <a href="/Frontend/index/inicio.html">Inicio Sesión</a>
             <a href="/Frontend/index/carrito/carritoo.html" id="carritoIcono">🛒</a>
-            <a id="theme-toggle" type="button">🌙</a>
-            <a id="btnAdmin" type="button" href="/Frontend/index/PaginaAdmin/admin.html">
-            </a>
+            <a id="theme-toggle" style="cursor: pointer;">🌙</a>
+            <!-- Botón Admin oculto o visible según necesites -->
+            <a id="btnAdmin" href="/Frontend/index/PaginaAdmin/admin.html"></a>
         </nav>
     </header>
 
     <main>
+        <!-- Banner Principal -->
+        <section class="banner-inicio">
+            <hgroup>
+                <h1>DENTOLOGY</h1>
+                <p>Tu sonrisa, nuestra prioridad.</p>
+            </hgroup>
+        </section>
 
-        <main>
-            <section class="banner-inicio">
-                <hgroup>
-                    <h1>DENTOLOGY</h1>
-                    <p>Tu sonrisa, nuestra prioridad.</p>
-                </hgroup>
-            </section>
+        <!-- Sección Dinámica de Tratamientos -->
+        <section class="tratamientos-destacados">
+            <header>
+                <h2>Nuestros Tratamientos Principales</h2>
+            </header>
 
-            <section class="tratamientos-destacados">
-                <header>
-                    <h2>Nuestros Tratamientos Principales</h2>
-                </header>
+            <!-- CAMBIO CLAVE: Se añadió el ID para que JS inyecte los datos aquí -->
+            <div class="contenedor-servicios" id="servicios-destacados">
+                <p style="text-align: center; color: white; grid-column: 1/-1;">Cargando servicios...</p>
+            </div>
 
-                <div class="destacados-grid">
-                    <article>
-                        <img src="/Media/Blanqueamiento.png" alt="Blanqueamiento Dental">
-                        <h3>Blanqueamiento Dental</h3>
-                        <p>Mejora el color de tus dientes de forma segura.</p>
-                        <a href="/Frontend/index/tratamientos/blanqueamiento.html" class="btn-detalle">Ver detalle</a>
-                    </article>
-
-                    <article>
-                        <img src="/Media/limpieza dental.png" alt="Limpieza Dental">
-                        <h3>Limpieza Dental</h3>
-                        <p>Mantenimiento preventivo para una salud oral óptima.</p>
-                        <a href="/Frontend/index/tratamientos/limpieza.html" class="btn-detalle">Ver detalle</a>
-                    </article>
-
-                    <article>
-                        <img src="/Media/Exodoncia.png" alt="Exodoncia">
-                        <h3>Exodoncia</h3>
-                        <p>Procedimientos quirúrgicos con la mejor tecnología.</p>
-                        <a href="/Frontend/index/tratamientos/exodoncia.html" class="btn-detalle">Ver detalle</a>
-                    </article>
-                </div>
-
-                <footer>
-                    <a href="/Frontend/index/servicios.html" class="btn-ver-mas">Ver más tratamientos</a>
-                </footer>
-            </section>
-        </main>
-
+            <footer>
+                <a href="/Frontend/index/servicios.html" class="btn-ver-mas">Ver más tratamientos</a>
+            </footer>
+        </section>
     </main>
+
     <footer class="pie-pagina">
         <nav class="footer_navegacion">
             <p class="contenido_footer">Términos de Servicio</p>
             <p class="contenido_footer">Política de Privacidad</p>
         </nav>
         <aside class="barra_inferior">
-            <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
+            <p class="derechos_reservados">©2026 DENTOLOGY. Todos los derechos reservados.</p>
         </aside>
     </footer>
 </body>
-
 </html>
