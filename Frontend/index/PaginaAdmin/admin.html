@@ -14,8 +14,9 @@
     
     <button class="menu-hamburguesa" id="btnHamburguesa">☰</button>
 
+
     <aside class="sidebar" id="sidebar">
-        <a href="#" class="logo-container">
+        <a href="/Frontend/index/lobby.html" class="logo">
             <img src="/Media/Logo.png" alt="DENTOLOGY">
         </a>
         <nav class="main-nav">
@@ -25,7 +26,7 @@
             <a href="/Frontend/index/PaginaAdmin/gestionUsuario.html">Gestión de Usuarios</a>
         </nav>
         <section class="sidebar-footer">
-            <a id="btnCerrarSesion" type="button">🚪 Cerrar Sesión</a>
+            <a href="/Frontend/index/inicio.html" id="btnCerrarSesion" type="button">🚪 Cerrar Sesión</a>
         </section>
     </aside>
 
@@ -40,14 +41,17 @@
         </header>
 
         <section id="gestion-servicios" class="admin-section">
-            <header class="header-section">
-                <h2>Catálogo de Servicios</h2>
-                <button class="btn-primario" id="btnNuevoServicio">+ Nuevo Servicio</button>
-            </header>
-            
-            <article id="crud-contenedor-servicios" class="crud-contenedor"></article>
-            
-        </section>
+    <header class="header-section">
+        <h2>Catálogo de Servicios</h2>
+        <button class="btn-primario" id="btnNuevoServicio">+ Nuevo Servicio</button>
+    </header>
+    
+    <article id="crud-contenedor-servicios" class="crud-contenedor"></article>
+
+    <button id="btnToggleServicios" class="btn-ver">
+        Ver mas +
+    </button>
+</section>
 
         <section id="gestion-citas" class="admin-section">
             <header class="header-section">
@@ -59,12 +63,29 @@
         </section>
     </main>
 
+    <dialog id="panelCRUD">
+    <h2>Gestión de Servicios</h2>
+    <form id="formServicio">
+        <input type="hidden" id="servicioId">
+        <label>Nombre</label> <input type="text" id="nombre" required>
+        <label>Precio</label> <input type="number" id="precio" required>
+        <label>Descripción</label> <textarea id="descripcion"></textarea>
+        <label>Imagen (URL)</label> <input type="text" id="imagen">
+        <input type="file" id="imagenInput" accept="image/*">
+        <button type="submit">Guardar</button>
+        <button type="button" class="btn-secundario" onclick="document.getElementById('panelCRUD').close()">
+    Cerrar
+</button>
+    </form>
+</dialog>
+
     <footer class="pie-pagina-admin">
         <p>©DENTOLOGY. Todos los derechos reservados.</p>
     </footer>
 
+    <script type="module" src="/frontend/js/admin.js"></script>
     <script src="/Frontend/js/tema.js"></script>
-    <script src="/Frontend/js/admin.js"></script>
+    
 </body>
 
 </html>

@@ -21,36 +21,31 @@
         <nav class="main-nav">
             <a href="/Frontend/index/lobby.html">Inicio</a>
             <a href="/Frontend/index/servicios.html">Tratamientos</a>
-            <a href="/Frontend/index/citas.html">Citas</a>
+            <a href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a>
             <a href="/Frontend/index/contacto.html">Contacto</a>
             <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
             <a id="theme-toggle" type="button">🌙</a>
             <a href="/Frontend/index/carrito/carritoo.html" id="carritoIcono">🛒</a>
         </nav>
     </header>
+<main>
 
-    <form id="formCita" class="formulario-estilo">
-        <h2>Agendar cita</h2>
+<form id="formCita" class="formulario-estilo">
+    <h2>Agendar cita</h2>
 
-        <p id="servicioSeleccionado">Servicio: </p>
+    <p id="servicioSeleccionado">Servicio: </p>
 
-        <input type="hidden" id="servicio">
+    <input type="hidden" id="servicio">
 
-        <label>Fecha:</label>
-        <input type="date" id="fecha" required>
-
-        <label>Hora:</label>
-        <input type="time" id="hora" required>
-
-        <button type="submit">Confirmar</button>
-    </form>
-
-    <section id="historial">
-        <h2> Historial de citas</h2>
-        <section id="listaCitas"></section>
-    </section>
-
-    <footer class="pie-pagina">
+    <label>Fecha:</label>
+    <input type="date" id="fecha" required>
+    <label>Hora:</label>
+    <input type="time" id="hora" required>
+    
+    <button type="submit">Agendar</button>
+    
+</form>
+<footer class="pie-pagina">
         <nav class="footer_navegacion">
             <p class="contenido_footer">Términos de Servicio</p>
             <p class="contenido_footer">Política de Privacidad</p>
@@ -60,8 +55,7 @@
         </aside>
     </footer>
 
-    <script type="module" src="../js/citas.js"></script>
+    <script type="module" src="/Frontend/js/citas.js"></script>
     <script src="/Frontend/js/tema.js"></script>
 </body>
-
 </html>

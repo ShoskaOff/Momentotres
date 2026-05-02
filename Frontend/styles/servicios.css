@@ -30,6 +30,7 @@ body {
   color: var(--color-texto);
 }
 
+/* HEADER */
 .site-header {
   position: fixed;
   top: 0;
@@ -45,90 +46,66 @@ body {
   align-items: center;
 }
 
+/* LOGO */
 .logo {
-    height: 80px; 
-    width: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: visible; 
+  height: 80px;
+  display: flex;
+  align-items: center;
 }
 
 .logo img {
-    height: 140%; 
-    width: auto;
-    object-fit: contain;
-    transform: scale(1.5); 
-    transition: transform 0.3s ease;
+  height: 140%;
+  transform: scale(1.5);
 }
 
+/* NAV */
 .main-nav {
   display: flex;
   gap: 15px;
 }
 
 .main-nav a {
-  color: var(--color-texto);
   text-decoration: none;
-  font-weight: 500;
+  color: var(--color-texto);
   padding: 8px 14px;
   border-radius: 10px;
-  transition: 0.3s ease;
 }
 
 .main-nav a:hover {
   background: var(--color-fondo);
 }
 
+/* 🔥 MAIN (AHORA OCUPA TODO EL ANCHO) */
 main {
   margin-top: 100px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
 }
 
+/* TITULO */
 .titulo-tratamientos {
   padding: 20px;
   text-align: center;
-} 
-
-
-#panelCRUD {
-    width: 80%;
-    border-radius: 15px;
-    padding: 20px;
 }
 
-#formServicio {
-    display: grid;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-#listaCRUD {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-#listaCRUD article {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    background: white;
-}
-
-#listaCRUD button {
-    margin: 5px;
-}
-
+/* 🔥 GRID CONTENEDOR PRINCIPAL */
 .tratamientos-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  width: 100%;
+  max-width: 100%;
   padding: 20px;
 }
 
+/* 🔥 GRID REAL DE TARJETAS */
+.contenedor-servicios {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 👈 IZQUIERDA / DERECHA */
+  gap: 20px;
+
+  width: 100%;
+}
+
+/* TARJETAS */
 article {
   background: var(--color-blanco);
   padding: 1.5rem;
@@ -136,16 +113,18 @@ article {
   border: 1px solid var(--color-borde);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 10px;
 }
 
+/* IMAGEN */
 article img {
   width: 100%;
-  height: auto;
+  height: 200px;
+  object-fit: cover;
   border-radius: 8px;
 }
 
+/* BOTONES */
 button {
   background: var(--color-boton-base);
   color: white;
@@ -155,6 +134,7 @@ button {
   cursor: pointer;
 }
 
+/* BOTÓN DETALLE */
 .btn-detalle {
   background: linear-gradient(
     135deg,
@@ -166,23 +146,16 @@ button {
   text-decoration: none;
 }
 
-.btn-detalle a {
-  color: inherit;
-  text-decoration: none;
-}
-
+/* MODAL */
 dialog[open] {
   margin: auto;
-  border: none;
   border-radius: 12px;
   padding: 20px;
   width: 90%;
   max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
 }
 
+/* FOOTER */
 .pie-pagina {
   background-color: var(--color-primario);
   display: flex;
@@ -196,7 +169,6 @@ dialog[open] {
   width: 100%;
   display: flex;
   justify-content: space-around;
-  align-items: center;
 }
 
 .contenido_footer {
@@ -204,59 +176,22 @@ dialog[open] {
   padding: 10px 20px;
 }
 
-.barra_inferior {
-  width: 100%;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.derechos_reservados {
-  font-family: var(--fuente-principal);
-}
-
-figure {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-@media (max-width: 992px) {
-  .site-header {
-    padding: 0 20px;
-  }
-}
-
+/* 📱 TABLET */
 @media (max-width: 768px) {
+  .contenedor-servicios {
+    grid-template-columns: 1fr; /* 👈 1 columna */
+  }
+
   .site-header {
-    position: sticky; 
     height: 80px;
   }
 
-  .logo {
-    margin: 0 10px;
-  }
-
-  .main-nav {
-    gap: 8px;
-  }
-
-  .main-nav a {
-    font-size: 0.9rem;
-    padding: 6px 10px;
-  }
-
   main {
-    margin-top: 0; 
-  }
-
-  .tratamientos-grid {
-    grid-template-columns: 1fr; 
+    margin-top: 80px;
   }
 }
 
+/* 📱 CELULAR */
 @media (max-width: 576px) {
   .site-header {
     flex-direction: column;
@@ -264,23 +199,8 @@ figure {
     padding: 10px;
   }
 
-  .logo {
-    margin: 0 0 10px 0;
-  }
-
   .main-nav {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 5px;
-  }
-
-  .main-nav a {
-    font-size: 0.8rem;
-    padding: 4px 8px;
-  }
-
-  .footer_navegacion {
-    flex-direction: column;
-    gap: 5px;
   }
 }

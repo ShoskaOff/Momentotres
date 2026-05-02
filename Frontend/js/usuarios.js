@@ -1,19 +1,101 @@
-import { supabase } from "../../Database/supabaseClient.js";
+import { supabase } from "/Frontend/js/supabase.js";
 
-export async function getUsuarios() {
-  return await supabase
-    .from("usuarios")
-    .select("*, roles(nombre)");
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("formLogin");
 
-export async function crearUsuario(usuario) {
-  return await supabase.from("usuarios").insert([usuario]);
-}
+  if (!form) return;
 
-export async function actualizarUsuario(id, datos) {
-  return await supabase.from("usuarios").update(datos).eq("id", id);
-}
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-export async function eliminarUsuario(id) {
-  return await supabase.from("usuarios").delete().eq("id", id);
-}
+    const correo = document.getElementById("correo").value.trim();
+    const clave = document.getElementById("clave").value.trim();
+
+    if (!correo || !clave) {
+      alert("Completa todos los campos");
+      return;
+    }
+
+    // 🔐 LOGIN
+    const { error: loginError } = await supabase.auth.signInWithPassword({
+      email: correo,
+      password: clave
+    });
+
+    if (loginError) {
+      console.error(loginError);
+      alert("Error al iniciar sesión");
+      return;
+    }
+
+    console.log("✅ Login exitoso");
+
+    // 🔥 OBTENER USUARIO AUTH
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+
+    if (userError || !userData.user) {
+      alert("No se pudo obtener el usuario");
+      return;
+    }
+
+    const userId = userData.user.id;
+
+    console.log("🔎 USER ID:", userId);
+
+    // 🔥 BUSCAR EN BD
+    let { data: usuario, error: usuarioError } = await supabase
+      .from("Usuarios")
+      .select("rol_id")
+      .eq("auth_uuid", userId)
+      .maybeSingle();
+
+    if (usuarioError) {
+      console.error("❌ Error BD:", usuarioError);
+      alert("Error consultando base de datos");
+      return;
+    }
+
+    // 🔥 SI NO EXISTE → CREAR AUTOMÁTICAMENTE
+    if (!usuario) {
+      console.warn("⚠ Usuario no encontrado en BD, creando...");
+
+      const { error: insertError } = await supabase
+        .from("Usuarios")
+        .insert([
+          {
+            auth_uuid: userId,
+            rol_id: 2
+          }
+        ]);
+
+      if (insertError) {
+        console.error("❌ Error creando usuario:", insertError);
+        alert("Error sincronizando usuario con base de datos");
+        return;
+      }
+
+      // 🔁 volver a consultar
+      const { data: nuevoUsuario, error: reloadError } = await supabase
+        .from("Usuarios")
+        .select("rol_id")
+        .eq("auth_uuid", userId)
+        .maybeSingle();
+
+      if (reloadError || !nuevoUsuario) {
+        alert("No se pudo validar usuario");
+        return;
+      }
+
+      usuario = nuevoUsuario;
+    }
+
+    console.log("✅ Usuario validado:", usuario);
+
+    // 🔥 REDIRECCIÓN POR ROL
+    if (usuario.rol_id === 1) {
+      window.location.href = "/Frontend/index/PaginaAdmin/admin.html";
+    } else {
+      window.location.href = "/Frontend/index/PaginaUsuario/usuario.html";
+    }
+  });
+});

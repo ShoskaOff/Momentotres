@@ -4,26 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro | Odontologia</title>
-    <link rel="stylesheet" href="/Frontend/styles/registro.css">
+        <link rel="stylesheet" href="/Frontend/styles/registro.css">
         <link rel="stylesheet" href="/Frontend/styles/tema.css">
-        <link rel="stylesheet" href="/Frontend/styles/responsive.css">
+        <link rel="stylesheet" href="/Frontend/styles/servicios.css">
         <link rel="icon" href="/Media/favicon.png" type="image/png">
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
+
 <body>
 
-<header class="encabezado">
-    <nav class="navegacion">
-        <ul>
-            <li>            <a href="/Frontend/index/lobby.html">Inicio</a></li>
-            <li>            <a href="/Frontend/index/servicios.html">Tratamientos</a></li>
-            <li>            <a href="/Frontend/index/citas.html">Citas</a></li>
-            <li>            <a href="/Frontend/index/contacto.html">Contacto</a></li>
-            <li>            <a href="/Frontend/index/inicio.html">Inicio Sesion</a></li>
-            <li><a id="theme-toggle" type="button">🌙</a></li>
-        </ul>
-    </nav>
-</header>
+    <header class="site-header">
+        <a href="/Frontend/index/lobby.html">
+            <figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure>
+        </a>
+        <nav class="main-nav">
+            <a href="/Frontend/index/lobby.html">Inicio</a>
+            <a href="/Frontend/index/servicios.html">Tratamientos</a>
+            <a href="/Frontend/index/citas.html">Citas</a>
+            <a href="/Frontend/index/contacto.html">Contacto</a>
+            <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
+            <a id="theme-toggle" type="button">🌙</a>
+            <a id="btnAdmin" type="button" href="/Frontend/index/PaginaAdmin/admin.html">
+            </a>
+        </nav>
+    </header>
 
 <main class="principal">
     <section class="seccion-registro">
@@ -31,43 +35,114 @@
 
             <header class="tarjeta-encabezado">
                 <h1>Crear cuenta</h1>
-                <p>Registrate para agendar tus citas</p>
+                <p>Regístrate para agendar tus citas</p>
             </header>
 
             <form id="formRegistro" class="formulario">
                 <fieldset>
-                    <legend>Informacion</legend>
+                    <legend>Información</legend>
 
                     <label>Nombre completo</label>
-                    <input type="text" required>
+                    <input type="text" id="nombre" required>
 
                     <label>Correo</label>
-                    <input type="email" required>
+                    <input type="email" id="correo" required>
 
                     <label>Contraseña</label>
-                    <input type="password" required>
+                    <input type="password" id="clave" required>
 
                     <label>Confirmar contraseña</label>
-                    <input type="password" required>
+                    <input type="password" id="confirmarClave" required>
                 </fieldset>
 
                 <button type="submit">Registrarse</button>
             </form>
 
             <footer class="tarjeta-pie">
-                <p>Ya tienes cuenta? <a href="inicio.html">Inicia sesion</a></p>
+                <p>¿Ya tienes cuenta? <a href="/Frontend/index/inicio.html">Inicia sesión</a></p>
             </footer>
 
         </article>
     </section>
 </main>
 
-<script>
-document.getElementById("formRegistro").addEventListener("submit", function(e){
-    e.preventDefault();
-    alert("Registro completado");
+<script type="module">
+import { supabase } from "/Frontend/js/supabase.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("formRegistro");
+
+    if (!form) return;
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const correo = document.getElementById("correo").value.trim();
+        const clave = document.getElementById("clave").value.trim();
+
+        if (!correo || !clave) {
+            alert("Completa todos los campos");
+            return;
+        }
+
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+            email: correo,
+            password: clave
+        });
+
+        if (authError) {
+            if (authError.message.includes("User already registered")) {
+                alert("Este correo ya está registrado. Inicia sesión.");
+                window.location.href = "/Frontend/index/inicio.html";
+                return;
+            }
+
+            console.error(authError);
+            alert(authError.message || "Error al registrar usuario");
+            return;
+        }
+
+        if (!authData.user) {
+            alert("No se pudo crear el usuario");
+            return;
+        }
+
+        const authUUID = authData.user.id;
+
+        const { data: usuarioExiste, error: buscarError } = await supabase
+            .from("Usuarios")
+            .select("id")
+            .eq("auth_uuid", authUUID)
+            .maybeSingle();
+
+        if (buscarError) {
+            console.error(buscarError);
+        }
+
+        if (!usuarioExiste) {
+            const { error: insertError } = await supabase
+                .from("Usuarios")
+                .insert([
+                    {
+                        auth_uuid: authUUID,
+                        rol_id: 2
+                    }
+                ]);
+
+            if (insertError) {
+                console.error(insertError);
+                alert(insertError.message || "Error al guardar usuario en Usuarios");
+                return;
+            }
+        }
+
+        alert("Registro exitoso");
+        window.location.href = "/Frontend/index/inicio.html";
+    });
 });
 </script>
+
+
  <script src="/Frontend/js/tema.js"></script>
 </body>
 </html>
