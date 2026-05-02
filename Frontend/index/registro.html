@@ -73,17 +73,25 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async function (e) {
         e.preventDefault();
 
+        // 1. AHORA CAPTURAMOS EL NOMBRE TAMBIÉN (Asegúrate de que el id en tu HTML sea "nombre")
+        const nombre = document.getElementById("nombre").value.trim();
         const correo = document.getElementById("correo").value.trim();
         const clave = document.getElementById("clave").value.trim();
 
-        if (!correo || !clave) {
+        if (!nombre || !correo || !clave) {
             alert("Completa todos los campos");
             return;
         }
 
+        // 2. ENVIAMOS EL NOMBRE A SUPABASE EN LOS METADATOS
         const { data: authData, error: authError } = await supabase.auth.signUp({
             email: correo,
-            password: clave
+            password: clave,
+            options: {
+                data: {
+                    full_name: nombre // ¡Aquí viaja "Juan Rodríguez" hacia la base de datos!
+                }
+            }
         });
 
         if (authError) {
