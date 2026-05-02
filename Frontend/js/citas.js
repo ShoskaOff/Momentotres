@@ -78,19 +78,27 @@ async function mostrarHistorial() {
     lista.innerHTML = "<p style='color: white; text-align: center;'>Cargando historial de citas...</p>";
 
     const { data, error } = await supabase
-        .from("Citas")
-        .select(`
-            *,
-            paciente:Usuarios (nombre, correo),
-            servicio:servicios (nombre, imagen_url)
-        `)
-        .order('fecha_hora', { ascending: true });
-
-    if (error) {
-        console.error("Error en Supabase:", error);
-        lista.innerHTML = `<p style='color: #ff4444;'>Error al cargar el historial.</p>`;
+  .from("Citas")
+  .select(`
+    *,
+    paciente:Usuarios!Citas_usuario_id_fkey (
+      nombre,
+      correo
+    ),
+    servicio:servicios (
+      nombre,
+      imagen_url
+    )
+  `)
+  .order('fecha_hora', { ascending: true });
+   if (error) {
+    console.error("Error en Supabase:", error);
+    lista.innerHTML = `<p style='color: #ff4444;'>Error al cargar el historial.</p>`;
         return;
-    }
+}
+        
+    
+    
 
     pintarCitas(data, lista);
 }
@@ -124,19 +132,19 @@ function pintarCitas(data, lista) {
                  style="width: 110px; height: 110px; object-fit: cover; border-radius: 10px;"
                  onerror="this.src='../../../Media/Logo.png';">
             
-            <div style="flex-grow: 1;">
+            <section style="flex-grow: 1;">
                 <h3 style="margin: 0 0 10px 0; color: #2196F3;">${nombreServicio}</h3>
                 <p style="margin: 3px 0;"><strong>👤 Paciente:</strong> ${nombrePaciente}</p>
                 <p style="margin: 3px 0;"><strong>📅 Fecha:</strong> ${new Date(cita.fecha_hora).toLocaleDateString()}</p>
                 <p style="margin: 3px 0;"><strong>⏰ Hora:</strong> ${new Date(cita.fecha_hora).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
-            </div>
+            </section>
 
-            <div>
+            <section>
                 <button onclick="cancelarCita(${cita.id})" 
                         style="background: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;">
                     Eliminar
                 </button>
-            </div>
+            </section>
         `;
         lista.appendChild(articulo);
     });
