@@ -67,101 +67,12 @@
         </aside>
     </footer>
 
-    
-<script type="module">
-
-import { supabase } from "../../Database/supabaseClient.js";
-document.getElementById("formLogin").addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const correo = document.getElementById("correo").value;
-    const clave = document.getElementById("clave").value;
-    
-    console.log("EMAIL:", correo);
-console.log("PASSWORD:", clave);
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email: correo,
-        password: clave
-    });
-
-    if (error) {
-        alert("Error al iniciar sesión");
-        console.error(error);
-        return;
-    }
-
-    alert("Inicio de sesión correcto");
-
-    // 🔥 ahora sí existe sesión
-    iniciarSistema();
-});
-
-async function obtenerRol() {
-    const { data, error: errorAuth } = await supabase.auth.getUser();
-
-    console.log("AUTH:", data, errorAuth);
-
-    if (!data.user) {
-        console.error("No hay usuario autenticado");
-        return null;
-    }
-
-    const userId = data.user.id;
-    console.log("USER ID:", userId);
-
-    // 🔹 Buscar en Usuarios
-    const { data: usuario, error: errorUsuario } = await supabase
-        .from("Usuarios")
-        .select("*")
-        .eq("auth_uuid", userId)
-        .maybeSingle();
-
-    console.log("USUARIO BD:", usuario, errorUsuario);
-
-    if (!usuario) {
-        console.error("❌ Usuario NO existe en tabla Usuarios");
-        return null;
-    }
-
-    // 🔹 Buscar en Roles
-    const { data: rolData, error: errorRol } = await supabase
-        .from("Roles")
-        .select("*")
-        .eq("id", usuario.rol_id)
-        .maybeSingle();
-
-    console.log("ROL BD:", rolData, errorRol);
-
-    if (!rolData) {
-        console.error("❌ Rol NO existe en tabla Roles");
-        return null;
-    }
-
-    return rolData.nombre;
-}
-async function iniciarSistema() {
-
-    const rol = await obtenerRol(); 
-
-    console.log("ROL REAL:", rol);
-
-    if (!rol) {
-        alert("No se pudo obtener el rol");
-        return;
-    }
-
-    if (rol.toLowerCase() === "admin") {
-        alert("Bienvenido Administrador");
-        window.location.href = "/Frontend/index/servicios.html";
-    } else {
-        alert("Bienvenido Usuario");
-        window.location.href = "/Frontend/index/citas.html";
-    }
-}
-
-</script>
-    
+    <script>
+        document.getElementById("formLogin").addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Inicio de sesion correcto");
+        });
+    </script>
     <script src="/Frontend/js/tema.js"></script>
 
 </body>
