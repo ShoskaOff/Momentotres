@@ -193,8 +193,8 @@ body {
     padding: 8px 14px;
     border: none;
     border-radius: 8px;
-    color: white;
-    font-size: 14px;
+  background-color: #0077cc;;
+    color: rgb(0, 0, 0);
     cursor: pointer;
     transition: 0.3s ease;
 }
@@ -208,8 +208,8 @@ body {
     padding: 8px 14px;
     border: none;
     border-radius: 8px;
-    color: white;
-    font-size: 14px;
+    color: rgb(0, 0, 0);
+    background-color: #0077cc;
     cursor: pointer;
     transition: 0.3s ease;
 }
