@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     <section class="acciones">
                         <button class="btn-editar" data-id="${s.id}">✏️ Editar</button>
-                        <button class="btn-borrar" data-id="${s.id}">🗑️ Borrar</button>
+                        <button class="btn-borrar" data-id="${s.id}"style="color:darkred;">🗑️ Borrar</button>
                     </section>
                 </section>
             `}).join('');
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </section>
                     <section class="acciones">
                         <button class="btn-editar" onclick="reprogramarCita(${c.id}, '${c.fecha_hora}')">✏️ Reprogramar</button>
-                        <button class="btn-borrar" onclick="eliminarCitaAdmin(${c.id})" style="color:red;">🗑️ Cancelar</button>
+                        <button class="btn-borrar" onclick="eliminarCitaAdmin(${c.id})" style="color:darkred;">🗑️ Cancelar</button>
                     </section>
                 </section>
             `).join('');
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 descripcion: document.getElementById("descripcion").value
             };
             
-            // Solo actualizamos la imagen si se subió algo nuevo
+            
             if (nombreArchivoParaBD) datos.imagen_url = nombreArchivoParaBD;
 
             const res = id 

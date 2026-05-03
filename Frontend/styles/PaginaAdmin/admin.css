@@ -215,7 +215,7 @@ body {
 }
 
 .btn-borrar:hover {
-    background: #cc0000;
+    background: #be4d4d;
     transform: scale(1.05);
 }
 
@@ -364,6 +364,7 @@ body {
         gap: 15px;
     }
 }
+
 #crud-contenedor-servicios {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
