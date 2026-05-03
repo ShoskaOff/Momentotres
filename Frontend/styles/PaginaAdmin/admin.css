@@ -181,14 +181,56 @@ body {
     opacity: 0.8;
 }
 
-.crud-contenedor {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-    width: 100%;
-    text-align: center;
+.acciones {
+    display: flex;
+    justify-content: center; 
+    gap: 10px; 
+    margin-top: 10px;
 }
 
+
+.btn-editar {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-editar:hover {
+    background: #2baee6;
+    transform: scale(1.05);
+}
+
+.btn-borrar {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-borrar:hover {
+    background: #cc0000;
+    transform: scale(1.05);
+}
+
+.crud-contenedor {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    padding: 20px;
+    justify-content: center;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+ 
 
 .tarjeta-servicio {
     background: white;
@@ -198,8 +240,8 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    word-wrap: break-word;
+    justify-content: space-between; 
+   
 }
 
 .menu-hamburguesa {
@@ -269,6 +311,8 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(3px);
 }
+
+
 
 @media (max-width: 576px) {
     .admin-filtros {

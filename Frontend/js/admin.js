@@ -53,10 +53,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <h3>${s.nombre}</h3>
                     <p>${s.descripcion || 'Consulta con nuestros especialistas.'}</p>
                     <span class="precio">$${s.precio ? s.precio.toLocaleString() : '0'}</span>
-                    <div class="acciones">
+
+                    <section class="acciones">
                         <button class="btn-editar" data-id="${s.id}">✏️ Editar</button>
-                        <button class="btn-borrar" data-id="${s.id}" style="color:red;">🗑️ Borrar</button>
-                    </div>
+                        <button class="btn-borrar" data-id="${s.id}">🗑️ Borrar</button>
+                    </section>
                 </section>
             `}).join('');
 
@@ -90,16 +91,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             contenedorCitas.innerHTML = citas.map(c => `
                 <section class="tarjeta-servicio"> 
-                    <div class="info-cita">
+                    <section class="info-cita">
                         <h3>Paciente: ${c.Usuarios?.nombre || 'Sin nombre'}</h3>
                         <p><strong>Servicio:</strong> ${c.servicios?.nombre || 'No encontrado'}</p>
                         <p><strong>Fecha:</strong> ${new Date(c.fecha_hora).toLocaleString()}</p>
                         <p><small>${c.Usuarios?.correo || ''}</small></p>
-                    </div>
-                    <div class="acciones">
+                    </section>
+                    <section class="acciones">
                         <button class="btn-editar" onclick="reprogramarCita(${c.id}, '${c.fecha_hora}')">✏️ Reprogramar</button>
                         <button class="btn-borrar" onclick="eliminarCitaAdmin(${c.id})" style="color:red;">🗑️ Cancelar</button>
-                    </div>
+                    </section>
                 </section>
             `).join('');
         } catch (error) {
