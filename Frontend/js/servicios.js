@@ -85,6 +85,7 @@ function generarHTMLTarjetas(servicios, esLobby) {
                             <p style="margin: 5px 0; color: #666; font-size: 0.9rem;">
                                 ${s.descripcion ? s.descripcion.substring(0, 80) + '...' : 'Consulta con nuestros especialistas.'}
                             </p>
+                            <p style="margin: 5px 0; font-size: 1.1rem; font-weight: bold;">$${s.precio ? s.precio.toLocaleString() : '0'}</p>
                         </div>
                     </a>
                 </article>
