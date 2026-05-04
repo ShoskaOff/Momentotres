@@ -5,27 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro | Odontologia</title>
 
+    <!-- 🔥 ORDEN CORRECTO DE CSS -->
     <link rel="stylesheet" href="/Frontend/styles/registro.css">
-    <link rel="stylesheet" href="/Frontend/styles/tema.css">
+    <link rel="stylesheet" href="/Frontend/styles/servicios.css">
+    <link rel="stylesheet" href="/Frontend/styles/tema.css"> <!-- SIEMPRE EL ÚLTIMO -->
+
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
 
 <body>
 
-<header class="encabezado">
-    <nav class="navegacion">
-        <ul>
-            <li><a href="/Frontend/index/lobby.html">Inicio</a></li>
-            <li><a href="/Frontend/index/servicios.html">Tratamientos</a></li>
-            <li><a href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a></li>
-            <li><a href="/Frontend/index/contacto.html">Contacto</a></li>
-            <li><a href="/Frontend/index/inicio.html">Inicio Sesión</a></li>
-            <li><a id="theme-toggle">🌙</a></li>
-        </ul>
+<header class="site-header">
+    <a href="/Frontend/index/lobby.html">
+        <figure class="logo">
+            <img src="/Media/Logo.png" alt="Dentology Logo">
+        </figure>
+    </a>
+
+    <nav class="main-nav">
+        <a href="/Frontend/index/lobby.html">Inicio</a>
+        <a href="/Frontend/index/servicios.html">Tratamientos</a>
+        <a href="/Frontend/index/citas.html">Citas</a>
+        <a href="/Frontend/index/contacto.html">Contacto</a>
+        <a href="/Frontend/index/inicio.html">Inicio Sesión</a>
+        <a id="theme-toggle">🌙</a>
+        <a id="btnAdmin" href="/Frontend/index/PaginaAdmin/admin.html"></a>
     </nav>
 </header>
 
 <main class="principal">
+
     <section class="seccion-registro">
         <article class="tarjeta">
 
@@ -35,37 +44,48 @@
             </header>
 
             <form id="formRegistro" class="formulario">
+
                 <fieldset>
                     <legend>Información</legend>
 
-                    <label>Nombre completo</label>
+                    <label for="nombre">Nombre completo</label>
                     <input type="text" id="nombre" required>
 
-                    <label>Correo</label>
+                    <label for="correo">Correo</label>
                     <input type="email" id="correo" required>
 
-                    <label>Contraseña</label>
+                    <label for="clave">Contraseña</label>
                     <input type="password" id="clave" required>
 
-                    <label>Confirmar contraseña</label>
+                    <label for="confirmarClave">Confirmar contraseña</label>
                     <input type="password" id="confirmarClave" required>
                 </fieldset>
 
-                <button type="submit">Registrarse</button>
+                <!-- 🔥 BOTÓN CORREGIDO -->
+                <button type="submit" class="btn-global">
+                    Registrarse
+                </button>
+
             </form>
 
             <footer class="tarjeta-pie">
-                <p>¿Ya tienes cuenta? <a href="/Frontend/index/inicio.html">Inicia sesión</a></p>
+                <p>
+                    ¿Ya tienes cuenta?
+                    <a href="/Frontend/index/inicio.html">Inicia sesión</a>
+                </p>
             </footer>
 
         </article>
     </section>
+
 </main>
 
+<!-- JS REGISTRO -->
 <script type="module">
 import { supabase } from "/Frontend/js/supabase.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+
     const form = document.getElementById("formRegistro");
 
     if (!form) return;
@@ -73,74 +93,71 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const nombre = document.getElementById("nombre").value.trim();
         const correo = document.getElementById("correo").value.trim();
         const clave = document.getElementById("clave").value.trim();
-        const confirmarClave = document.getElementById("confirmarClave").value.trim();
+        const confirmar = document.getElementById("confirmarClave").value.trim();
 
-        // 🔍 VALIDACIONES
-        if (!nombre || !correo || !clave || !confirmarClave) {
+        if (!correo || !clave || !confirmar) {
             alert("Completa todos los campos");
             return;
         }
 
-        if (clave !== confirmarClave) {
+        if (clave !== confirmar) {
             alert("Las contraseñas no coinciden");
             return;
         }
 
-        try {
-            // 🔐 1. CREAR USUARIO EN AUTH
-            const { data: authData, error: authError } = await supabase.auth.signUp({
-                email: correo,
-                password: clave
-            });
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+            email: correo,
+            password: clave
+        });
 
-            if (authError) {
-                console.error("❌ ERROR AUTH:", authError);
-                alert(authError.message);
+        if (authError) {
+            if (authError.message.includes("User already registered")) {
+                alert("Este correo ya está registrado. Inicia sesión.");
+                window.location.href = "/Frontend/index/inicio.html";
                 return;
             }
 
-            if (!authData.user) {
-                alert("No se pudo crear el usuario en Auth");
-                return;
-            }
+            console.error(authError);
+            alert(authError.message || "Error al registrar usuario");
+            return;
+        }
 
-            const authUUID = authData.user.id;
+        if (!authData.user) {
+            alert("No se pudo crear el usuario");
+            return;
+        }
 
-            console.log("🧠 AUTH UUID:", authUUID);
+        const authUUID = authData.user.id;
 
-            // 📦 2. INSERT EN TABLA USUARIOS (AQUÍ ESTABA EL PROBLEMA)
+        const { data: usuarioExiste } = await supabase
+            .from("Usuarios")
+            .select("id")
+            .eq("auth_uuid", authUUID)
+            .maybeSingle();
+
+        if (!usuarioExiste) {
             const { error: insertError } = await supabase
                 .from("Usuarios")
                 .insert([
                     {
                         auth_uuid: authUUID,
-                        nombre: nombre,
-                        correo: correo,
                         rol_id: 2
                     }
                 ]);
 
-            // 🔥 MOSTRAR ERROR REAL (IMPORTANTE)
-            /*if (insertError) {
-                console.error("❌ ERROR INSERT BD:", insertError);
-                alert("Error BD: " + insertError.message);
+            if (insertError) {
+                console.error(insertError);
+                alert("Error al guardar usuario");
                 return;
-            }*/
-
-            console.log("✅ Usuario guardado en BD");
-
-            alert("Registro exitoso");
-
-            window.location.href = "/Frontend/index/inicio.html";
-
-        } catch (err) {
-            console.error("❌ ERROR GENERAL:", err);
-            alert("Error inesperado en el registro");
+            }
         }
+
+        alert("Registro exitoso");
+        window.location.href = "/Frontend/index/inicio.html";
     });
+
 });
 </script>
 
