@@ -124,3 +124,84 @@ body {
 main{
     flex: 1;
 }
+
+
+/* --- CONTENEDOR Y TARJETAS DE SERVICIOS --- */
+
+.contenedor-servicios {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.servicio-card {
+    /* Usamos tu color de fondo lavanda muy clarito para que resalte */
+    background-color: #ffffff; 
+    border: 1px solid var(--color-primario);
+    border-radius: 15px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.servicio-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(199, 197, 241, 0.4); /* Sombra usando tu color primario */
+}
+
+/* El enlace que envuelve el contenido para que sea horizontal */
+.servicio-enlace {
+    text-decoration: none;
+    color: inherit;
+    display: flex; /* Esto arregla el desorden horizontal */
+    align-items: center;
+    gap: 20px;
+}
+
+.servicio-img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid var(--color-primario);
+}
+
+.servicio-info {
+    flex: 1;
+}
+
+.servicio-titulo {
+    margin: 0;
+    font-family: var(--titulos); /* Usamos tu variable de fuentes */
+    color: var(--color-texto);
+    font-size: 1.4rem;
+}
+
+.servicio-descripcion {
+    margin: 8px 0;
+    font-family: var(--fuente-principal);
+    color: #444;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.servicio-precio {
+    margin: 0;
+    font-weight: bold;
+    color: var(--detalles); /* Usamos tu color turquesa */
+    font-size: 1.2rem;
+}
+
+/* --- ESTILO PARA EL CRUD (ADMIN) --- */
+.crud-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border: 1px solid var(--color-primario);
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
