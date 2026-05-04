@@ -1,68 +1,40 @@
 import { supabase } from '../../Database/supabaseClient.js';
 
-// 1. URL BASE PARA IMÁGENES (ID: jdofaujfqsyiwauwttcd)
 const URL_BASE_STORAGE = "https://jdofaujfqsyiwauwttcd.supabase.co/storage/v1/object/public/Imagenes/Carpeta%20Servicios/";
 
-// --- 1. CARGA DE SERVICIOS (Vista Pública: Lobby y Tratamientos) ---
 async function cargarServicios() {
-    // Buscamos ambos posibles contenedores
     const contenedorGeneral = document.querySelector('.contenedor-servicios:not(#servicios-destacados)');
     const contenedorLobby = document.getElementById('servicios-destacados');
     
     if (!contenedorGeneral && !contenedorLobby) return;
 
-    // Traemos los datos de la base de datos
     const { data, error } = await supabase.from('servicios').select('*').order('nombre', { ascending: true });
     
     if (error) { 
-        console.error("Error:", error.message); 
+        console.error(error.message); 
         return; 
     }
 
     if (data) {
-        // Si existe el contenedor del Lobby, le enviamos solo los primeros 3
         if (contenedorLobby) {
             const destacados = data.slice(0, 3);
             contenedorLobby.innerHTML = generarHTMLTarjetas(destacados, true);
         }
 
-        // Si existe el contenedor de la página de servicios, le enviamos todos
         if (contenedorGeneral) {
             contenedorGeneral.innerHTML = generarHTMLTarjetas(data, false);
         }
     }
 }
 
-// Función auxiliar para generar el HTML (Evita repetir código)
 function generarHTMLTarjetas(servicios, esLobby) {
     return servicios.map(s => {
-        // Lógica para rutas de archivos HTML locales
-        const nombreDB = s.nombre
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "");
-
-        let nombreArchivo = "";
-        if (nombreDB.includes("diseno") || nombreDB.includes("sonrisa")) {
-            nombreArchivo = "diseñoSonrisa";
-        } else if (nombreDB.includes("frenectomia") || nombreDB.includes("frenilectomia")) {
-            nombreArchivo = "frenilectomia";
-        } else if (nombreDB.includes("cordales")) {
-            nombreArchivo = "cordales";
-        } else {
-            nombreArchivo = nombreDB.split(' ')[0];
-        }
-
-        // Ajuste de ruta según la ubicación del HTML
-        const rutaArchivo = esLobby 
-            ? `/Frontend/index/tratamientos/${nombreArchivo}.html` 
-            : `./tratamientos/${nombreArchivo}.html`;
+        const rutaArchivo = `/Frontend/index/detalle.html?id=${s.id}`;
 
         const imgFinal = s.imagen_url 
             ? URL_BASE_STORAGE + s.imagen_url 
             : "../../../Media/Logo.png";
 
-        // Estilo específico para el Lobby o para la lista general
         if (esLobby) {
             return `
                 <article>
@@ -94,7 +66,6 @@ function generarHTMLTarjetas(servicios, esLobby) {
     }).join('');
 }
 
-// --- 2. CARGA DEL CRUD (Panel Administrativo) ---
 async function cargarCRUD() {
     const lista = document.getElementById("listaCRUD");
     if (!lista) return;
@@ -117,7 +88,6 @@ async function cargarCRUD() {
     }
 }
 
-// --- 3. GUARDAR / ACTUALIZAR ---
 async function guardarServicio(e) {
     e.preventDefault();
     const id = document.getElementById("servicioId").value;
@@ -148,7 +118,6 @@ async function guardarServicio(e) {
     window.cerrarPanel();
 }
 
-// --- 4. INICIALIZACIÓN ---
 document.addEventListener("DOMContentLoaded", async () => {
     await cargarServicios();
     
@@ -167,7 +136,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// FUNCIONES GLOBALES
 window.editarServicio = (id, nombre, precio, descripcion, imagen_url) => {
     document.getElementById("servicioId").value = id;
     document.getElementById("nombre").value = nombre;
