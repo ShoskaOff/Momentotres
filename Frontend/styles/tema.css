@@ -67,7 +67,7 @@ body.dark-mode figcaption {
 body.dark-mode .site-header,
 body.dark-mode .top-menu,
 body.dark-mode header {
-    background: var(--color-primario);
+    background: var(--color-primario) !important;
     border-bottom: 1px solid white;
 }
 
@@ -77,60 +77,59 @@ body.dark-mode .top-menu a {
 }
 
 body.dark-mode .main-nav a:hover,
-body.dark-mode .top-menu a:hover {
+body.dark-mode .main-nav a.active {
     background: #243447;
 }
 
 /* ======================= */
-/* TARJETAS */
+/* TARJETAS Y CITAS PROGRAMADAS */
 /* ======================= */
 
 body.dark-mode article,
 body.dark-mode .cita,
 body.dark-mode .card,
 body.dark-mode section,
-body.dark-mode main ul li {
-    background: #1e293b;
+body.dark-mode .servicio-card,
+body.dark-mode .cita-programada {
+    background: #1e293b !important;
     color: white !important;
-    border: 1px solid #334155;
-}
-
-/* --- Mejoras específicas para las tarjetas de servicios --- */
-
-body.dark-mode .servicio-card {
-    background-color: var(--color-blanco) !important;
     border: 1px solid var(--color-borde) !important;
 }
 
-body.dark-mode .servicio-titulo {
-    color: white !important;
+/* Estilo específico para las citas en el historial */
+body.dark-mode .cita-programada {
+    border-left: 5px solid var(--color-detalles) !important;
 }
 
-body.dark-mode .servicio-descripcion {
-    color: #cbd5e1 !important; /* Gris claro para mejor lectura */
-}
-
-body.dark-mode .servicio-precio {
-    color: var(--color-detalles) !important; /* Usa tu celeste neón */
-}
+/* Mejoras para servicios */
+body.dark-mode .servicio-titulo { color: white !important; }
+body.dark-mode .servicio-descripcion { color: #cbd5e1 !important; }
+body.dark-mode .servicio-precio { color: var(--color-detalles) !important; }
 
 /* ======================= */
-/* FORMULARIOS */
+/* FORMULARIOS (CITAS Y SERVICIOS) */
 /* ======================= */
 
 body.dark-mode form,
+body.dark-mode .formulario-estilo,
 body.dark-mode #formCita,
 body.dark-mode #formServicio {
-    background: #1e293b;
-    color: white;
+    background: #1e293b !important;
+    color: white !important;
+    border: 1px solid var(--color-borde);
+}
+
+/* Resalte para el texto informativo de citas */
+body.dark-mode #servicioSeleccionado {
+    color: var(--color-detalles) !important;
 }
 
 body.dark-mode input,
 body.dark-mode select,
 body.dark-mode textarea {
-    background: #0f1720;
+    background: #0f1720 !important;
     color: white !important;
-    border: 1px solid #334155;
+    border: 1px solid var(--color-borde) !important;
 }
 
 body.dark-mode input::placeholder,
@@ -144,14 +143,18 @@ body.dark-mode textarea::placeholder {
 
 body.dark-mode button,
 body.dark-mode .btn-detalle,
+body.dark-mode .btn-agendar,
 body.dark-mode #agendarBtn {
-    background: linear-gradient(45deg, #2563eb, #0ea5e9);
+    background: linear-gradient(45deg, #2563eb, #0ea5e9) !important;
     color: white !important;
+    border: none;
 }
 
 body.dark-mode .btn-detalle:hover,
+body.dark-mode .btn-agendar:hover,
 body.dark-mode #agendarBtn:hover {
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
 }
 
 /* ======================= */
@@ -161,11 +164,11 @@ body.dark-mode #agendarBtn:hover {
 body.dark-mode .pie-pagina,
 body.dark-mode .footer_navegacion,
 body.dark-mode footer {
-    background: #182330;
+    background: #182330 !important;
 }
 
 body.dark-mode .barra_inferior {
-    background: black;
+    background: black !important;
 }
 
 body.dark-mode .contenido_footer,
@@ -174,20 +177,15 @@ body.dark-mode .derechos_reservados {
 }
 
 /* ======================= */
-/* MODAL */
+/* MODALES Y PANELES */
 /* ======================= */
 
 body.dark-mode dialog,
 body.dark-mode #panelCRUD,
 body.dark-mode #modalDetalle {
-    background: #1e293b;
+    background: #1e293b !important;
     color: white !important;
     border: 1px solid var(--color-borde);
-}
-
-body.dark-mode #modalDetalle #titulo,
-body.dark-mode #modalDetalle #descripcion {
-    color: white !important;
 }
 
 body.dark-mode #modalDetalle #precio {
