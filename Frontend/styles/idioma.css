@@ -1,0 +1,18 @@
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.main-nav button {
+  font-size: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.main-nav button:hover {
+  transform: scale(1.2);
+}
