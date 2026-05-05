@@ -4,47 +4,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coronas Dentales</title>
+  <title data-i18n="coronas_titulo_pestana">Coronas Dentales</title>
   <link rel="stylesheet" href="/Frontend/styles/servicios.css">
   <link rel="stylesheet" href="/Frontend/styles/tratamientos.css">
   <link rel="stylesheet" href="/Frontend/styles/tema.css">
   <link rel="stylesheet" href="/Frontend/styles/responsive.css">
-</head>
+  <link rel="stylesheet" href="../styles/idioma.css"> </head>
 
 <body>
 
   <header class="site-header">
     <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure></a>
     <nav class="main-nav">
-        <a href="/Frontend/index/lobby.html">Inicio</a>
-        <a href="/Frontend/index/servicios.html">Tratamientos</a>
-        <a href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a>
-        <a href="/Frontend/index/contacto.html">Contacto</a>
-        <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
+        <a data-i18n="inicio" href="/Frontend/index/lobby.html">Inicio</a>
+        <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
+        <a data-i18n="citas" href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a>
+        <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
+        <a data-i18n="login" href="/Frontend/index/inicio.html">Inicio Sesion</a>
         <a id="theme-toggle" type="button">🌙</a>
+
+        <button id="btn-es" type="button" aria-label="Español">🇪🇸</button>
+        <button id="btn-en" type="button" aria-label="English">🇺🇸</button>
     </nav>
   </header>
 
   <main>
-    <h1>Coronas Dentales</h1>
+    <h1 data-i18n="coronas">Coronas Dentales</h1>
     <section class="contenedor-volver">
-      <a href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
+      <a data-i18n="volver" href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
     </section>
     
     <img src="/Media/img/coronas.jpeg" alt="Coronas">
-    <p>Protección para dientes dañados.</p>
+    <p data-i18n="proteccion_dientes">Protección para dientes dañados.</p>
 
     <ul>
-      <li>Durabilidad</li>
-      <li>Funcionalidad</li>
+      <li data-i18n="durabilidad">Durabilidad</li>
+      <li data-i18n="funcionalidad">Funcionalidad</li>
     </ul>
 
-    <p class="precio">Precio variable</p>
+    <p class="precio" data-i18n="precio_variable">Precio variable</p>
     
-    <button id="agendarBtn" data-servicio="Coronas Dentales">Agendar cita</button>
+    <button id="agendarBtn" data-servicio="Coronas Dentales" data-i18n="agendar">Agendar cita</button>
 
     <div class="producto" data-id="coronas" data-nombre="Coronas Dentales" data-precio="20000">
-        <button class="btn-agregar">Agregar al carrito</button>
+        <button class="btn-agregar" data-i18n="agregar_carrito">Agregar al carrito</button>
     </div>
 
   </main>
@@ -59,6 +62,5 @@
   </script>
 
   <script src="/Frontend/index/carrito/carrito.js"></script>
-
-</body>
+  <script src="../js/idioma.js"></script> </body>
 </html>

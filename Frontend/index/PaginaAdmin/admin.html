@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administrativo - DENTOLOGY</title>
+    <title data-i18n="admin_panel_titulo_pestana">Panel Administrativo - DENTOLOGY</title>
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="stylesheet" href="/Frontend/styles/PaginaAdmin/admin.css">
+    <link rel="stylesheet" href="/Frontend/styles/idioma.css"> 
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
 
@@ -14,78 +15,92 @@
     
     <button class="menu-hamburguesa" id="btnHamburguesa">☰</button>
 
-
     <aside class="sidebar" id="sidebar">
         <a href="/Frontend/index/lobby.html" class="logo">
             <img src="/Media/Logo.png" alt="DENTOLOGY">
         </a>
         <nav class="main-nav">
-            <a href="/Frontend/index/lobby.html">Pagina</a>
-            <a href="/Frontend/index/PaginaAdmin/admin.html">Panel de Administración</a>
-            <a href="/Frontend/index/PaginaAdmin/gestionCitas.html">Gestión de Citas</a>
-            <a href="/Frontend/index/PaginaAdmin/gestionUsuario.html">Gestión de Usuarios</a>
+            <a data-i18n="pagina" href="/Frontend/index/lobby.html">Pagina</a>
+            <a data-i18n="panel_admin" href="/Frontend/index/PaginaAdmin/admin.html" class="activo">Panel de Administración</a>
+            <a data-i18n="gestion_citas" href="/Frontend/index/PaginaAdmin/gestionCitas.html">Gestión de Citas</a>
+            <a data-i18n="gestion_usuarios" href="/Frontend/index/PaginaAdmin/gestionUsuario.html">Gestión de Usuarios</a>
         </nav>
         <section class="sidebar-footer">
-            <a href="/Frontend/index/inicio.html" id="btnCerrarSesion" type="button">🚪 Cerrar Sesión</a>
+            <a href="/Frontend/index/inicio.html" id="btnCerrarSesion">
+                <span data-i18n="cerrar_sesion">🚪 Cerrar Sesión</span>
+            </a>
         </section>
     </aside>
 
     <header class="admin-topbar">
         <output id="info-admin-logueado"></output>
-        <button id="theme-toggle" class="btn-tema" type="button" aria-label="Cambiar tema">🌙</button>
+        
+        <div class="topbar-controls" style="display: flex; align-items: center; gap: 15px;">
+
+                <button id="btn-es" type="button" class="btn-lang">🇪🇸</button>
+                <button id="btn-en" type="button" class="btn-lang">🇺🇸</button>
+            
+            <button id="theme-toggle" class="btn-tema" type="button" aria-label="Cambiar tema">🌙</button>
+        </div>
     </header>
 
     <main class="admin-content">
         <header class="admin-header-section">
-            <h1>Panel de Administración</h1>
+            <h1 data-i18n="panel_admin_header">Panel de Administración</h1>
         </header>
 
         <section id="gestion-servicios" class="admin-section">
-    <header class="header-section">
-        <h2>Catálogo de Servicios</h2>
-        <button class="btn-primario" id="btnNuevoServicio">+ Nuevo Servicio</button>
-    </header>
-    
-    <article id="crud-contenedor-servicios" class="crud-contenedor"></article>
+            <header class="header-section">
+                <h2 data-i18n="catalogo_servicios">Catálogo de Servicios</h2>
+                <button class="btn-primario" id="btnNuevoServicio" data-i18n="nuevo_servicio">+ Nuevo Servicio</button>
+            </header>
+            
+            <article id="crud-contenedor-servicios" class="crud-contenedor"></article>
 
-    <button id="btnToggleServicios" class="btn-ver">
-        Ver mas +
-    </button>
-</section>
+            <button id="btnToggleServicios" class="btn-ver" data-i18n="ver_mas">
+                Ver mas +
+            </button>
+        </section>
 
         <section id="gestion-citas" class="admin-section">
             <header class="header-section">
-                <h2>Citas Programadas</h2>
+                <h2 data-i18n="citas_programadas_admin">Citas Programadas</h2>
             </header>
-            
             <article id="crud-contenedor-citas" class="crud-contenedor"></article>
-            
         </section>
     </main>
 
     <dialog id="panelCRUD">
-    <h2>Gestión de Servicios</h2>
-    <form id="formServicio">
-        <input type="hidden" id="servicioId">
-        <label>Nombre</label> <input type="text" id="nombre" required>
-        <label>Precio</label> <input type="number" id="precio" required>
-        <label>Descripción</label> <textarea id="descripcion"></textarea>
-        <label>Imagen (URL)</label> <input type="text" id="imagen">
-        <input type="file" id="imagenInput" accept="image/*">
-        <button type="submit">Guardar</button>
-        <button type="button" class="btn-secundario" onclick="document.getElementById('panelCRUD').close()">
-    Cerrar
-</button>
-    </form>
-</dialog>
+        <h2 data-i18n="gestion_servicios_modal">Gestión de Servicios</h2>
+        <form id="formServicio">
+            <input type="hidden" id="servicioId">
+            <label data-i18n="nombre_label">Nombre</label> 
+            <input type="text" id="nombre" required>
+            
+            <label data-i18n="precio_label">Precio</label> 
+            <input type="number" id="precio" required>
+            
+            <label data-i18n="descripcion_label">Descripción</label> 
+            <textarea id="descripcion"></textarea>
+            
+            <label data-i18n="imagen_url_label">Imagen (URL)</label> 
+            <input type="text" id="imagen">
+            
+            <input type="file" id="imagenInput" accept="image/*">
+            
+            <button type="submit" data-i18n="guardar">Guardar</button>
+            <button type="button" class="btn-secundario" onclick="document.getElementById('panelCRUD').close()" data-i18n="cerrar">
+                Cerrar
+            </button>
+        </form>
+    </dialog>
 
     <footer class="pie-pagina-admin">
-        <p>©DENTOLOGY. Todos los derechos reservados.</p>
+        <p>©DENTOLOGY. <span data-i18n="derechos">Todos los derechos reservados.</span></p>
     </footer>
 
-    <script type="module" src="/frontend/js/admin.js"></script>
+    <script src="/Frontend/js/idioma.js"></script> <script type="module" src="/Frontend/js/admin.js"></script>
     <script src="/Frontend/js/tema.js"></script>
-    
 </body>
 
 </html>

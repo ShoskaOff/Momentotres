@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro | Odontologia</title>
-        <link rel="stylesheet" href="/Frontend/styles/registro.css">
-        <link rel="stylesheet" href="/Frontend/styles/tema.css">
-        <link rel="stylesheet" href="/Frontend/styles/servicios.css">
-        <link rel="icon" href="/Media/favicon.png" type="image/png">
-    <link rel="icon" href="/Media/favicon.png" type="image/png">
+    <title data-i18n="registro_titulo_pestana">Registro | Odontologia</title>
+    <link rel="stylesheet" href="/Frontend/styles/registro.css">
+    <link rel="stylesheet" href="/Frontend/styles/tema.css">
+    <link rel="stylesheet" href="/Frontend/styles/servicios.css">
+    <link rel="stylesheet" href="../styles/idioma.css"> <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
 
 <body>
@@ -18,14 +17,18 @@
             <figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure>
         </a>
         <nav class="main-nav">
-            <a href="/Frontend/index/lobby.html">Inicio</a>
-            <a href="/Frontend/index/servicios.html">Tratamientos</a>
-            <a href="/Frontend/index/citas.html">Citas</a>
-            <a href="/Frontend/index/contacto.html">Contacto</a>
-            <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
+            <a data-i18n="inicio" href="/Frontend/index/lobby.html">Inicio</a>
+            <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
+            <a data-i18n="citas" href="/Frontend/index/citas.html">Citas</a>
+            <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
+            <a data-i18n="login" href="/Frontend/index/inicio.html">Inicio Sesion</a>
+            
             <a id="theme-toggle" type="button">🌙</a>
-            <a id="btnAdmin" type="button" href="/Frontend/index/PaginaAdmin/admin.html">
-            </a>
+
+            <button id="btn-es" type="button" aria-label="Español">🇪🇸</button>
+            <button id="btn-en" type="button" aria-label="English">🇺🇸</button>
+
+            <a id="btnAdmin" type="button" href="/Frontend/index/PaginaAdmin/admin.html"></a>
         </nav>
     </header>
 
@@ -34,32 +37,35 @@
         <article class="tarjeta">
 
             <header class="tarjeta-encabezado">
-                <h1>Crear cuenta</h1>
-                <p>Regístrate para agendar tus citas</p>
+                <h1 data-i18n="crear_cuenta">Crear cuenta</h1>
+                <p data-i18n="subtitulo_registro">Regístrate para agendar tus citas</p>
             </header>
 
             <form id="formRegistro" class="formulario">
                 <fieldset>
-                    <legend>Información</legend>
+                    <legend data-i18n="leyenda_informacion">Información</legend>
 
-                    <label>Nombre completo</label>
+                    <label data-i18n="nombre_completo">Nombre completo</label>
                     <input type="text" id="nombre" required>
 
-                    <label>Correo</label>
+                    <label data-i18n="correo_label">Correo</label>
                     <input type="email" id="correo" required>
 
-                    <label>Contraseña</label>
+                    <label data-i18n="pass_label">Contraseña</label>
                     <input type="password" id="clave" required>
 
-                    <label>Confirmar contraseña</label>
+                    <label data-i18n="confirmar_pass">Confirmar contraseña</label>
                     <input type="password" id="confirmarClave" required>
                 </fieldset>
 
-                <button type="submit">Registrarse</button>
+                <button type="submit" data-i18n="btn_registrarse">Registrarse</button>
             </form>
 
             <footer class="tarjeta-pie">
-                <p>¿Ya tienes cuenta? <a href="/Frontend/index/inicio.html">Inicia sesión</a></p>
+                <p>
+                    <span data-i18n="tienes_cuenta">¿Ya tienes cuenta?</span> 
+                    <a data-i18n="login" href="/Frontend/index/inicio.html">Inicia sesión</a>
+                </p>
             </footer>
 
         </article>
@@ -142,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-
- <script src="/Frontend/js/tema.js"></script>
-</body>
+<script src="/Frontend/js/tema.js"></script>
+<script src="../js/idioma.js"></script>
+ </body>
 </html>

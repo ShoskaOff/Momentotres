@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("Sistema de carrito inicializado.");
 
     // --- 1. Lógica para AGREGAR ---
-    // Usamos un selector condicional para no fallar si no hay botones en la página actual
     const botones = document.querySelectorAll('.btn-agregar');
     botones.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -26,7 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             localStorage.setItem('carrito', JSON.stringify(carrito));
-            alert(nuevoProducto.nombre + " añadido al carrito.");
+
+            // 🌍 ALERTA TRADUCIBLE (Opcional: usar claves si tienes un sistema de alertas)
+            const msg = localStorage.getItem('idioma') === 'en' 
+                ? `${nuevoProducto.nombre} added to cart.` 
+                : `${nuevoProducto.nombre} añadido al carrito.`;
+            alert(msg);
         });
     });
 
@@ -38,30 +42,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 3. Lógica para TEMA OSCURO ---
     const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) { // Verificamos que el botón exista antes de agregar el evento
+    if (themeToggle) {
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark-theme');
             localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
         });
 
-        // Cargar preferencia al iniciar
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark-theme');
         }
     }
 });
 
-// Función para dibujar el carrito
 function renderizarCarrito() {
     const contenedor = document.getElementById('contenedor-carrito');
-    const totalSpan = document.getElementById('total-carrito'); // Corregido ID
+    const totalSpan = document.getElementById('total-carrito');
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     
     contenedor.innerHTML = '';
     let total = 0;
 
     if (carrito.length === 0) {
-        contenedor.innerHTML = '<p>Tu carrito está vacío.</p>';
+        // Marcado para i18n
+        contenedor.innerHTML = '<p data-i18n="carrito_vacio">Tu carrito está vacío.</p>';
     } else {
         carrito.forEach((prod, index) => {
             const cantidad = prod.cantidad || 1;
@@ -76,11 +79,17 @@ function renderizarCarrito() {
                         <button onclick="cambiarCantidad(${index}, 1)">+</button>
                     </div>
                     <span>$${(prod.precio * cantidad).toLocaleString()}</span>
-                    <button onclick="eliminarProducto(${index})">Eliminar</button>
+                    <button onclick="eliminarProducto(${index})" data-i18n="eliminar">Eliminar</button>
                 </div>`;
         });
     }
+    
     if (totalSpan) totalSpan.innerText = total.toLocaleString();
+
+    // 🌍 IMPORTANTE: Ejecutar la traducción de los nuevos elementos inyectados
+    if (typeof traducirPagina === "function") {
+        traducirPagina();
+    }
 }
 
 window.cambiarCantidad = function(index, cambio) {

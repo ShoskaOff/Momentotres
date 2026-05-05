@@ -1,79 +1,74 @@
 import { supabase } from '/Frontend/js/supabase.js';
 
-// 🔗 Base solo para cuando la BD tenga nombres de archivo
 const URL_BASE_STORAGE = "https://jdofaujfqsyiwauwttcd.supabase.co/storage/v1/object/public/Imagenes/Detalles%20Servicios/";
 
 export async function cargarUnSoloProducto() {
     const contenedor = document.getElementById("contenedor-detalle");
+    if (!contenedor) return;
+
     const parametrosURL = new URLSearchParams(window.location.search);
     const idServicio = parametrosURL.get("id");
+    
+    // 🌍 Sincronizamos con la clave correcta del traductor
+    const idioma = localStorage.getItem('idiomaSeleccionado') || 'es';
 
-    // 🔁 Redirección si no hay ID
     if (!idServicio) {
         window.location.href = "/Frontend/index/servicios.html";
         return;
     }
 
-    // 🔎 Consulta a Supabase
     const { data: servicio, error } = await supabase
         .from('servicios')
         .select('*')
         .eq('id', idServicio)
         .single();
 
-    // ❌ Manejo de error
     if (error || !servicio) {
+        const tituloError = idioma === 'en' ? "Treatment not found" : "Tratamiento no encontrado";
+        const btnVolver = idioma === 'en' ? "Back to Treatments" : "Volver a Tratamientos";
+        
         contenedor.innerHTML = `
             <div style="text-align: center; padding: 50px;">
-                <h2>Tratamiento no encontrado</h2>
+                <h2>${tituloError}</h2>
                 <button onclick="window.location.href='/Frontend/index/servicios.html'" 
                     style="margin-top: 20px; padding: 10px 20px; cursor: pointer;">
-                    Volver a Tratamientos
+                    ${btnVolver}
                 </button>
             </div>`;
         return;
     }
 
-    // 🖼️ Lógica inteligente para la imagen
+    // 🖼️ Lógica para la imagen
     let imgFinal = "/Media/Logo.png";
-
     if (servicio.detalle_url) {
-        if (servicio.detalle_url.startsWith("http")) {
-            // ✔ Ya es URL completa
-            imgFinal = servicio.detalle_url;
-        } else {
-            // ✔ Solo nombre de archivo
-            imgFinal = URL_BASE_STORAGE + servicio.detalle_url;
-        }
+        imgFinal = servicio.detalle_url.startsWith("http") 
+            ? servicio.detalle_url 
+            : URL_BASE_STORAGE + servicio.detalle_url;
     }
 
-    // 🧠 Debug (puedes quitar luego)
-    console.log("Servicio:", servicio);
-    console.log("detalle_url:", servicio.detalle_url);
-    console.log("imgFinal:", imgFinal);
+    // ✅ CORRECCIÓN: Usamos directamente 'nombre' y 'descripcion' que son las columnas reales.
+    // El atributo 'data-i18n-dinamico' en el HTML se encargará de traducirlos.
+    const nombreAMostrar = servicio.nombre;
+    const descripcionAMostrar = servicio.descripcion;
 
-    // 🏷️ Título dinámico
-    document.title = `${servicio.nombre} | Dentology`;
+    document.title = `${nombreAMostrar} | Dentology`;
 
-    // 🎨 Render HTML
     contenedor.innerHTML = `
         <article style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto; text-align: center;">
             
             <img 
                 src="${imgFinal}" 
-                alt="${servicio.nombre}" 
+                alt="${nombreAMostrar}" 
                 style="width: 100%; max-width: 500px; height: auto; border-radius: 10px; object-fit: cover; margin-bottom: 25px;"
                 onerror="this.src='/Media/Logo.png';"
             >
             
-            <h1 style="color: var(--primario); margin-bottom: 15px; font-size: 2.5rem;">
-                ${servicio.nombre}
+            <h1 style="color: var(--primario); margin-bottom: 15px; font-size: 2.5rem;" data-i18n-dinamico>
+                ${nombreAMostrar}
             </h1>
             
-            <p style="font-size: 1.2rem; color: #555; margin-bottom: 25px; line-height: 1.6; text-align: justify;">
-                ${servicio.descripcion 
-                    ? servicio.descripcion 
-                    : 'Consulta con nuestros especialistas para más información sobre este tratamiento.'}
+            <p style="font-size: 1.2rem; color: #555; margin-bottom: 25px; line-height: 1.6; text-align: justify;" data-i18n-dinamico>
+                ${descripcionAMostrar || 'Consulta con nuestros especialistas.'}
             </p>
             
             <h2 style="color: #333; margin-bottom: 35px; font-size: 2rem;">
@@ -81,20 +76,48 @@ export async function cargarUnSoloProducto() {
             </h2>
             
             <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-                
                 <button 
                     id="agendarBtn" 
-                    data-servicio="${servicio.nombre}" 
+                    data-i18n="btn_agendar_cita"
                     style="background: var(--primario); color: white; padding: 15px 30px; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; font-weight: bold;">
                     Agendar Cita
                 </button>
                 
                 <button 
                     onclick="window.location.href='/Frontend/index/servicios.html'" 
+                    data-i18n="btn_volver_tratamientos"
                     style="background: #f0f0f0; color: #333; padding: 15px 30px; border: 1px solid #ccc; border-radius: 8px; font-size: 1.1rem; cursor: pointer;">
                     Volver a Tratamientos
                 </button>
             </div>
         </article>
     `;
+
+    // 🌍 Traducir botones y textos dinámicos
+    if (window.traducirPagina) window.traducirPagina();
+
+    // ✅ CORRECCIÓN EN EL EVENTO: Nos aseguramos de enviar el nombre real para que no llegue 'null'
+    const agendarBtn = document.getElementById("agendarBtn");
+    if (agendarBtn) {
+        agendarBtn.onclick = () => {
+            // Enviamos el nombre del servicio obtenido de la base de datos
+            window.location.href = `/Frontend/index/PaginaUsuario/usuario.html?servicio=${encodeURIComponent(nombreAMostrar)}`;
+        };
+    }
+}
+
+// ... al final de cargarUnSoloProducto ...
+const agendarBtn = document.getElementById("agendarBtn");
+if (agendarBtn) {
+    agendarBtn.onclick = () => {
+        // ✅ Aseguramos que usamos servicio.nombre que es el que viene de Supabase
+        const nombreParaEnviar = servicio.nombre; 
+        
+        if (nombreParaEnviar) {
+            window.location.href = `/Frontend/index/PaginaUsuario/usuario.html?servicio=${encodeURIComponent(nombreParaEnviar)}`;
+        } else {
+            console.error("No se encontró el nombre del servicio para enviar");
+            window.location.href = `/Frontend/index/PaginaUsuario/usuario.html`;
+        }
+    };
 }

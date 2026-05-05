@@ -4,47 +4,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prótesis Dentales</title>
+  <title data-i18n="protesis_titulo_pestana">Prótesis Dentales | Dentology</title>
+  
   <link rel="stylesheet" href="/Frontend/styles/servicios.css">
   <link rel="stylesheet" href="/Frontend/styles/tratamientos.css">
   <link rel="stylesheet" href="/Frontend/styles/tema.css">
   <link rel="stylesheet" href="/Frontend/styles/responsive.css">
+  <link rel="stylesheet" href="../styles/idioma.css"> 
 </head>
 
 <body>
 
   <header class="site-header">
-    <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure></a>
+    <a href="/Frontend/index/lobby.html">
+        <figure class="logo"><img src="/Media/Logo.png" alt="Logo Dentology"></figure>
+    </a>
     <nav class="main-nav">
-        <a href="/Frontend/index/lobby.html">Inicio</a>
-        <a href="/Frontend/index/servicios.html">Tratamientos</a>
-        <a href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a>
-        <a href="/Frontend/index/contacto.html">Contacto</a>
-        <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
-        <a id="theme-toggle" type="button">🌙</a>
+        <a data-i18n="inicio" href="/Frontend/index/lobby.html">Inicio</a>
+        <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
+        <a data-i18n="citas" href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a>
+        <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
+        <a data-i18n="login" href="/Frontend/index/inicio.html">Inicio Sesión</a>
+        <a id="theme-toggle" style="cursor: pointer;">🌙</a>
+
+        <button id="btn-es" type="button" aria-label="Español">🇪🇸</button>
+        <button id="btn-en" type="button" aria-label="English">🇺🇸</button>
     </nav>
   </header>
 
-  <main>
-    <h1>Prótesis Dentales</h1>
-    <section class="contenedor-volver">
-      <a href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
+  <main style="padding: 20px; max-width: 800px; margin: 0 auto; text-align: center;">
+    <h1 data-i18n="protesis">Prótesis Dentales</h1>
+    
+    <section class="contenedor-volver" style="margin-bottom: 20px;">
+      <a data-i18n="volver" href="/Frontend/index/servicios.html" class="btn-detalle">Volver</a>
     </section>
     
-    <img src="/Media/img/protesis.webp" alt="Prótesis">
-    <p>Reemplazo de dientes faltantes.</p>
+    <img src="/Media/img/protesis.webp" alt="Prótesis" style="width: 100%; max-width: 500px; border-radius: 15px; margin-bottom: 20px;">
+    
+    <p data-i18n="reemplazo_dientes" style="font-size: 1.2rem; color: #555;">Reemplazo de dientes faltantes.</p>
 
-    <ul>
-      <li>Mejora masticación</li>
-      <li>Mejora el habla</li>
+    <ul style="list-style: none; padding: 0; margin: 20px 0;">
+      <li data-i18n="mejora_masticacion">✅ Mejora masticación</li>
+      <li data-i18n="mejora_habla">✅ Mejora el habla</li>
     </ul>
 
-    <p class="precio">Precio variable</p>
+    <p class="precio" data-i18n="precio_variable" style="font-weight: bold; font-size: 1.5rem; color: var(--primario);">Precio variable</p>
     
-    <button id="agendarBtn" data-servicio="Prótesis Dentales">Agendar cita</button>
+    <button id="agendarBtn" 
+            data-servicio="Prótesis Dentales" 
+            data-i18n="agendar" 
+            style="background: #2196F3; color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.1rem; margin-top: 20px;">
+      Agendar cita
+    </button>
 
-    <div class="producto" data-id="protesis" data-nombre="Prótesis Dentales" data-precio="20000">
-        <button class="btn-agregar">Agregar al carrito</button>
+    <div class="producto" data-id="protesis" data-nombre="Prótesis Dentales" data-precio="20000" style="margin-top: 20px;">
+        <button class="btn-agregar" data-i18n="agregar_carrito" style="padding: 10px 20px; cursor: pointer;">
+            Agregar al carrito
+        </button>
     </div>
 
   </main>
@@ -54,11 +70,14 @@
   <script>
     document.getElementById("agendarBtn").addEventListener("click", function() {
       const servicio = this.getAttribute("data-servicio");
-      window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
+      
+      // ✅ RUTA CORREGIDA: Ahora apunta a la carpeta PaginaUsuario y al archivo usuario.html
+      // Esto asegura que el archivo usuario.js pueda leer el nombre correctamente.
+      window.location.href = "/Frontend/index/PaginaUsuario/usuario.html?servicio=" + encodeURIComponent(servicio);
     });
   </script>
 
   <script src="/Frontend/index/carrito/carrito.js"></script>
-
+  <script src="../js/idioma.js"></script> 
 </body>
 </html>

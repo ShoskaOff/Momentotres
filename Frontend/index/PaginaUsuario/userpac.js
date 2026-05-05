@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const lista = document.getElementById("listaCitas");
 
-    lista.innerHTML = "<p>Cargando citas...</p>";
+    lista.innerHTML = "<p data-i18n='cargando_citas'>Cargando citas...</p>";
 
     // 🔐 ESPACIO PARA LOGIN
     // 👉 Aquí luego deben traer el usuario logueado
@@ -66,7 +66,7 @@ const renderizarCitas = (citas) => {
     lista.innerHTML = "";
 
     if (!citas || citas.length === 0) {
-        lista.innerHTML = "<p>No tienes citas registradas</p>";
+        lista.innerHTML = "<p data-i18n='sin_citas'>No tienes citas registradas</p>";
         return;
     }
 
@@ -76,13 +76,18 @@ const renderizarCitas = (citas) => {
 
         card.innerHTML = `
             <h3>${cita.servicio || cita.Servicio?.nombre}</h3>
-            <p><strong>Fecha:</strong> ${cita.fecha}</p>
-            <p><strong>Hora:</strong> ${cita.hora}</p>
-            <p class="estado ${cita.estado || "pendiente"}">
+            <p><strong data-i18n="cita_fecha">Fecha:</strong> ${cita.fecha}</p>
+            <p><strong data-i18n="cita_hora">Hora:</strong> ${cita.hora}</p>
+            <p class="estado ${cita.estado || "pendiente"}" data-i18n="estado_${cita.estado || "pendiente"}">
                 ${(cita.estado || "pendiente").toUpperCase()}
             </p>
         `;
 
         lista.appendChild(card);
     });
+
+    // Añadimos la ejecución de la traducción al final sin alterar la estructura
+    if (typeof traducirPagina === "function") {
+        traducirPagina();
+    }
 };

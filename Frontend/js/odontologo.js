@@ -51,14 +51,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (error) {
             console.error(error);
-            listaServicios.innerHTML = "<p>Error cargando servicios</p>";
+            listaServicios.innerHTML = "<p data-i18n='error_servicios'>Error cargando servicios</p>";
+            if (window.traducirPagina) window.traducirPagina();
             return;
         }
 
         listaServicios.innerHTML = "";
 
         if (!data?.length) {
-            listaServicios.innerHTML = "<p>No hay servicios</p>";
+            listaServicios.innerHTML = "<p data-i18n='no_servicios'>No hay servicios</p>";
+            if (window.traducirPagina) window.traducirPagina();
             return;
         }
 
@@ -67,14 +69,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             div.innerHTML = `
                 <p>${servicio.nombre ?? ""}</p>
-                <p>Precio actual: ${servicio.precio ?? 0}</p>
+                <p><span data-i18n="precio_actual">Precio actual</span>: ${servicio.precio ?? 0}</p>
 
                 <input type="number"
                     class="nuevo-precio"
                     data-id="${servicio.id}"
+                    data-i18n-placeholder="placeholder_nuevo_precio"
                     placeholder="Nuevo precio">
 
-                <button class="actualizar-precio" data-id="${servicio.id}">
+                <button class="actualizar-precio" data-id="${servicio.id}" data-i18n="btn_actualizar_precio">
                     Actualizar Precio
                 </button>
 
@@ -83,6 +86,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             listaServicios.appendChild(div);
         });
+
+        if (window.traducirPagina) window.traducirPagina();
 
         document.querySelectorAll(".actualizar-precio").forEach(btn => {
             btn.addEventListener("click", async function () {
@@ -95,7 +100,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const nuevoPrecio = Number(input.value);
 
                 if (isNaN(nuevoPrecio) || nuevoPrecio <= 0) {
-                    alert("Ingresa un precio válido");
+                    const msgValid = localStorage.getItem('idioma') === 'en' ? "Enter a valid price" : "Ingresa un precio válido";
+                    alert(msgValid);
                     return;
                 }
 
@@ -106,11 +112,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 if (error) {
                     console.error(error);
-                    alert("Error actualizando precio");
+                    const msgError = localStorage.getItem('idioma') === 'en' ? "Error updating price" : "Error actualizando precio";
+                    alert(msgError);
                     return;
                 }
 
-                alert("Precio actualizado");
+                const msgOk = localStorage.getItem('idioma') === 'en' ? "Price updated" : "Precio actualizado";
+                alert(msgOk);
                 cargarServicios();
             });
         });
@@ -129,14 +137,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (error) {
             console.error(error);
-            listaCitas.innerHTML = "<p>Error cargando citas</p>";
+            listaCitas.innerHTML = "<p data-i18n='error_citas'>Error cargando citas</p>";
+            if (window.traducirPagina) window.traducirPagina();
             return;
         }
 
         listaCitas.innerHTML = "";
 
         if (!data?.length) {
-            listaCitas.innerHTML = "<p>No hay citas</p>";
+            listaCitas.innerHTML = "<p data-i18n='no_citas'>No hay citas</p>";
+            if (window.traducirPagina) window.traducirPagina();
             return;
         }
 
@@ -144,13 +154,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             const div = document.createElement("div");
 
             div.innerHTML = `
-                <p>Cita #${cita.id}</p>
+                <p><span data-i18n="cita_num">Cita</span> #${cita.id}</p>
                 <p>${cita.fecha_hora ?? ""}</p>
                 <hr>
             `;
 
             listaCitas.appendChild(div);
         });
+
+        if (window.traducirPagina) window.traducirPagina();
     }
 
     // =========================
@@ -166,14 +178,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (error) {
             console.error(error);
-            listaNotificaciones.innerHTML = "<p>Error cargando notificaciones</p>";
+            listaNotificaciones.innerHTML = "<p data-i18n='error_notificaciones'>Error cargando notificaciones</p>";
+            if (window.traducirPagina) window.traducirPagina();
             return;
         }
 
         listaNotificaciones.innerHTML = "";
 
         if (!data?.length) {
-            listaNotificaciones.innerHTML = "<p>No hay notificaciones</p>";
+            listaNotificaciones.innerHTML = "<p data-i18n='no_notificaciones'>No hay notificaciones</p>";
+            if (window.traducirPagina) window.traducirPagina();
             return;
         }
 
