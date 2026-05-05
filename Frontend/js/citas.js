@@ -9,7 +9,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (nombreProducto) {
         const texto = document.getElementById("servicioSeleccionado");
         const input = document.getElementById("servicio");
-        if (texto) texto.innerText = "Servicio: " + nombreProducto;
+        // Agregamos data-i18n para que el servicio seleccionado también se traduzca
+        if (texto) {
+            texto.innerText = nombreProducto;
+            texto.setAttribute("data-i18n", "");
+        }
         if (input) input.value = nombreProducto;
     }
 
@@ -33,7 +37,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return;
             }
 
-            // 1. Obtener ID del servicio
             const { data: sData } = await supabase
                 .from("servicios")
                 .select("id")
@@ -46,27 +49,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const fechaHoraISO = new Date(`${fecha}T${hora}`).toISOString();
-
-            // --- NUEVA VALIDACIÓN DE DISPONIBILIDAD ---
-            // --- NUEVA VALIDACIÓN DE DISPONIBILIDAD (Rango de 3 horas) ---
-
-// 1. Calculamos los límites de tiempo
             const inicioRango = new Date(new Date(`${fecha}T${hora}`).getTime() - (3 * 60 * 60 * 1000)).toISOString();
             const finRango = new Date(new Date(`${fecha}T${hora}`).getTime() + (3 * 60 * 60 * 1000)).toISOString();
 
-// 2. Consultamos si hay alguna cita en ese intervalo
-            const { data: citasEnRango, error: errorCheck } = await supabase
+            const { data: citasEnRango } = await supabase
               .from("Citas")
               .select("id, fecha_hora")
-               .gt("fecha_hora", inicioRango) // Mayor que (hora seleccionada - 3h)
-                .lt("fecha_hora", finRango)    // Menor que (hora seleccionada + 3h)
-             .limit(1); // Con que encuentre una es suficiente
+               .gt("fecha_hora", inicioRango)
+               .lt("fecha_hora", finRango)
+              .limit(1);
 
             if (citasEnRango && citasEnRango.length > 0) {
                  alert("El doctor no está disponible. Las citas deben tener un margen de 3 horas entre sí.");
                  return;
-    }
-// --- FIN DE VALIDACIÓN ---
+            }
 
             const { error: errorInsert } = await supabase
                 .from("Citas")
@@ -89,12 +85,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     mostrarHistorial();
 });
 
-// El resto de funciones (mostrarHistorial, pintarCitas, cancelarCita) permanecen igual
 async function mostrarHistorial() {
     let lista = document.getElementById("listaCitas");
     if (!lista) return;
 
-    lista.innerHTML = "<p style='color: white; text-align: center;'>Cargando historial de citas...</p>";
+    lista.innerHTML = "<p style='color: white; text-align: center;' data-i18n>Cargando historial de citas...</p>";
 
     const { data, error } = await supabase
         .from("Citas")
@@ -113,7 +108,7 @@ async function mostrarHistorial() {
 
     if (error) {
         console.error("Error en Supabase:", error);
-        lista.innerHTML = `<p style='color: #ff4444;'>Error al cargar el historial.</p>`;
+        lista.innerHTML = `<p style='color: #ff4444;' data-i18n>Error al cargar el historial.</p>`;
         return;
     }
 
@@ -122,7 +117,7 @@ async function mostrarHistorial() {
 
 function pintarCitas(data, lista) {
     if (!data || data.length === 0) {
-        lista.innerHTML = "<p style='color: white; text-align: center;'>No tienes citas registradas.</p>";
+        lista.innerHTML = "<p style='color: white; text-align: center;' data-i18n>No tienes citas registradas.</p>";
         return;
     }
 
@@ -144,21 +139,27 @@ function pintarCitas(data, lista) {
                  onerror="this.src='../../../Media/Logo.png';">
             
             <section style="flex-grow: 1;">
-                <h3 style="margin: 0 0 10px 0; color: #2196F3;">${nombreServicio}</h3>
-                <p style="margin: 3px 0;"><strong>👤 Paciente:</strong> ${nombrePaciente}</p>
-                <p style="margin: 3px 0;"><strong>📅 Fecha:</strong> ${new Date(cita.fecha_hora).toLocaleDateString()}</p>
-                <p style="margin: 3px 0;"><strong>⏰ Hora:</strong> ${new Date(cita.fecha_hora).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                <h3 style="margin: 0 0 10px 0; color: #2196F3;" data-i18n>${nombreServicio}</h3>
+                <p style="margin: 3px 0;"><strong data-i18n>👤 Paciente:</strong> ${nombrePaciente}</p>
+                <p style="margin: 3px 0;"><strong data-i18n>📅 Fecha:</strong> ${new Date(cita.fecha_hora).toLocaleDateString()}</p>
+                <p style="margin: 3px 0;"><strong data-i18n>⏰ Hora:</strong> ${new Date(cita.fecha_hora).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
             </section>
 
             <section>
                 <button onclick="cancelarCita(${cita.id})" 
-                        style="background: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                        style="background: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;"
+                        data-i18n>
                     Eliminar
                 </button>
             </section>
         `;
         lista.appendChild(articulo);
     });
+
+    // 🌍 ÚLTIMO PASO: Activar la traducción de Microsoft sobre los nuevos elementos
+    if (typeof window.traducirPagina === 'function') {
+        window.traducirPagina();
+    }
 }
 
 window.cancelarCita = async (id) => {
