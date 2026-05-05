@@ -31,9 +31,11 @@ function generarHTMLTarjetas(servicios, esLobby) {
     return servicios.map(s => {
         const rutaArchivo = `/Frontend/index/detalle.html?id=${s.id}`;
 
-        const imgFinal = s.imagen_url 
-            ? URL_BASE_STORAGE + s.imagen_url 
-            : "../../../Media/Logo.png";
+        // Limpiamos el nombre del archivo y codificamos la URL para los espacios
+        const nombreImagen = s.imagen_url ? s.imagen_url.trim() : "";
+        const imgFinal = nombreImagen 
+            ? URL_BASE_STORAGE + encodeURIComponent(nombreImagen) 
+            : "/Media/Logo.png";
 
         if (esLobby) {
             return `
@@ -45,26 +47,23 @@ function generarHTMLTarjetas(servicios, esLobby) {
                 </article>
             `;
         } else {
+            // VISTA DE TRATAMIENTOS: Solo Imagen y Nombre
             return `
-                <article class="servicio-card" style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px;">
-                    <a href="${rutaArchivo}" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 20px;">
+                <article class="servicio-card" style="background: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; transition: transform 0.3s ease;">
+                    <a href="${rutaArchivo}" style="text-decoration: none; color: inherit; display: block; text-align: center; padding-bottom: 15px;">
                         <img src="${imgFinal}" alt="${s.nombre}" 
-                             style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px;"
-                             onerror="this.src='../../../Media/Logo.png';">
+                             style="width: 100%; height: 200px; object-fit: cover;"
+                             onerror="this.src='/Media/Logo.png';">
                         
-                        <div style="flex-grow: 1;">
-                            <h3 style="margin: 0; color: #333;">${s.nombre}</h3>
-                            <p style="margin: 5px 0; color: #666; font-size: 0.9rem;">
-                                ${s.descripcion ? s.descripcion.substring(0, 80) + '...' : 'Consulta con nuestros especialistas.'}
-                            </p>
-                            <p style="margin: 5px 0; font-size: 1.1rem; font-weight: bold;">$${s.precio ? s.precio.toLocaleString() : '0'}</p>
-                        </div>
+                        <h3 style="margin: 15px 10px 0; color: #333; font-size: 1.2rem;">${s.nombre}</h3>
                     </a>
                 </article>
             `;
         }
     }).join('');
 }
+
+
 
 async function cargarCRUD() {
     const lista = document.getElementById("listaCRUD");

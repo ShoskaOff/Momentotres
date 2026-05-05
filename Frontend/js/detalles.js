@@ -1,5 +1,6 @@
 import { supabase } from '/Frontend/js/supabase.js';
 
+// URL base corregida para el bucket "Imagenes" y la carpeta "Carpeta Servicios"
 const URL_BASE_STORAGE = "https://jdofaujfqsyiwauwttcd.supabase.co/storage/v1/object/public/Imagenes/Carpeta%20Servicios/";
 
 export async function cargarUnSoloProducto() {
@@ -12,6 +13,7 @@ export async function cargarUnSoloProducto() {
         return;
     }
 
+    // Consultamos la tabla 'servicios'
     const { data: servicio, error } = await supabase
         .from('servicios')
         .select('*')
@@ -27,15 +29,25 @@ export async function cargarUnSoloProducto() {
         return;
     }
 
-    const imgFinal = servicio.detalle_url 
-        ? URL_BASE_STORAGE + servicio.detalle_url 
+    /* 
+       CORRECCIÓN CLAVE: 
+       1. Usamos 'imagen_url' porque así se llama la columna en tu base de datos.
+       2. Usamos encodeURIComponent() para que nombres como "limpieza dental.png" 
+          funcionen correctamente en la URL.
+    */
+    const nombreImagen = servicio.imagen_url ? servicio.imagen_url.trim() : "";
+    
+    const imgFinal = nombreImagen 
+        ? URL_BASE_STORAGE + encodeURIComponent(nombreImagen) 
         : "/Media/Logo.png";
 
     document.title = `${servicio.nombre} | Dentology`;
 
     contenedor.innerHTML = `
         <article style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto; text-align: center;">
-            <img src="${imgFinal}" alt="${servicio.nombre}" style="width: 100%; max-width: 500px; height: auto; border-radius: 10px; object-fit: cover; margin-bottom: 25px;" onerror="this.src='/Media/Logo.png';">
+            <img src="${imgFinal}" alt="${servicio.nombre}" 
+                 style="width: 100%; max-width: 500px; height: auto; border-radius: 10px; object-fit: cover; margin-bottom: 25px;" 
+                 onerror="this.src='/Media/Logo.png';">
             
             <h1 style="color: var(--primario); margin-bottom: 15px; font-size: 2.5rem;">${servicio.nombre}</h1>
             
