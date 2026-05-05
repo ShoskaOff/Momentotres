@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -8,22 +8,30 @@
     <link rel="stylesheet" href="/Frontend/styles/servicios.css">
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="stylesheet" href="/Frontend/styles/responsive.css">
+    <link rel="stylesheet" href="/Frontend/styles/idioma.css">
+    
     <link rel="icon" href="/Media/favicon.png" type="image/png">
     <script src="/Frontend/js/servicios.js"></script>
-    <title>Contacto</title>
+    <title data-i18n="contacto_pestana">Contacto</title>
 </head>
 
 <body>
     <header class="site-header">
-        <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure></a>
+        <a href="/Frontend/index/lobby.html">
+            <figure class="logo"><img src="/Media/Logo.png" alt="DENTOLOGY"></figure>
+        </a>
         <nav class="main-nav">
-            <a href="/Frontend/index/lobby.html">Inicio</a>
-            <a href="/Frontend/index/servicios.html">Tratamientos</a>
-            <a href="/Frontend/index/citas.html">Citas</a>
-            <a href="/Frontend/index/contacto.html">Contacto</a>
-            <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
+            <a data-i18n="inicio" href="/Frontend/index/lobby.html">Inicio</a>
+            <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
+            <a data-i18n="citas" href="/Frontend/index/citas.html">Citas</a>
+            <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
+            <a data-i18n="login" href="/Frontend/index/inicio.html">Inicio Sesion</a>
             <a href="/Frontend/index/carrito/carritoo.html" id="carritoIcono">🛒</a>
-            <a id="theme-toggle" type="button">🌙</a>
+            
+            <a id="theme-toggle" style="cursor: pointer;">🌙</a>
+
+            <button id="btn-es" type="button" aria-label="Español">🇪🇸</button>
+            <button id="btn-en" type="button" aria-label="English">🇺🇸</button>
         </nav>
     </header>
 
@@ -31,48 +39,50 @@
 
         <section class="contacto-container">
             <hgroup class="contacto-header">
-                <h1 class="titulo-contacto">Contáctanos</h1>
-                <p>Estamos aquí para cuidar de tu sonrisa. Envíanos un mensaje y te responderemos lo antes posible.</p>
+                <h1 data-i18n="titulo_contacto" class="titulo-contacto">Contáctanos</h1>
+                <p data-i18n="subtitulo_contacto">Estamos aquí para cuidar de tu sonrisa. Envíanos un mensaje y te responderemos lo antes posible.</p>
             </hgroup>
 
             <form class="formulario-contacto">
                 <fieldset class="grupo-input">
-                    <label for="nombre">Nombre Completo</label>
-                    <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+                    <label for="nombre" data-i18n="nombre_label">Nombre Completo</label>
+                    <input type="text" id="nombre" name="nombre" data-i18n="nombre_placeholder" placeholder="Tu nombre" required>
                 </fieldset>
 
                 <fieldset class="grupo-input">
-                    <label for="email">Correo Electrónico</label>
-                    <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required>
+                    <label for="email" data-i18n="correo_label">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" data-i18n="email_placeholder" placeholder="ejemplo@correo.com" required>
                 </fieldset>
 
                 <fieldset class="grupo-input">
-                    <label for="asunto">Asunto</label>
-                    <input type="text" id="asunto" name="asunto" placeholder="¿En qué podemos ayudarte?" required>
+                    <label for="asunto" data-i18n="asunto_label">Asunto</label>
+                    <input type="text" id="asunto" name="asunto" data-i18n="asunto_placeholder" placeholder="¿En qué podemos ayudarte?" required>
                 </fieldset>
 
                 <fieldset class="grupo-input">
-                    <label for="mensaje">Mensaje</label>
-                    <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe tu mensaje aquí..."
-                        required></textarea>
+                    <label for="mensaje" data-i18n="mensaje_label">Mensaje</label>
+                    <textarea id="mensaje" name="mensaje" rows="5" data-i18n="mensaje_placeholder" placeholder="Escribe tu mensaje aquí..." required></textarea>
                 </fieldset>
 
-                <button type="submit" class="btn-enviar">Enviar Mensaje</button>
+                <button type="submit" class="btn-enviar" data-i18n="enviar_btn">Enviar Mensaje</button>
             </form>
         </section>
 
     </main>
+
     <footer class="pie-pagina">
         <nav class="footer_navegacion">
-            <p class="contenido_footer">Términos de Servicio</p>
-            <p class="contenido_footer">Política de Privacidad</p>
+            <p data-i18n="terminos" class="contenido_footer">Términos de Servicio</p>
+            <p data-i18n="privacidad" class="contenido_footer">Política de Privacidad</p>
         </nav>
         <aside class="barra_inferior">
-            <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
+            <p data-i18n="derechos" class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
         </aside>
     </footer>
+
     <script src="/Frontend/js/tema.js"></script>
     <script src="/Frontend/js/contacto.js"></script>
+    <script src="/Frontend/js/idioma.js"></script>
 </body>
 
 </html>

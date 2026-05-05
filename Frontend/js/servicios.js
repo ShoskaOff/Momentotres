@@ -1,17 +1,15 @@
 import { supabase } from '../../Database/supabaseClient.js';
 
-// 1. URL BASE PARA IMÁGENES (ID: jdofaujfqsyiwauwttcd)
+// 1. URL BASE PARA IMÁGENES
 const URL_BASE_STORAGE = "https://jdofaujfqsyiwauwttcd.supabase.co/storage/v1/object/public/Imagenes/Carpeta%20Servicios/";
 
 // --- 1. CARGA DE SERVICIOS (Vista Pública: Lobby y Tratamientos) ---
 async function cargarServicios() {
-    // Buscamos ambos posibles contenedores
     const contenedorGeneral = document.querySelector('.contenedor-servicios:not(#servicios-destacados)');
     const contenedorLobby = document.getElementById('servicios-destacados');
     
     if (!contenedorGeneral && !contenedorLobby) return;
 
-    // Traemos los datos de la base de datos
     const { data, error } = await supabase.from('servicios').select('*').order('nombre', { ascending: true });
     
     if (error) { 
@@ -20,28 +18,31 @@ async function cargarServicios() {
     }
 
     if (data) {
-        // Si existe el contenedor del Lobby, le enviamos solo los primeros 3
         if (contenedorLobby) {
             const destacados = data.slice(0, 3);
             contenedorLobby.innerHTML = generarHTMLTarjetas(destacados, true);
         }
 
-        // Si existe el contenedor de la página de servicios, le enviamos todos
         if (contenedorGeneral) {
             contenedorGeneral.innerHTML = generarHTMLTarjetas(data, false);
         }
+
+        // 🌍 TRADUCCIÓN: Forzamos la traducción después de renderizar las tarjetas
+        setTimeout(() => {
+            if (typeof window.traducirPagina === 'function') {
+                window.traducirPagina();
+            }
+        }, 150);
     }
 }
 
-// Función auxiliar para generar el HTML (Evita repetir código)
+// Función auxiliar para generar el HTML con etiquetas de idioma
 function generarHTMLTarjetas(servicios, esLobby) {
     return servicios.map(s => {
-        // Lógica para rutas de archivos HTML locales
-        const nombreDB = s.nombre
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "");
+        // Generar llave única para el diccionario (ej: "Blanqueamiento dental" -> "blanqueamiento_dental")
+        const idIdioma = s.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_');
 
+        const nombreDB = s.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         let nombreArchivo = "";
         if (nombreDB.includes("diseno") || nombreDB.includes("sonrisa")) {
             nombreArchivo = "diseñoSonrisa";
@@ -53,7 +54,6 @@ function generarHTMLTarjetas(servicios, esLobby) {
             nombreArchivo = nombreDB.split(' ')[0];
         }
 
-        // Ajuste de ruta según la ubicación del HTML
         const rutaArchivo = esLobby 
             ? `/Frontend/index/tratamientos/${nombreArchivo}.html` 
             : `./tratamientos/${nombreArchivo}.html`;
@@ -62,14 +62,13 @@ function generarHTMLTarjetas(servicios, esLobby) {
             ? URL_BASE_STORAGE + s.imagen_url 
             : "../../../Media/Logo.png";
 
-        // Estilo específico para el Lobby o para la lista general
         if (esLobby) {
             return `
                 <article>
                     <img src="${imgFinal}" alt="${s.nombre}" onerror="this.src='/Media/Logo.png';">
-                    <h3>${s.nombre}</h3>
-                    <p>${s.descripcion ? s.descripcion.substring(0, 60) + '...' : 'Tu sonrisa es nuestra prioridad.'}</p>
-                    <a href="${rutaArchivo}" class="btn-detalle">Ver detalle</a>
+                    <h3 data-i18n="nombre_${idIdioma}">${s.nombre}</h3>
+                    <p data-i18n="desc_${idIdioma}">${s.descripcion ? s.descripcion.substring(0, 60) + '...' : 'Tu sonrisa es nuestra prioridad.'}</p>
+                    <a href="${rutaArchivo}" class="btn-detalle" data-i18n="ver_detalle">Ver detalle</a>
                 </article>
             `;
         } else {
@@ -81,8 +80,8 @@ function generarHTMLTarjetas(servicios, esLobby) {
                              onerror="this.src='../../../Media/Logo.png';">
                         
                         <div style="flex-grow: 1;">
-                            <h3 style="margin: 0; color: #333;">${s.nombre}</h3>
-                            <p style="margin: 5px 0; color: #666; font-size: 0.9rem;">
+                            <h3 style="margin: 0; color: #333;" data-i18n="nombre_${idIdioma}">${s.nombre}</h3>
+                            <p style="margin: 5px 0; color: #666; font-size: 0.9rem;" data-i18n="desc_${idIdioma}">
                                 ${s.descripcion ? s.descripcion.substring(0, 80) + '...' : 'Consulta con nuestros especialistas.'}
                             </p>
                             <p style="margin: 5px 0; font-size: 1.1rem; font-weight: bold;">$${s.precio ? s.precio.toLocaleString() : '0'}</p>
@@ -102,18 +101,24 @@ async function cargarCRUD() {
     const { data } = await supabase.from('servicios').select('*').order('nombre', { ascending: true });
     
     if (data) {
-        lista.innerHTML = data.map(s => `
-            <article style="border:1px solid #ccc; padding:15px; margin-bottom:10px; border-radius:8px; display: flex; justify-content: space-between; align-items: center; background: #f9f9f9;">
-                <div>
-                    <strong>${s.nombre}</strong> <br>
-                    <small style="color: #666;">$${s.precio ? s.precio.toLocaleString() : '0'}</small>
-                </div>
-                <button onclick="editarServicio('${s.id}', '${s.nombre}', ${s.precio}, '${s.descripcion || ''}', '${s.imagen_url || ''}')"
-                        style="background: #2196F3; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
-                    Editar
-                </button>
-            </article>
-        `).join('');
+        lista.innerHTML = data.map(s => {
+            const idIdioma = s.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_');
+            return `
+                <article style="border:1px solid #ccc; padding:15px; margin-bottom:10px; border-radius:8px; display: flex; justify-content: space-between; align-items: center; background: #f9f9f9;">
+                    <div>
+                        <strong data-i18n="nombre_${idIdioma}">${s.nombre}</strong> <br>
+                        <small style="color: #666;">$${s.precio ? s.precio.toLocaleString() : '0'}</small>
+                    </div>
+                    <button onclick="editarServicio('${s.id}', '${s.nombre}', ${s.precio}, '${s.descripcion || ''}', '${s.imagen_url || ''}')"
+                            style="background: #2196F3; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;"
+                            data-i18n="btn_editar">
+                        Editar
+                    </button>
+                </article>
+            `;
+        }).join('');
+        
+        if (typeof window.traducirPagina === 'function') window.traducirPagina();
     }
 }
 

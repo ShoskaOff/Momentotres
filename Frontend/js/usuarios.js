@@ -3,6 +3,14 @@ import { supabase } from "/Frontend/js/supabase.js";
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("formLogin");
 
+  // Función auxiliar para obtener textos traducidos en JS
+  function obtenerTraduccion(llave, textoPorDefecto) {
+    if (window.traducciones && window.traducciones[window.currentLang] && window.traducciones[window.currentLang][llave]) {
+      return window.traducciones[window.currentLang][llave];
+    }
+    return textoPorDefecto;
+  }
+
   if (!form) return;
 
   form.addEventListener("submit", async (e) => {
@@ -12,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const clave = document.getElementById("clave").value.trim();
 
     if (!correo || !clave) {
-      alert("Completa todos los campos");
+      alert(obtenerTraduccion("error_campos_vacios", "Completa todos los campos"));
       return;
     }
 
@@ -24,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (loginError) {
       console.error(loginError);
-      alert("Error al iniciar sesión");
+      alert(obtenerTraduccion("error_login", "Error al iniciar sesión"));
       return;
     }
 
@@ -34,13 +42,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const { data: userData, error: userError } = await supabase.auth.getUser();
 
     if (userError || !userData.user) {
-      alert("No se pudo obtener el usuario");
+      alert(obtenerTraduccion("error_obtener_usuario", "No se pudo obtener el usuario"));
       return;
     }
 
     const userId = userData.user.id;
-
-    console.log("🔎 USER ID:", userId);
 
     // 🔥 BUSCAR EN BD
     let { data: usuario, error: usuarioError } = await supabase
@@ -51,33 +57,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (usuarioError) {
       console.error("❌ Error BD:", usuarioError);
-      alert("Error consultando base de datos");
+      alert(obtenerTraduccion("error_bd", "Error consultando base de datos"));
       return;
     }
 
-    
-   if (!usuario) {
-  let rol = 2;
+    if (!usuario) {
+      let rol = 2;
+      if (correo === "admin@tudominio.com") {
+        rol = 1;
+      }
 
-  if (correo === "admin@tudominio.com") {
-    rol = 1;
-  }
-
-  await supabase.from("Usuarios").insert([
-    {
-      auth_uuid: userId,
-      rol_id: rol
-    }
-  ]);
-
+      const { error: insertError } = await supabase.from("Usuarios").insert([
+        {
+          auth_uuid: userId,
+          rol_id: rol
+        }
+      ]);
 
       if (insertError) {
         console.error("❌ Error creando usuario:", insertError);
-        alert("Error sincronizando usuario con base de datos");
+        alert(obtenerTraduccion("error_sincronizacion", "Error sincronizando usuario con base de datos"));
         return;
       }
 
-      // 🔁 volver a consultar
       const { data: nuevoUsuario, error: reloadError } = await supabase
         .from("Usuarios")
         .select("rol_id")
@@ -85,14 +87,12 @@ document.addEventListener("DOMContentLoaded", () => {
         .maybeSingle();
 
       if (reloadError || !nuevoUsuario) {
-        alert("No se pudo validar usuario");
+        alert(obtenerTraduccion("error_validar", "No se pudo validar usuario"));
         return;
       }
 
       usuario = nuevoUsuario;
     }
-
-    console.log("✅ Usuario validado:", usuario);
 
     // 🔥 REDIRECCIÓN POR ROL
     if (usuario.rol_id === 1) {

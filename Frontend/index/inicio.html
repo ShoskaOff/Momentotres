@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesión</title>
+    <title data-i18n="login_titulo_pestana">Iniciar sesión</title>
 
     <link rel="stylesheet" href="/Frontend/styles/inicio.css">
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="stylesheet" href="/Frontend/styles/servicios.css">
     <link rel="stylesheet" href="/Frontend/styles/responsive.css">
+    <link rel="stylesheet" href="/Frontend/styles/idioma.css">
+    
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
 
@@ -17,18 +19,21 @@
 
     <header class="site-header">
         <a href="/Frontend/index/lobby.html">
-            <figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure>
+            <figure class="logo"><img src="/Media/Logo.png" alt="DENTOLOGY"></figure>
         </a>
         <nav class="main-nav">
-            <a href="/Frontend/index/lobby.html">Inicio</a>
-            <a href="/Frontend/index/servicios.html">Tratamientos</a>
-            <a href="/Frontend/index/citas.html">Citas</a>
-            <a href="/Frontend/index/contacto.html">Contacto</a>
-            <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
+            <a data-i18n="inicio" href="/Frontend/index/lobby.html">Inicio</a>
+            <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
+            <a data-i18n="citas" href="/Frontend/index/citas.html">Citas</a>
+            <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
+            <a data-i18n="login" href="/Frontend/index/inicio.html">Inicio Sesion</a>
             
-            <a id="theme-toggle" type="button">🌙</a>
-            <a id="btnAdmin" type="button" href="/Frontend/index/PaginaAdmin/admin.html">
-            </a>
+            <a id="theme-toggle" type="button" style="cursor: pointer;">🌙</a>
+            
+            <button id="btn-es" type="button" aria-label="Español">🇪🇸</button>
+            <button id="btn-en" type="button" aria-label="English">🇺🇸</button>
+
+            <a id="btnAdmin" type="button" href="/Frontend/index/PaginaAdmin/admin.html"></a>
         </nav>
     </header>
 
@@ -37,27 +42,27 @@
         <article class="tarjeta">
 
             <header class="tarjeta-encabezado">
-                <h1>Bienvenido</h1>
-                <p>Accede a tus citas odontológicas</p>
+                <h1 data-i18n="bienvenido">Bienvenido</h1>
+                <p data-i18n="subtitulo_login">Accede a tus citas odontológicas</p>
             </header>
 
             <form id="formLogin" class="formulario">
                 <fieldset>
-                    <legend>Datos de acceso</legend>
+                    <legend data-i18n="datos_acceso">Datos de acceso</legend>
 
-                    <label for="correo">Correo electrónico</label>
+                    <label for="correo" data-i18n="correo_electronico">Correo electrónico</label>
                     <input type="email" id="correo" required>
 
-                    <label for="clave">Contraseña</label>
+                    <label for="clave" data-i18n="contrasena">Contraseña</label>
                     <input type="password" id="clave" required>
                 </fieldset>
 
-                <button type="submit">Ingresar</button>
+                <button type="submit" data-i18n="ingresar">Ingresar</button>
             </form>
 
             <footer class="tarjeta-pie">
-                <p>¿No tienes cuenta?</p>
-                <a href="/Frontend/index/registro.html" class="btn-registro">
+                <p data-i18n="no_tienes_cuenta">¿No tienes cuenta?</p>
+                <a data-i18n="crear_cuenta_btn" href="/Frontend/index/registro.html" class="btn-registro">
                     Crear cuenta
                 </a>
             </footer>
@@ -67,7 +72,8 @@
 </main>
 
 <script type="module" src="/Frontend/js/usuarios.js"></script>
- <script src="/Frontend/js/tema.js"></script>
+<script src="/Frontend/js/tema.js"></script>
+<script src="/Frontend/js/idioma.js"></script>
 
 </body>
 </html>

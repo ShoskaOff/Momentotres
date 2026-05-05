@@ -4,62 +4,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sellantes</title>
+  <title data-i18n="titulo_sellantes">Sellantes</title>
   <link rel="stylesheet" href="/Frontend/styles/servicios.css">
   <link rel="stylesheet" href="/Frontend/styles/tratamientos.css">
   <link rel="stylesheet" href="/Frontend/styles/tema.css">
   <link rel="stylesheet" href="/Frontend/styles/responsive.css">
+  <link rel="stylesheet" href="/Frontend/styles/idioma.css">
+  
+  <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
 
 <body>
 
   <header class="site-header">
-    <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure></a>
+    <a href="/Frontend/index/lobby.html">
+        <figure class="logo"><img src="/Media/Logo.png" alt="DENTOLOGY"></figure>
+    </a>
     <nav class="main-nav">
-        <a href="/Frontend/index/lobby.html">Inicio</a>
-        <a href="/Frontend/index/servicios.html">Tratamientos</a>
-        <a href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a>
-        <a href="/Frontend/index/contacto.html">Contacto</a>
-        <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
-        <a id="theme-toggle" type="button">🌙</a>
+        <a data-i18n="inicio" href="/Frontend/index/lobby.html">Inicio</a>
+        <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
+        <a data-i18n="citas" href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a>
+        <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
+        <a data-i18n="login" href="/Frontend/index/inicio.html">Inicio Sesion</a>
+        
+        <a id="theme-toggle" style="cursor: pointer;">🌙</a>
+
+        <button id="btn-es" type="button" aria-label="Español">🇪🇸</button>
+        <button id="btn-en" type="button" aria-label="English">🇺🇸</button>
     </nav>
   </header>
 
   <main>
-    <h1>Sellantes</h1>
+    <h1 data-i18n="sellantes_h1">Sellantes</h1>
     <section class="contenedor-volver">
-      <a href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
+      <a data-i18n="volver_btn" href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
     </section>
     
     <img src="/Media/img/sellante.jpeg" alt="Sellantes">
-    <p>Protección contra caries.</p>
+    <p data-i18n="sellantes_desc">Protección contra caries.</p>
 
     <ul>
-      <li>Prevención</li>
-      <li>Aplicación rápida</li>
+      <li data-i18n="sellantes_beneficio_1">Prevención</li>
+      <li data-i18n="sellantes_beneficio_2">Aplicación rápida</li>
     </ul>
 
-    <p class="precio">$40.000 por diente</p>
+    <p class="precio">
+        $40.000 <span data-i18n="por_diente">por diente</span>
+    </p>
     
-    <button id="agendarBtn" data-servicio="Sellantes">Agendar cita</button>
+    <button id="agendarBtn" data-i18n="agendar_cita_btn" data-servicio="Sellantes">Agendar cita</button>
 
     <div class="producto" data-id="sellantes" data-nombre="Sellantes" data-precio="40000">
-        <button class="btn-agregar">Agregar al carrito</button>
+        <button class="btn-agregar" data-i18n="agregar_carrito">Agregar al carrito</button>
     </div>
-
   </main>
 
-  <footer>
-    <aside class="contenido_footer">
-        <p>Política de Privacidad</p>
-        <p>Términos de Servicio</p>
-    </aside>
-    <aside class="barra_inferior">
-         <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
-    </aside>
+  <footer class="pie-pagina">
+      <nav class="footer_navegacion">
+          <p data-i18n="terminos" class="contenido_footer">Términos de Servicio</p>
+          <p data-i18n="privacidad" class="contenido_footer">Política de Privacidad</p>
+      </nav>
+      <aside class="barra_inferior">
+          <p data-i18n="derechos" class="derechos_reservados">©2026 DENTOLOGY. Todos los derechos reservados.</p>
+      </aside>
   </footer>
 
   <script src="/Frontend/js/tema.js"></script>
+  <script src="/Frontend/js/idioma.js"></script>
   
   <script>
     document.getElementById("agendarBtn").addEventListener("click", function() {

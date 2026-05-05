@@ -4,29 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Usuarios - DENTOLOGY</title>
+    <title data-i18n="titulo_gestion_usuarios">Gestión de Usuarios - DENTOLOGY</title>
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="stylesheet" href="/Frontend/styles/PaginaAdmin/admin.css">
+    <link rel="stylesheet" href="/Frontend/styles/idioma.css">
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
 
 <body>
     
-    button class="menu-hamburguesa" id="btnHamburguesa">☰</button>
-
+    <button class="menu-hamburguesa" id="btnHamburguesa">☰</button>
 
     <aside class="sidebar" id="sidebar">
         <a href="/Frontend/index/lobby.html" class="logo">
             <img src="/Media/Logo.png" alt="DENTOLOGY">
         </a>
         <nav class="main-nav">
-            <a href="/Frontend/index/lobby.html">Pagina</a>
-            <a href="/Frontend/index/PaginaAdmin/admin.html">Panel de Administración</a>
-            <a href="/Frontend/index/PaginaAdmin/gestionCitas.html">Gestión de Citas</a>
-            <a href="/Frontend/index/PaginaAdmin/gestionUsuario.html">Gestión de Usuarios</a>
+            <a data-i18n="inicio" href="/Frontend/index/lobby.html">Pagina</a>
+            <a data-i18n="panel_admin_nav" href="/Frontend/index/PaginaAdmin/admin.html">Panel de Administración</a>
+            <a data-i18n="gestion_citas_nav" href="/Frontend/index/PaginaAdmin/gestionCitas.html">Gestión de Citas</a>
+            <a data-i18n="gestion_usuarios_nav" href="/Frontend/index/PaginaAdmin/gestionUsuario.html" class="activo">Gestión de Usuarios</a>
         </nav>
+
+        <section class="idioma-sidebar">
+            <button id="btn-es" type="button" class="btn-lang">🇪🇸 ES</button>
+            <button id="btn-en" type="button" class="btn-lang">🇺🇸 EN</button>
+        </section>
+
         <section class="sidebar-footer">
-            <a href="/Frontend/index/inicio.html" id="btnCerrarSesion" type="button">🚪 Cerrar Sesión</a>
+            <a href="/Frontend/index/inicio.html" id="btnCerrarSesion" type="button">
+                <span data-i18n="cerrar_sesion">🚪 Cerrar Sesión</span>
+            </a>
         </section>
     </aside>
 
@@ -37,15 +45,15 @@
 
     <main class="admin-content">
         <header class="admin-header-section">
-            <h1>Gestión de Usuarios y Roles</h1>
+            <h1 data-i18n="gestion_usuarios_h1">Gestión de Usuarios y Roles</h1>
         </header>
 
         <section class="admin-filtros">
-            <input type="search" id="buscarUsuario" placeholder="Buscar por nombre o correo..." class="input-busqueda">
+            <input type="search" id="buscarUsuario" data-i18n-placeholder="placeholder_buscar_usuario" placeholder="Buscar por nombre o correo..." class="input-busqueda">
             <select id="filtroRol" class="select-filtro" aria-label="Filtrar por rol">
-                <option value="todos">Todos los roles</option>
-                <option value="paciente">Pacientes</option>
-                <option value="admin">Administradores</option>
+                <option value="todos" data-i18n="rol_todos">Todos los roles</option>
+                <option value="paciente" data-i18n="rol_pacientes">Pacientes</option>
+                <option value="admin" data-i18n="rol_admins">Administradores</option>
             </select>
         </section>
 
@@ -58,10 +66,11 @@
     </main>
 
     <footer class="pie-pagina-admin">
-        <p>©DENTOLOGY. Todos los derechos reservados.</p>
+        <p data-i18n="derechos">©2026 DENTOLOGY. Todos los derechos reservados.</p>
     </footer>
 
     <script src="/Frontend/js/tema.js"></script>
+    <script src="/Frontend/js/idioma.js"></script>
     <script src="/Frontend/js/admin.js"></script>
 </body>
 

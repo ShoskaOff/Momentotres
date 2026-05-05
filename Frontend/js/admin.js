@@ -1,6 +1,6 @@
 import { supabase as db } from '../../Database/supabaseClient.js';
 
-// 1. CONFIGURACIÓN DE RUTA (ID verificado: jdofaujfqsyiwauwttcd)
+// 1. CONFIGURACIÓN DE RUTA
 const URL_BASE_STORAGE = "https://jdofaujfqsyiwauwttcd.supabase.co/storage/v1/object/public/Imagenes/Carpeta%20Servicios/";
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -18,11 +18,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         btnToggle.addEventListener("click", () => {
             expandido = !expandido;
             contenedor.classList.toggle("expandido");
-            btnToggle.textContent = expandido ? "Ocultar servicios" : "Ver mas +";
+            // Usamos llaves para el botón de toggle también
+            btnToggle.setAttribute('data-i18n', expandido ? 'btn_ocultar_servicios' : 'btn_ver_mas');
+            if (typeof window.traducirPagina === 'function') window.traducirPagina();
         });
     }
 
-    // --- 2. CARGAR SERVICIOS (CORREGIDO PARA IMÁGENES) ---
+    // --- 2. CARGAR SERVICIOS (CON TRADUCCIÓN) ---
     async function cargarServicios() {
         if (!contenedor) return;
         try {
@@ -34,33 +36,31 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (error) throw error;
 
             if (!servicios || servicios.length === 0) {
-                contenedor.innerHTML = '<p>No hay tratamientos disponibles.</p>';
+                contenedor.innerHTML = '<p data-i18n="no_servicios">No hay tratamientos disponibles.</p>';
                 return;
             }
 
             contenedor.innerHTML = servicios.map(s => {
-                // Si la columna imagen_url tiene el nombre del archivo, le pegamos la URL base
-                // Si está vacía, usamos el logo por defecto
-                const imgFinal = s.imagen_url 
-                    ? URL_BASE_STORAGE + s.imagen_url 
-                    : "../../../Media/Logo.png";
+                const idIdioma = s.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_');
+                const imgFinal = s.imagen_url ? URL_BASE_STORAGE + s.imagen_url : "../../../Media/Logo.png";
 
                 return `
                 <section class="tarjeta-servicio">
                     <img src="${imgFinal}" alt="${s.nombre}" 
                          style="width:100px; height:100px; object-fit:cover; border-radius:8px;"
                          onerror="this.src='../../../Media/Logo.png';">
-                    <h3>${s.nombre}</h3>
-                    <p>${s.descripcion || 'Consulta con nuestros especialistas.'}</p>
+                    <h3 data-i18n="nombre_${idIdioma}">${s.nombre}</h3>
+                    <p data-i18n="desc_${idIdioma}">${s.descripcion || 'Consulta con nuestros especialistas.'}</p>
                     <span class="precio">$${s.precio ? s.precio.toLocaleString() : '0'}</span>
 
                     <section class="acciones">
-                        <button class="btn-editar" data-id="${s.id}">✏️ Editar</button>
-                        <button class="btn-borrar" data-id="${s.id}"style="color:darkred;">🗑️ Borrar</button>
+                        <button class="btn-editar" data-id="${s.id}" data-i18n="btn_editar_icon">✏️ Editar</button>
+                        <button class="btn-borrar" data-id="${s.id}" style="color:darkred;" data-i18n="btn_borrar_icon">🗑️ Borrar</button>
                     </section>
                 </section>
             `}).join('');
 
+            // Eventos de botones
             document.querySelectorAll('#crud-contenedor-servicios .btn-editar').forEach(b => {
                 b.onclick = () => prepararEdicion(b.dataset.id);
             });
@@ -68,12 +68,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 b.onclick = () => eliminarServicio(b.dataset.id);
             });
 
+            // 🌍 TRADUCIR CONTENIDO DINÁMICO
+            if (typeof window.traducirPagina === 'function') window.traducirPagina();
+
         } catch (error) {
             console.error("Error cargando servicios:", error);
         }
     }
 
-    // --- 3. CARGAR CITAS ---
+    // --- 3. CARGAR CITAS (CON TRADUCCIÓN) ---
     async function cargarCitasAdmin() {
         if (!contenedorCitas) return;
         try {
@@ -89,26 +92,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (error) throw error;
 
-            contenedorCitas.innerHTML = citas.map(c => `
+            contenedorCitas.innerHTML = citas.map(c => {
+                const sNombre = c.servicios?.nombre || '';
+                const idServicioCita = sNombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_');
+
+                return `
                 <section class="tarjeta-servicio"> 
                     <section class="info-cita">
-                        <h3>Paciente: ${c.Usuarios?.nombre || 'Sin nombre'}</h3>
-                        <p><strong>Servicio:</strong> ${c.servicios?.nombre || 'No encontrado'}</p>
-                        <p><strong>Fecha:</strong> ${new Date(c.fecha_hora).toLocaleString()}</p>
+                        <h3><span data-i18n="paciente_label">Paciente:</span> ${c.Usuarios?.nombre || 'Sin nombre'}</h3>
+                        <p><strong data-i18n="servicio_label">Servicio:</strong> <span data-i18n="nombre_${idServicioCita}">${sNombre || 'No encontrado'}</span></p>
+                        <p><strong data-i18n="fecha_label">Fecha:</strong> ${new Date(c.fecha_hora).toLocaleString()}</p>
                         <p><small>${c.Usuarios?.correo || ''}</small></p>
                     </section>
                     <section class="acciones">
-                        <button class="btn-editar" onclick="reprogramarCita(${c.id}, '${c.fecha_hora}')">✏️ Reprogramar</button>
-                        <button class="btn-borrar" onclick="eliminarCitaAdmin(${c.id})" style="color:darkred;">🗑️ Cancelar</button>
+                        <button class="btn-editar" onclick="reprogramarCita(${c.id}, '${c.fecha_hora}')" data-i18n="btn_reprogramar">✏️ Reprogramar</button>
+                        <button class="btn-borrar" onclick="eliminarCitaAdmin(${c.id})" style="color:darkred;" data-i18n="btn_cancelar_cita">🗑️ Cancelar</button>
                     </section>
                 </section>
-            `).join('');
+            `}).join('');
+
+            if (typeof window.traducirPagina === 'function') window.traducirPagina();
+
         } catch (error) {
             console.error("Error citas:", error);
         }
     }
 
-    // --- 4. GUARDAR / EDITAR (CON SUBIDA DE ARCHIVOS) ---
+    // --- 4. GUARDAR / EDITAR ---
     if (form) {
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -116,18 +126,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const file = document.getElementById("imagenInput")?.files[0];
             let nombreArchivoParaBD = "";
 
-            // Si el usuario sube un archivo nuevo
             if (file) {
                 const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
                 const { error: upError } = await db.storage
                     .from('Imagenes')
                     .upload(`Carpeta Servicios/${fileName}`, file);
                 
-                if (!upError) {
-                    nombreArchivoParaBD = fileName;
-                } else {
-                    console.error("Error subida:", upError);
-                }
+                if (!upError) nombreArchivoParaBD = fileName;
             }
 
             const datos = {
@@ -135,7 +140,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 precio: parseFloat(document.getElementById("precio").value),
                 descripcion: document.getElementById("descripcion").value
             };
-            
             
             if (nombreArchivoParaBD) datos.imagen_url = nombreArchivoParaBD;
 

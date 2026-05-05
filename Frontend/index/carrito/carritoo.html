@@ -1,115 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="titulo_carrito">Carrito - DENTOLOGY</title>
+
     <link rel="stylesheet" href="/Frontend/styles/servicios.css">
     <link rel="stylesheet" href="/Frontend/styles/lobby.css">
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="stylesheet" href="/Frontend/styles/responsive.css">
+    <link rel="stylesheet" href="/Frontend/styles/idioma.css">
     <link rel="icon" href="/Media/favicon.png" type="image/png">
     <link rel="stylesheet" href="carritoo.css">
-    <script src="/Frontend/js/servicios.js"></script>
-    <script src="/Frontend/js/tema.js"></script>
-    <title>Inicio</title>
 </head>
 
 <body>
     <header class="site-header">
-        <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure></a>
+        <a href="/Frontend/index/lobby.html">
+            <figure class="logo"><img src="/Media/Logo.png" alt="DENTOLOGY"></figure>
+        </a>
         <nav class="main-nav">
-            <a href="/Frontend/index/lobby.html">Inicio</a>
-            <a href="/Frontend/index/servicios.html">Tratamientos</a>
-            <a href="/Frontend/index/citas.html">Citas</a>
-            <a href="/Frontend/index/contacto.html">Contacto</a>
-            <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
-            <a id="theme-toggle" type="button">🌙</a>
+            <a data-i18n="inicio" href="/Frontend/index/lobby.html">Inicio</a>
+            <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
+            <a data-i18n="citas" href="/Frontend/index/citas.html">Citas</a>
+            <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
+            <a data-i18n="login" href="/Frontend/index/inicio.html">Inicio Sesion</a>
+            
+            <a id="theme-toggle" style="cursor: pointer;">🌙</a>
+
+            <button id="btn-es" type="button" aria-label="Español">🇪🇸</button>
+            <button id="btn-en" type="button" aria-label="English">🇺🇸</button>
         </nav>
     </header>
 
-    <main>
-        <main class="carrito-container">
-    <h1>Carrito de Tratamientos</h1>
-    <div id="contenedor-carrito">
-        </div>
-    <hr>
-    <h3>Total a pagar: $<span id="total-carrito">0</span></h3>
-</main>
+    <main class="carrito-container">
+        <h1 data-i18n="carrito_h1">Carrito de Tratamientos</h1>
+        <div id="contenedor-carrito">
+            </div>
+        <hr>
+        <h3>
+            <span data-i18n="total_pagar">Total a pagar</span>: 
+            $<span id="total-carrito">0</span>
+        </h3>
+    </main>
 
-<footer>
-    <nav class="footer_navegacion">
-        <section class="contenido_footer">Política de Privacidad</section>
-        <section class="contenido_footer">Términos de Servicio</section>
-    </nav>
-    <nav class="barra_inferior">
-        <section class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</section>
-    </nav>
-</footer>
+    <footer>
+        <nav class="footer_navegacion">
+            <p data-i18n="privacidad" class="contenido_footer">Política de Privacidad</p>
+            <p data-i18n="terminos" class="contenido_footer">Términos de Servicio</p>
+        </nav>
+        <aside class="barra_inferior">
+            <p data-i18n="derechos" class="derechos_reservados">©2026 DENTOLOGY. Todos los derechos reservados.</p>
+        </aside>
+    </footer>
 
-<script src="../../js/carrito.js"></script>
+    <script src="/Frontend/js/tema.js"></script>
+    <script src="/Frontend/js/idioma.js"></script>
+    <script src="../../js/carrito.js"></script>
 
-<script>
-    const contenedor = document.getElementById('contenedor-carrito');
-    const totalSpan = document.getElementById('total-carrito');
+    <script>
+        const contenedor = document.getElementById('contenedor-carrito');
+        const totalSpan = document.getElementById('total-carrito');
 
-    function renderizar() {
-        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-        contenedor.innerHTML = '';
-        let total = 0;
-        
-        if (carrito.length === 0) {
-            contenedor.innerHTML = '<p>Tu carrito está vacío.</p>';
-        } else {
-            carrito.forEach((prod, index) => {
-                let cantidad = prod.cantidad || 1;
-                total += (prod.precio * cantidad);
-                contenedor.innerHTML += `
-                    <div class="item-carrito">
-                        <span>${prod.nombre}</span>
-                        <div>
-                            <button onclick="cambiarCantidad(${index}, -1)">-</button>
-                            <span>${cantidad}</span>
-                            <button onclick="cambiarCantidad(${index}, 1)">+</button>
-                        </div>
-                        <span>$${(prod.precio * cantidad).toLocaleString()}</span>
-                        <button onclick="eliminarProducto(${index})">Eliminar</button>
-                    </div>`;
-            });
+        function renderizar() {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            contenedor.innerHTML = '';
+            let total = 0;
+
+            // Obtener idioma actual para textos dinámicos
+            const lang = localStorage.getItem('language') || 'es';
+            const msgVacio = lang === 'es' ? 'Tu carrito está vacío.' : 'Your cart is empty.';
+            const btnEliminar = lang === 'es' ? 'Eliminar' : 'Remove';
+
+            if (carrito.length === 0) {
+                contenedor.innerHTML = `<p>${msgVacio}</p>`;
+            } else {
+                carrito.forEach((prod, index) => {
+                    let cantidad = prod.cantidad || 1;
+                    total += (prod.precio * cantidad);
+                    contenedor.innerHTML += `
+                        <div class="item-carrito">
+                            <span>${prod.nombre}</span>
+                            <div>
+                                <button onclick="cambiarCantidad(${index}, -1)">-</button>
+                                <span>${cantidad}</span>
+                                <button onclick="cambiarCantidad(${index}, 1)">+</button>
+                            </div>
+                            <span>$${(prod.precio * cantidad).toLocaleString()}</span>
+                            <button onclick="eliminarProducto(${index})">${btnEliminar}</button>
+                        </div>`;
+                });
+            }
+            totalSpan.innerText = total.toLocaleString();
         }
-        totalSpan.innerText = total.toLocaleString();
-    }
 
-    // Funciones de control
-    window.cambiarCantidad = function(index, cambio) {
-        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-        carrito[index].cantidad = (carrito[index].cantidad || 1) + cambio;
-        if (carrito[index].cantidad <= 0) carrito.splice(index, 1);
-        localStorage.setItem('carrito', JSON.stringify(carrito));
+        // Funciones de control
+        window.cambiarCantidad = function(index, cambio) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            carrito[index].cantidad = (carrito[index].cantidad || 1) + cambio;
+            if (carrito[index].cantidad <= 0) carrito.splice(index, 1);
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            renderizar();
+        };
+
+        window.eliminarProducto = function(index) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            carrito.splice(index, 1);
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            renderizar();
+        };
+
+        // Escuchar cambios de idioma para refrescar el carrito dinámico
+        document.getElementById('btn-es').addEventListener('click', () => setTimeout(renderizar, 100));
+        document.getElementById('btn-en').addEventListener('click', () => setTimeout(renderizar, 100));
+
+        // Ejecutar renderizado al cargar
         renderizar();
-    };
-
-    window.eliminarProducto = function(index) {
-        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-        carrito.splice(index, 1);
-        localStorage.setItem('carrito', JSON.stringify(carrito));
-        renderizar();
-    };
-
-    // --- Lógica del Tema Oscuro ---
-    const themeToggle = document.getElementById('theme-toggle');
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-theme');
-        localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
-    });
-
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-theme');
-    }
-
-    // Ejecutar renderizado al cargar
-    renderizar();
-</script>
-</main>
+    </script>
 </body>
 </html>

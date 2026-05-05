@@ -1,88 +1,84 @@
 // 🔌 IMPORTANTE: conexión a Supabase
-// 👉 Aquí va tu import real cuando lo conecten
-// import { supabase } from "../../Database/supabaseClient.js";
+import { supabase } from "/Frontend/js/supabase.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
 
     const lista = document.getElementById("listaCitas");
 
-    lista.innerHTML = "<p>Cargando citas...</p>";
+    if (lista) {
+        lista.innerHTML = "<p data-i18n='cargando'>Cargando citas...</p>";
+    }
 
-    // 🔐 ESPACIO PARA LOGIN
-    // 👉 Aquí luego deben traer el usuario logueado
-    /*
-    const { data: { user } } = await supabase.auth.getUser();
+    // 🔐 OBTENER USUARIO LOGUEADO
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-    if (!user) {
+    if (authError || !user) {
         window.location.href = "/Frontend/index/inicio.html";
         return;
     }
-    */
 
-    // 🔴 TEMPORAL (simulación mientras backend está listo)
-    const citasSimuladas = [
-        {
-            servicio: "Limpieza dental",
-            fecha: "2026-05-01",
-            hora: "10:00 AM",
-            estado: "pendiente"
-        },
-        {
-            servicio: "Ortodoncia",
-            fecha: "2026-05-03",
-            hora: "2:00 PM",
-            estado: "confirmada"
-        }
-    ];
-
-    renderizarCitas(citasSimuladas);
-
-
-    // 🔌 CONEXIÓN REAL (cuando usen Supabase)
-    /*
+    // 🔌 CONEXIÓN REAL CON SUPABASE
     const { data, error } = await supabase
         .from("Citas")
         .select(`
             *,
-            Servicio(nombre)
+            servicios:servicio_id ( nombre, imagen_url )
         `)
-        .eq("user_id", user.id);
+        .eq("usuario_id", user.id) // Ajusta si tu columna se llama user_id
+        .order("fecha_hora", { ascending: true });
 
     if (error) {
         console.error(error);
-        lista.innerHTML = "<p>Error cargando citas</p>";
+        lista.innerHTML = "<p data-i18n='error_carga_citas'>Error cargando citas</p>";
         return;
     }
 
     renderizarCitas(data);
-    */
 });
 
-
-// Renderizado
+// Renderizado con Soporte Multilingüe
 const renderizarCitas = (citas) => {
     const lista = document.getElementById("listaCitas");
+    if (!lista) return;
 
     lista.innerHTML = "";
 
     if (!citas || citas.length === 0) {
-        lista.innerHTML = "<p>No tienes citas registradas</p>";
+        lista.innerHTML = "<p data-i18n='sin_citas'>No tienes citas registradas</p>";
         return;
     }
 
     citas.forEach(cita => {
+        // Obtenemos el nombre del servicio (de la relación con la tabla servicios)
+        const sNombre = cita.servicios?.nombre || "Servicio";
+        
+        // Creamos la llave para el diccionario (ej: "nombre_limpieza_dental")
+        const idIdioma = sNombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '_');
+        
+        // Manejo de fecha y hora desde el campo fecha_hora de la BD
+        const fechaObj = new Date(cita.fecha_hora);
+        const fLabel = fechaObj.toLocaleDateString();
+        const hLabel = fechaObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        const estadoCita = cita.estado || "pendiente";
+
         const card = document.createElement("div");
         card.classList.add("cita-card");
 
         card.innerHTML = `
-            <h3>${cita.servicio || cita.Servicio?.nombre}</h3>
-            <p><strong>Fecha:</strong> ${cita.fecha}</p>
-            <p><strong>Hora:</strong> ${cita.hora}</p>
-            <p class="estado ${cita.estado || "pendiente"}">
-                ${(cita.estado || "pendiente").toUpperCase()}
+            <h3 data-i18n="nombre_${idIdioma}">${sNombre}</h3>
+            <p><strong data-i18n="fecha_label">Fecha:</strong> ${fLabel}</p>
+            <p><strong data-i18n="hora_label">Hora:</strong> ${hLabel}</p>
+            <p class="estado ${estadoCita}">
+                <span data-i18n="estado_${estadoCita.toLowerCase()}">${estadoCita.toUpperCase()}</span>
             </p>
         `;
 
         lista.appendChild(card);
     });
+
+    // 🌍 DISPARAR TRADUCCIÓN después de crear las tarjetas
+    if (typeof window.traducirPagina === 'function') {
+        window.traducirPagina();
+    }
 };
