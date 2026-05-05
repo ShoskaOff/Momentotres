@@ -15,7 +15,7 @@ article {
 
 button {
   background: #0077cc;
-  color: white;
+  color: rgb(255, 255, 255);
   border: none;
   padding: 0.5rem;
   border-radius: 5px;
@@ -64,7 +64,7 @@ section#contenedorTratamientos {
             padding: 20px;
         }
 #contenedorTratamientos article {
-            border: 1px solid #ddd;
+            border: 1px solid #fffdfd;
             padding: 15px;
             border-radius: 8px;
         }

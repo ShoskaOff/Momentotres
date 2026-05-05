@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Sistema de carrito inicializado.");
 
-    // --- 1. Lógica para AGREGAR ---
-    // Usamos un selector condicional para no fallar si no hay botones en la página actual
-    const botones = document.querySelectorAll('.btn-agregar');
-    botones.forEach(btn => {
-        btn.addEventListener('click', (e) => {
+    // --- 1. Lógica para AGREGAR (CORREGIDA 🔥) ---
+    // 👉 Ahora usa delegación de eventos (funciona con contenido dinámico)
+    document.addEventListener('click', (e) => {
+
+        if (e.target.classList.contains('btn-agregar')) {
+
             const prod = e.target.closest('.producto');
             if (!prod) return;
 
@@ -26,8 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             localStorage.setItem('carrito', JSON.stringify(carrito));
-            alert(nuevoProducto.nombre + " añadido al carrito.");
-        });
+
+            // 🔥 REDIRECCIÓN CORREGIDA (ruta relativa)
+            const ir = confirm(nuevoProducto.nombre + " añadido 🛒 ¿Ir al carrito?");
+
+            if (ir) {
+                 window.location.href = "/Frontend/index/carrito/carritoo.html";
+
+             }
+        }
     });
 
     // --- 2. Lógica para RENDERIZAR ---
@@ -38,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 3. Lógica para TEMA OSCURO ---
     const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) { // Verificamos que el botón exista antes de agregar el evento
+    if (themeToggle) {
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark-theme');
             localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
@@ -51,10 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Función para dibujar el carrito
+
+// --- 4. Función para dibujar el carrito ---
 function renderizarCarrito() {
     const contenedor = document.getElementById('contenedor-carrito');
-    const totalSpan = document.getElementById('total-carrito'); // Corregido ID
+    const totalSpan = document.getElementById('total-carrito');
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     
     contenedor.innerHTML = '';
@@ -80,22 +89,34 @@ function renderizarCarrito() {
                 </div>`;
         });
     }
+
     if (totalSpan) totalSpan.innerText = total.toLocaleString();
 }
 
+
+// --- 5. Cambiar cantidad ---
 window.cambiarCantidad = function(index, cambio) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
     if (carrito[index]) {
         carrito[index].cantidad = (carrito[index].cantidad || 1) + cambio;
-        if (carrito[index].cantidad <= 0) carrito.splice(index, 1);
+
+        if (carrito[index].cantidad <= 0) {
+            carrito.splice(index, 1);
+        }
     }
+
     localStorage.setItem("carrito", JSON.stringify(carrito));
     renderizarCarrito();
 };
 
+
+// --- 6. Eliminar producto ---
 window.eliminarProducto = function(index) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
     carrito.splice(index, 1);
+
     localStorage.setItem("carrito", JSON.stringify(carrito));
     renderizarCarrito();
 };

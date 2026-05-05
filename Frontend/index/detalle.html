@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalle Tratamiento | Dentology</title>
 
-  <link rel="stylesheet" href="/Frontend/styles/servicios.css">
-  <link rel="stylesheet" href="/Frontend/styles/tratamientos.css">
-  <link rel="stylesheet" href="/Frontend/styles/tema.css">
-  <link rel="stylesheet" href="/Frontend/styles/responsive.css">
+  <link rel="stylesheet" href="../styles/inicio.css">
+  <link rel="stylesheet" href="../styles/tema.css">
+  <link rel="stylesheet" href="../styles/servicios.css">
 </head>
 
 <body>
@@ -31,14 +30,15 @@
 
   <main>
     <section class="tratamientos-grid">
-      <section class="contenedor-servicios">
-        <div style="text-align: center; padding: 50px; color: #666;">
+      <section id="contenedor-detalle" class="contenedor-servicios">
+        <section style="text-align: center; padding: 50px; color: #666;">
           <p>Cargando detalles del tratamiento...</p>
-        </div>
+        </section>
       </section>
     </section>
   </main>
 
+  <!-- scripts -->
   <script src="/Frontend/js/tema.js"></script>
   <script src="/Frontend/index/carrito/carrito.js"></script>
 
@@ -49,6 +49,7 @@
       await cargarUnSoloProducto();
     });
 
+    // 👉 Mantiene funcionalidad de agendar
     document.addEventListener("click", (e) => {
       if (e.target.id === "agendarBtn") {
         const servicio = e.target.getAttribute("data-servicio");

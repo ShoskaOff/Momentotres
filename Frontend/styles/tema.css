@@ -2,7 +2,7 @@
 /* BOTON TEMA */
 /* ======================= */
 
-#theme-toggle{
+#theme-toggle {
     background: transparent;
     border: none;
     cursor: pointer;
@@ -14,7 +14,7 @@
     transition: transform 0.2s ease;
 }
 
-#theme-toggle:hover{
+#theme-toggle:hover {
     transform: scale(1.15);
 }
 
@@ -22,29 +22,29 @@
 /* VARIABLES DARK MODE */
 /* ======================= */
 
-body.dark-mode{
-    --color-fondo:#0f1720;
-    --color-primario:#182330;
-    --color-texto:#ffffff;
-    --color-blanco:#1f2937;
-    --color-borde:#334155;
-    --color-detalles:#38bdf8;
-    --color-boton-base:#0ea5e9;
-    --color-gradiente-1:#2563eb;
-    --color-gradiente-2:#0ea5e9;
+body.dark-mode {
+    --color-fondo: #0f1720;
+    --color-primario: #182330;
+    --color-texto: #ffffff;
+    --color-blanco: #1f2937;
+    --color-borde: #334155;
+    --color-detalles: #38bdf8;
+    --color-boton-base: #0ea5e9;
+    --color-gradiente-1: #2563eb;
+    --color-gradiente-2: #0ea5e9;
 }
 
 /* ======================= */
 /* GLOBAL */
 /* ======================= */
 
-body{
+body {
     transition: background 0.3s ease, color 0.3s ease;
 }
 
-body.dark-mode{
-    background:var(--color-fondo);
-    color:var(--color-texto);
+body.dark-mode {
+    background: var(--color-fondo);
+    color: var(--color-texto);
 }
 
 body.dark-mode h1,
@@ -55,8 +55,9 @@ body.dark-mode p,
 body.dark-mode span,
 body.dark-mode label,
 body.dark-mode li,
-body.dark-mode a{
-    color:white;
+body.dark-mode a,
+body.dark-mode figcaption {
+    color: white !important; /* Forzamos blanco para evitar letras negras */
 }
 
 /* ======================= */
@@ -65,56 +66,75 @@ body.dark-mode a{
 
 body.dark-mode .site-header,
 body.dark-mode .top-menu,
-body.dark-mode header{
-    background:var(--color-primario);
-    border-bottom:1px solid white;
+body.dark-mode header {
+    background: var(--color-primario) !important;
+    border-bottom: 1px solid white;
 }
 
 body.dark-mode .main-nav a,
-body.dark-mode .top-menu a{
-    color:white;
+body.dark-mode .top-menu a {
+    color: white !important;
 }
 
 body.dark-mode .main-nav a:hover,
-body.dark-mode .top-menu a:hover{
-    background:#243447;
+body.dark-mode .main-nav a.active {
+    background: #243447;
 }
 
 /* ======================= */
-/* TARJETAS */
+/* TARJETAS Y CITAS PROGRAMADAS */
 /* ======================= */
 
 body.dark-mode article,
 body.dark-mode .cita,
 body.dark-mode .card,
 body.dark-mode section,
-body.dark-mode main ul li{
-    background:#1e293b;
-    color:white;
-    border:1px solid #334155;
+body.dark-mode .servicio-card,
+body.dark-mode .cita-programada {
+    background: #1e293b !important;
+    color: white !important;
+    border: 1px solid var(--color-borde) !important;
 }
 
+/* Estilo específico para las citas en el historial */
+body.dark-mode .cita-programada {
+    border-left: 5px solid var(--color-detalles) !important;
+}
+
+/* Mejoras para servicios */
+body.dark-mode .servicio-titulo { color: white !important; }
+body.dark-mode .servicio-descripcion { color: #cbd5e1 !important; }
+body.dark-mode .servicio-precio { color: var(--color-detalles) !important; }
+
 /* ======================= */
-/* FORMULARIOS */
+/* FORMULARIOS (CITAS Y SERVICIOS) */
 /* ======================= */
 
 body.dark-mode form,
-body.dark-mode #formCita{
-    background:#1e293b;
-    color:white;
+body.dark-mode .formulario-estilo,
+body.dark-mode #formCita,
+body.dark-mode #formServicio {
+    background: #1e293b !important;
+    color: white !important;
+    border: 1px solid var(--color-borde);
+}
+
+/* Resalte para el texto informativo de citas */
+body.dark-mode #servicioSeleccionado {
+    color: var(--color-detalles) !important;
 }
 
 body.dark-mode input,
 body.dark-mode select,
-body.dark-mode textarea{
-    background:#0f1720;
-    color:white;
-    border:1px solid #334155;
+body.dark-mode textarea {
+    background: #0f1720 !important;
+    color: white !important;
+    border: 1px solid var(--color-borde) !important;
 }
 
 body.dark-mode input::placeholder,
-body.dark-mode textarea::placeholder{
-    color:#94a3b8;
+body.dark-mode textarea::placeholder {
+    color: #94a3b8;
 }
 
 /* ======================= */
@@ -123,14 +143,18 @@ body.dark-mode textarea::placeholder{
 
 body.dark-mode button,
 body.dark-mode .btn-detalle,
-body.dark-mode #agendarBtn{
-    background:linear-gradient(45deg,#2563eb,#0ea5e9);
-    color:white;
+body.dark-mode .btn-agendar,
+body.dark-mode #agendarBtn {
+    background: linear-gradient(45deg, #2563eb, #0ea5e9) !important;
+    color: white !important;
+    border: none;
 }
 
 body.dark-mode .btn-detalle:hover,
-body.dark-mode #agendarBtn:hover{
+body.dark-mode .btn-agendar:hover,
+body.dark-mode #agendarBtn:hover {
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
 }
 
 /* ======================= */
@@ -139,24 +163,31 @@ body.dark-mode #agendarBtn:hover{
 
 body.dark-mode .pie-pagina,
 body.dark-mode .footer_navegacion,
-body.dark-mode footer{
-    background:#182330;
+body.dark-mode footer {
+    background: #182330 !important;
 }
 
-body.dark-mode .barra_inferior{
-    background:black;
+body.dark-mode .barra_inferior {
+    background: black !important;
 }
 
 body.dark-mode .contenido_footer,
-body.dark-mode .derechos_reservados{
-    color:white;
+body.dark-mode .derechos_reservados {
+    color: white !important;
 }
 
 /* ======================= */
-/* MODAL */
+/* MODALES Y PANELES */
 /* ======================= */
 
-body.dark-mode dialog{
-    background:#1e293b;
-    color:white;
+body.dark-mode dialog,
+body.dark-mode #panelCRUD,
+body.dark-mode #modalDetalle {
+    background: #1e293b !important;
+    color: white !important;
+    border: 1px solid var(--color-borde);
+}
+
+body.dark-mode #modalDetalle #precio {
+    color: var(--color-detalles) !important;
 }

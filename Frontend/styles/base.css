@@ -1,8 +1,5 @@
-/* 
-Manejar toda la estructura de la página con GRID y ya la informacion que vaya dentro de cada etiqueta con flex
-
+/* Manejar toda la estructura de la página con GRID y la información interna con FLEX
 */
-
 
 * {
   margin: 0;
@@ -10,117 +7,270 @@ Manejar toda la estructura de la página con GRID y ya la informacion que vaya d
   box-sizing: border-box;
 }
 
-:root{
-    --color-fondo: #f7f0ff;
-    --color-primario: #c7c5f1;
-    --color-texto: #110202;
-    --fuente-principal: @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        font-family: "Inter", sans-serif;;
-    --titulos: @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700&display=swap');
-        font-family: "League Spartan", sans-serif;
-    --detalles: #40c4be;
-    --detalles-hover: #30bfb8; 
+:root {
+  --color-fondo: #f7f0ff;
+  --color-primario: #c7c5f1;
+  --color-texto: #110202;
+  --fuente-principal: 'Inter', sans-serif;
+  --titulos: 'League Spartan', sans-serif;
+  --detalles: #40c4be;
+  --detalles-hover: #30bfb8;
 }
 
-.top-menu {
+/* Importación de fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=League+Spartan:wght@300;400;500;600;700&display=swap');
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  margin-top: 60px; /* Espacio para el menú fixed */
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--fuente-principal);
+}
+
+/* --- HEADER / NAVEGACIÓN --- */
+
+.site-header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   padding: 12px 20px;
-  border-bottom: 1px solid#110202;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(90deg, #c7c5f1, #c7c5f1, #c7c5f1);
+  border-bottom: 1px solid var(--color-texto);
+  background: var(--color-primario);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.top-menu a {
-  color:#110202;
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.main-nav a {
+  color: var(--color-texto);
   text-decoration: none;
   font-weight: 500;
-  margin-right: 15px;
   padding: 8px 14px;
   border-radius: 10px;
   transition: 0.3s ease;
 }
 
-.top-menu a:hover {
+.main-nav a:hover, .main-nav a.active {
   background: #F0F7FF;
-  color:#110202;
+  color: var(--color-texto);
 }
 
-body {
-  margin-top: 60px;
+#theme-toggle {
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 5px;
+  transition: transform 0.2s;
 }
 
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    margin: 0;
+#theme-toggle:hover {
+  transform: scale(1.2);
 }
 
-.barra_navegacion {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    height: 50px;
-    background-color: var(--color-primario);
-    font-family: var(--fuente-principal);
-    color: var(--color-texto);
-    align-items: center;
-    text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+/* --- MAIN CONTENT --- */
+
+main {
+  flex: 1;
+  padding: 20px;
+}
+
+/* --- SECCIÓN DE CITAS (Nuevas Clases) --- */
+
+.contenedor-formulario {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.formulario-estilo {
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  border: 1px solid var(--color-primario);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.formulario-estilo h2 {
+  font-family: var(--titulos);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#servicioSeleccionado {
+  font-weight: bold;
+  color: #2196F3; /* Azul acento para modo claro */
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.campo {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.campo label {
+  font-weight: 600;
+}
+
+.campo input {
+  padding: 10px;
+  border: 1px solid var(--color-primario);
+  border-radius: 8px;
+  font-family: var(--fuente-principal);
+}
+
+.btn-agendar {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--detalles);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-agendar:hover {
+  background-color: var(--detalles-hover);
+}
+
+/* --- HISTORIAL DE CITAS --- */
+
+.titulo-historial {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-family: var(--titulos);
+}
+
+.cita-programada {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 5px solid var(--detalles);
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* --- TARJETAS DE SERVICIOS --- */
+
+.contenedor-servicios {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.servicio-card {
+  background-color: #ffffff; 
+  border: 1px solid var(--color-primario);
+  border-radius: 15px;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.servicio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(199, 197, 241, 0.4);
+}
+
+.servicio-enlace {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.servicio-img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid var(--color-primario);
+}
+
+.servicio-info {
+  flex: 1;
+}
+
+.servicio-titulo {
+  margin: 0;
+  font-family: var(--titulos);
+  color: var(--color-texto);
+  font-size: 1.4rem;
+}
+
+.servicio-descripcion {
+  margin: 8px 0;
+  color: #444;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.servicio-precio {
+  font-weight: bold;
+  color: var(--detalles);
+  font-size: 1.2rem;
+}
+
+/* --- FOOTER --- */
+
+.pie-pagina {
+  margin-top: auto;
 }
 
 .footer_navegacion {
-    background-color: var(--color-primario);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 10px 0;
+  background-color: var(--color-primario);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 15px 0;
 }
 
-.footer {
-    color: var(--color-texto);
-    font-size: 14px;
-    font-family: var(--fuente-principal);
-    text-align: center;
+.contenido_footer {
+  color: var(--color-texto);
+  font-size: 14px;
+  cursor: pointer;
 }
 
-.barra_inferior{
-    height: 20px;
-    background-color: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.barra_inferior {
+  height: 30px;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.texto_b_inferior{
-    color: var(--color-texto);
-    font-size: 10px;
-    font-family: var(--fuente-principal);
-    text-align: center;
+.derechos_reservados {
+  color: white;
+  font-size: 11px;
 }
 
-.derechos_reservados{
-    color: white;
-    font-size: 10px;
-    font-family: var(--fuente-principal);
-    text-align: center;
-    
-}
-
-#opciones_navegacion{
-    display:flex ;
-}
-
-.logo{
-    background-color: var(--detalles);
-    width: 20px;
-    height: 20px;
-}
-
-main{
-    flex: 1;
+/* --- CRUD ADMIN --- */
+.crud-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  border: 1px solid var(--color-primario);
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
 }

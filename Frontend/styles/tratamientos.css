@@ -9,14 +9,14 @@
   --fuente: "Inter", sans-serif;
 }
 
-/* RESET */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* BODY */
+
 body {
   font-family: var(--fuente);
   background: var(--color-fondo);
@@ -24,7 +24,7 @@ body {
   line-height: 1.6;
 }
 
-/* HEADER */
+
 header {
   text-align: center;
   padding: 25px 15px 10px;
@@ -42,23 +42,7 @@ header h1 {
     text-align: center; 
 }
 
-.btn-detalle {
-    display: inline-block;
-    padding: 10px 25px;
-    background: var(--detalles);
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: 0.3s;
-}
 
-.btn-detalle:hover {
-    background: var(--detalles-hover);
-    transform: translateY(-2px);
-}
-
-/* CONTENIDO PRINCIPAL */
 main {
   max-width: 900px;
   margin: auto;
@@ -66,7 +50,7 @@ main {
   text-align: center;
 }
 
-/* IMAGEN */
+
 main img {
   width: 100%;
   max-width: 700px;
@@ -76,13 +60,12 @@ main img {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* TEXTO */
+
 main p {
   margin: 10px 0;
   font-size: 1.05rem;
 }
 
-/* LISTA */
 main ul {
   list-style: none;
   margin: 20px auto;
@@ -98,14 +81,14 @@ main ul li {
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-/* PRECIO */
+
 .precio {
   margin-top: 20px;
   font-size: 1.3rem;
   font-weight: bold;
   color: var(--detalles);
 }
-/* BOTÓN */
+
 .btn-detalle {
   display: inline-block;
   margin-top: 10px;
@@ -119,15 +102,15 @@ main ul li {
   main img {
   width: 100%;
   max-width: 700px;
-  height: 300px;        /* 👈 tamaño fijo uniforme */
-  object-fit: cover;    /* 👈 recorta sin deformar */
+  height: 300px;        
+  object-fit: cover;    
   border-radius: 12px;
   display: block;
   margin: 20px auto;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* ANIMACIÓN SUAVE */
+
 main {
   animation: fadeIn 0.4s ease-in-out;
 }
@@ -143,7 +126,8 @@ main {
 
 #agendarBtn:hover {
     background-color: #c7c5f1;
-}
+} 
+
 
 @keyframes fadeIn {
   from {

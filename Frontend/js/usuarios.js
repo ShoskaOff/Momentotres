@@ -55,18 +55,21 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 🔥 SI NO EXISTE → CREAR AUTOMÁTICAMENTE
-    if (!usuario) {
-      console.warn("⚠ Usuario no encontrado en BD, creando...");
+    
+   if (!usuario) {
+  let rol = 2;
 
-      const { error: insertError } = await supabase
-        .from("Usuarios")
-        .insert([
-          {
-            auth_uuid: userId,
-            rol_id: 2
-          }
-        ]);
+  if (correo === "admin@tudominio.com") {
+    rol = 1;
+  }
+
+  await supabase.from("Usuarios").insert([
+    {
+      auth_uuid: userId,
+      rol_id: rol
+    }
+  ]);
+
 
       if (insertError) {
         console.error("❌ Error creando usuario:", insertError);
