@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Citas</title>
+    <title data-i18n="mis_citas_titulo">Mis Citas</title>
 
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="stylesheet" href="/Frontend/styles/PaginaAdmin/admin.css">
     <link rel="stylesheet" href="/Frontend/styles/userpac.css">
+    <link rel="stylesheet" href="/Frontend/styles/idioma.css"> 
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
 
@@ -21,50 +22,57 @@
             <img src="/Media/Logo.png" alt="DENTOLOGY">
         </a>
         <nav class="main-nav">
-            <a href="/Frontend/index/lobby.html">Inicio</a>
-            <a href="/Frontend/index/servicios.html">Tratamientos</a>
-            <a href="/Frontend/index/PaginaUsuario/usuario.html" class="activo">Mis Citas</a>
-            <a href="/Frontend/index/contacto.html">Contacto</a>
+            <a data-i18n="inicio" href="/Frontend/index/lobby.html">Inicio</a>
+            <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
+            <a data-i18n="mis_citas" href="/Frontend/index/PaginaUsuario/usuario.html" class="activo">Mis Citas</a>
+            <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
         </nav>
         <section class="sidebar-footer">
-            <a id="btnCerrarSesion" href="/Frontend/index/inicio.html" type="button">🚪 Cerrar Sesión</a>
+            <a id="btnCerrarSesion" href="/Frontend/index/inicio.html">
+                <span data-i18n="cerrar_sesion">🚪 Cerrar Sesión</span>
+            </a>
         </section>
     </aside>
 
     <header class="admin-topbar">
         <output id="info-usuario-logueado"></output>
-        <button id="theme-toggle" class="btn-tema" type="button" aria-label="Cambiar tema">🌙</button>
+        
+        <div class="topbar-controls" style="display: flex; align-items: center; gap: 15px; margin-left: auto;">
+            <div class="idioma-selector">
+                <button id="btn-es" type="button" class="btn-lang">🇪🇸</button>
+                <button id="btn-en" type="button" class="btn-lang">🇺🇸</button>
+            </div>
+            <button id="theme-toggle" class="btn-tema" type="button" aria-label="Cambiar tema">🌙</button>
+        </div>
     </header>
 
     <main class="admin-content">
         <header class="admin-header-section">
-            <h1>Panel de Paciente</h1>
+            <h1 data-i18n="panel_paciente">Panel de Paciente</h1>
         </header>
 
         <section id="gestion-citas-usuario" class="admin-section">
             <header class="header-section">
-                <h2>Mis Citas Programadas</h2>
+                <h2 data-i18n="citas_programadas">Mis Citas Programadas</h2>
             </header>
             
-            <article id="listaCitas" class="crud-contenedor">
-                <!-- Aquí se cargarán las citas dinámicamente -->
-            </article>
+            <article id="listaCitas" class="crud-contenedor"></article>
         </section>
     </main>
 
-    <!-- JS -->
-    <script type="module" src="/Frontend/js/citas.js"></script>
-    <script src="/Frontend/js/tema.js"></script>
-
     <footer class="pie-pagina-admin">
         <nav class="footer_navegacion">
-            <p class="contenido_footer">Términos de Servicio</p>
-            <p class="contenido_footer">Política de Privacidad</p>
+            <p class="contenido_footer" data-i18n="terminos">Términos de Servicio</p>
+            <p class="contenido_footer" data-i18n="privacidad">Política de Privacidad</p>
         </nav>
         <aside class="barra_inferior">
-            <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
+            <p class="derechos_reservados">©DENTOLOGY. <span data-i18n="derechos">Todos los derechos reservados.</span></p>
         </aside>
     </footer>
+
+    <script src="/Frontend/js/idioma.js"></script> 
+    <script src="/Frontend/js/tema.js"></script>
+    <script type="module" src="/Frontend/js/citas.js"></script>
 </body>
 
 </html>

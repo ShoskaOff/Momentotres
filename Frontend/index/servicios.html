@@ -4,95 +4,110 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DENTOLOGY</title>
+
     <link rel="stylesheet" href="/Frontend/styles/servicios.css" />
     <link rel="stylesheet" href="/Frontend/styles/tema.css" />
+    <link rel="stylesheet" href="../styles/idioma.css">
 
-    <link rel="icon" href="/Media/favicon.png" type="image/png" />
     <link rel="icon" href="/Media/favicon.png" type="image/png" />
   </head>
 
   <body>
     <header class="site-header">
-      <a href="/Frontend/index/lobby.html"
-        ><figure class="logo">
-          <img src="/Media/Logo.png" alt="image/png" /></figure
-      ></a>
+
+      <a href="/Frontend/index/lobby.html">
+        <figure class="logo">
+          <img src="/Media/Logo.png" alt="DENTOLOGY" />
+        </figure>
+      </a>
+
       <nav class="main-nav">
-        <a href="/Frontend/index/lobby.html">Inicio</a>
-        <a href="/Frontend/index/servicios.html">Tratamientos</a>
-        <a href="/Frontend/index/citas.html">Citas</a>
-        <a href="/Frontend/index/contacto.html">Contacto</a>
-        <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
+
+        <a data-i18n="inicio" href="/Frontend/index/lobby.html">Inicio</a>
+        <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
+        <a data-i18n="citas" href="/Frontend/index/citas.html">Citas</a>
+        <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
+        <a data-i18n="login" href="/Frontend/index/inicio.html">Inicio Sesion</a>
+
         <a href="/Frontend/index/carrito/carritoo.html" id="carritoIcono">🛒</a>
+
         <a id="theme-toggle" type="button">🌙</a>
 
-        <dialog id="panelCRUD">
-          <h2>Gestión de Servicios</h2>
+        <!-- 🌍 BOTONES IDIOMA -->
+        <button id="btn-es" type="button" aria-label="Español">🇪🇸</button>
+        <button id="btn-en" type="button" aria-label="English">🇺🇸</button>
 
-          <form id="formServicio">
-            <input type="hidden" id="servicioId" />
-
-            <label>Nombre</label>
-            <input type="text" id="nombre" required />
-
-            <label>Precio</label>
-            <input type="number" id="precio" required />
-
-            <label>Descripción</label>
-            <textarea id="descripcion"></textarea>
-
-            <label>Imagen (URL)</label>
-            <input type="text" id="imagen" />
-
-            <button type="submit">Guardar</button>
-          </form>
-
-          <hr />
-
-          <section id="listaCRUD"></section>
-
-          <button onclick="cerrarPanel()">Cerrar</button>
-        </dialog>
       </nav>
+
+      <dialog id="panelCRUD">
+        <h2 data-i18n="gestion">Gestión de Servicios</h2>
+
+        <form id="formServicio">
+          <label data-i18n="nombre">Nombre</label>
+          <input type="text" id="nombre" required />
+
+          <label data-i18n="precio">Precio</label>
+          <input type="number" id="precio" required />
+
+          <label data-i18n="descripcion">Descripción</label>
+          <textarea id="descripcion"></textarea>
+
+          <label data-i18n="imagen">Imagen (URL)</label>
+          <input type="text" id="imagen" />
+
+          <button type="submit" data-i18n="guardar">Guardar</button>
+        </form>
+
+        <button onclick="cerrarPanel()" data-i18n="cerrar">Cerrar</button>
+      </dialog>
+
     </header>
 
     <main>
+
       <section class="titulo-tratamientos">
-        <h1>Tratamientos Odontológicos</h1>
+        <h1 data-i18n="titulo">Tratamientos Odontológicos</h1>
       </section>
 
       <section class="tratamientos-grid">
         <section class="contenedor-servicios"></section>
       </section>
+
       <dialog id="modalDetalle">
         <header>
           <h2 id="titulo"></h2>
         </header>
+
         <figure>
           <img id="imagen" src="" alt="Tratamiento" />
           <figcaption id="descripcionCorta"></figcaption>
         </figure>
+
         <p id="descripcion"></p>
         <ul id="beneficios"></ul>
+
         <footer>
           <p id="precio"></p>
-          <button id="agendarBtn">Agendar Cita</button>
-          <button id="cerrarBtn">Cerrar</button>
+          <button id="agendarBtn" data-i18n="agendar">Agendar Cita</button>
+          <button id="cerrarBtn" data-i18n="cerrar">Cerrar</button>
         </footer>
       </dialog>
+
     </main>
+
     <script type="module" src="../js/servicios.js"></script>
     <script src="/Frontend/js/tema.js"></script>
+    <script src="../js/idioma.js"></script>
     <footer class="pie-pagina">
       <nav class="footer_navegacion">
-        <p class="contenido_footer">Términos de Servicio</p>
-        <p class="contenido_footer">Política de Privacidad</p>
+        <p data-i18n="terminos">Términos de Servicio</p>
+        <p data-i18n="privacidad">Política de Privacidad</p>
       </nav>
+
       <aside class="barra_inferior">
-        <p class="derechos_reservados">
-          ©DENTOLOGY. Todos los derechos reservados.
-        </p>
+        <p data-i18n="derechos">©DENTOLOGY. Todos los derechos reservados.</p>
       </aside>
     </footer>
+
   </body>
 </html>

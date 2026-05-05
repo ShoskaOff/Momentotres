@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detalle Tratamiento | Dentology</title>
+  <title data-i18n="detalle_titulo_pestana">Detalle Tratamiento | Dentology</title>
 
   <link rel="stylesheet" href="../styles/inicio.css">
   <link rel="stylesheet" href="../styles/tema.css">
@@ -19,12 +19,16 @@
     </a>
 
     <nav class="main-nav">
-      <a href="/Frontend/index/lobby.html">Inicio</a>
-      <a href="/Frontend/index/servicios.html">Tratamientos</a>
-      <a href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a>
-      <a href="/Frontend/index/contacto.html">Contacto</a>
-      <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
+      <a data-i18n="inicio" href="/Frontend/index/lobby.html">Inicio</a>
+      <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
+      <a data-i18n="citas" href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a>
+      <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
+      <a data-i18n="login" href="/Frontend/index/inicio.html">Inicio Sesion</a>
+      
       <button id="theme-toggle" type="button">🌙</button>
+
+      <button id="btn-es" type="button" aria-label="Español">🇪🇸</button>
+      <button id="btn-en" type="button" aria-label="English">🇺🇸</button>
     </nav>
   </header>
 
@@ -57,5 +61,6 @@
       }
     });
   </script>
-</body>
+
+  <script src="../js/idioma.js"></script> </body>
 </html>

@@ -2,6 +2,9 @@ import { supabase } from "./supabase.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const btnCerrarSesion = document.getElementById("btnCerrarSesion");
+    
+    // 🌍 Idioma actual
+    const idioma = localStorage.getItem('idioma') || 'es';
 
     const { data, error } = await supabase.auth.getUser();
 
@@ -20,11 +23,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (usuarioError || !usuarioData) {
         console.error(usuarioError);
-        alert("Usuario no encontrado");
+        const msgNoUsuario = idioma === 'en' ? "User not found" : "Usuario no encontrado";
+        alert(msgNoUsuario);
         window.location.href = "/Frontend/index/inicio.html";
         return;
     }
 
+    // Guardar datos en Storage
     localStorage.setItem("usuario_id", usuarioData.id);
     localStorage.setItem("rol_id", usuarioData.rol_id);
     localStorage.setItem("auth_uuid", authUUID);
@@ -35,10 +40,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (logoutError) {
                 console.error(logoutError);
-                alert("Error al cerrar sesión");
+                const msgErrorLogout = idioma === 'en' ? "Error signing out" : "Error al cerrar sesión";
+                alert(msgErrorLogout);
                 return;
             }
 
+            // Limpiar datos sensibles
             localStorage.removeItem("usuario_id");
             localStorage.removeItem("rol_id");
             localStorage.removeItem("auth_uuid");

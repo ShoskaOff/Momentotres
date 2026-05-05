@@ -1,0 +1,16 @@
+.topbar-controls {
+    margin-left: auto; /* Empuja todo a la derecha */
+}
+
+.btn-lang {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    padding: 5px;
+}
+
+.btn-lang:hover {
+    transform: scale(1.2);
+}

@@ -4,71 +4,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sellantes</title>
+  <title data-i18n="sellantes_titulo_pestana">Sellantes</title>
   <link rel="stylesheet" href="/Frontend/styles/servicios.css">
   <link rel="stylesheet" href="/Frontend/styles/tratamientos.css">
   <link rel="stylesheet" href="/Frontend/styles/tema.css">
   <link rel="stylesheet" href="/Frontend/styles/responsive.css">
-</head>
+  <link rel="stylesheet" href="../styles/idioma.css"> </head>
 
 <body>
 
   <header class="site-header">
     <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure></a>
     <nav class="main-nav">
-        <a href="/Frontend/index/lobby.html">Inicio</a>
-        <a href="/Frontend/index/servicios.html">Tratamientos</a>
-        <a href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a>
-        <a href="/Frontend/index/contacto.html">Contacto</a>
-        <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
+        <a data-i18n="inicio" href="/Frontend/index/lobby.html">Inicio</a>
+        <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
+        <a data-i18n="citas" href="/Frontend/index/PaginaUsuario/usuario.html">Citas</a>
+        <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
+        <a data-i18n="login" href="/Frontend/index/inicio.html">Inicio Sesion</a>
         <a id="theme-toggle" type="button">🌙</a>
+
+        <button id="btn-es" type="button" aria-label="Español">🇪🇸</button>
+        <button id="btn-en" type="button" aria-label="English">🇺🇸</button>
     </nav>
   </header>
 
   <main>
-    <h1>Sellantes</h1>
+    <h1 data-i18n="sellantes">Sellantes</h1>
     <section class="contenedor-volver">
-      <a href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
+      <a data-i18n="volver" href="/Frontend/index/servicios.html" class="btn-detalle"> Volver</a>
     </section>
     
     <img src="/Media/img/sellante.jpeg" alt="Sellantes">
-    <p>Protección contra caries.</p>
+    <p data-i18n="proteccion_caries">Protección contra caries.</p>
 
     <ul>
-      <li>Prevención</li>
-      <li>Aplicación rápida</li>
+      <li data-i18n="prevencion">Prevención</li>
+      <li data-i18n="aplicacion_rapida">Aplicación rápida</li>
     </ul>
 
-    <p class="precio">$40.000 por diente</p>
+    <p class="precio"><span data-i18n="precio_sellantes">$40.000 por diente</span></p>
     
-    <button id="agendarBtn" data-servicio="Sellantes">Agendar cita</button>
+    <button id="agendarBtn" data-servicio="Sellantes" data-i18n="agendar">Agendar cita</button>
 
     <div class="producto" data-id="sellantes" data-nombre="Sellantes" data-precio="40000">
-        <button class="btn-agregar">Agregar al carrito</button>
+        <button class="btn-agregar" data-i18n="agregar_carrito">Agregar al carrito</button>
     </div>
 
   </main>
 
   <footer>
     <aside class="contenido_footer">
-        <p>Política de Privacidad</p>
-        <p>Términos de Servicio</p>
+        <p data-i18n="privacidad">Política de Privacidad</p>
+        <p data-i18n="terminos">Términos de Servicio</p>
     </aside>
     <aside class="barra_inferior">
-         <p class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
+         <p data-i18n="derechos" class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</p>
     </aside>
   </footer>
 
   <script src="/Frontend/js/tema.js"></script>
   
-  <script>
-    document.getElementById("agendarBtn").addEventListener("click", function() {
-      const servicio = this.getAttribute("data-servicio");
-      window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
-    });
-  </script>
+<script>
+  document.getElementById("agendarBtn").addEventListener("click", function() {
+    const servicio = this.getAttribute("data-servicio");
+    // ✅ Volvemos a tu ruta original, pero asegurando el parámetro
+    window.location.href = "/Frontend/index/citas.html?servicio=" + encodeURIComponent(servicio);
+  });
+</script>
 
   <script src="/Frontend/index/carrito/carrito.js"></script>
-
-</body>
+  <script src="../js/idioma.js"></script> </body>
 </html>

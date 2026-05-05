@@ -1,6 +1,5 @@
 import { supabase as db } from '../../Database/supabaseClient.js';
 
-// 1. CONFIGURACIÓN DE RUTA (ID verificado: jdofaujfqsyiwauwttcd)
 const URL_BASE_STORAGE = "https://jdofaujfqsyiwauwttcd.supabase.co/storage/v1/object/public/Imagenes/Carpeta%20Servicios/";
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -14,15 +13,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let expandido = false;
 
+    // 🌍 Sincronización de idioma global
+    const getIdioma = () => localStorage.getItem('idiomaSeleccionado') || 'es';
+
     if (btnToggle && contenedor) {
         btnToggle.addEventListener("click", () => {
             expandido = !expandido;
             contenedor.classList.toggle("expandido");
-            btnToggle.textContent = expandido ? "Ocultar servicios" : "Ver mas +";
+            const idioma = getIdioma();
+            if (expandido) {
+                btnToggle.textContent = idioma === 'en' ? "Hide services" : "Ocultar servicios";
+            } else {
+                btnToggle.textContent = idioma === 'en' ? "See more +" : "Ver mas +";
+            }
         });
     }
 
-    // --- 2. CARGAR SERVICIOS (CORREGIDO PARA IMÁGENES) ---
+    // --- 2. CARGAR SERVICIOS (CATÁLOGO ADMIN) ---
     async function cargarServicios() {
         if (!contenedor) return;
         try {
@@ -34,32 +41,38 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (error) throw error;
 
             if (!servicios || servicios.length === 0) {
-                contenedor.innerHTML = '<p>No hay tratamientos disponibles.</p>';
+                contenedor.innerHTML = '<p data-i18n="no_tratamientos">No hay tratamientos disponibles.</p>';
                 return;
             }
 
+            const idioma = getIdioma();
+
             contenedor.innerHTML = servicios.map(s => {
-                // Si la columna imagen_url tiene el nombre del archivo, le pegamos la URL base
-                // Si está vacía, usamos el logo por defecto
                 const imgFinal = s.imagen_url 
                     ? URL_BASE_STORAGE + s.imagen_url 
                     : "../../../Media/Logo.png";
 
+                // 🌍 Lógica Bilingüe para el catálogo
+                const nombreAMostrar = (idioma === 'en' && s.nombre_en) ? s.nombre_en : s.nombre;
+                const descAMostrar = (idioma === 'en' && s.descripcion_en) ? s.descripcion_en : (s.descripcion || 'Consulta con nuestros especialistas.');
+
                 return `
                 <section class="tarjeta-servicio">
-                    <img src="${imgFinal}" alt="${s.nombre}" 
+                    <img src="${imgFinal}" alt="${nombreAMostrar}" 
                          style="width:100px; height:100px; object-fit:cover; border-radius:8px;"
                          onerror="this.src='../../../Media/Logo.png';">
-                    <h3>${s.nombre}</h3>
-                    <p>${s.descripcion || 'Consulta con nuestros especialistas.'}</p>
+                    
+                    <h3 data-i18n-dinamico>${nombreAMostrar}</h3>
+                    <p data-i18n-dinamico>${descAMostrar}</p>
                     <span class="precio">$${s.precio ? s.precio.toLocaleString() : '0'}</span>
 
                     <section class="acciones">
-                        <button class="btn-editar" data-id="${s.id}">✏️ Editar</button>
-                        <button class="btn-borrar" data-id="${s.id}"style="color:darkred;">🗑️ Borrar</button>
-                    </section>
-                </section>
+                        <button class="btn-editar" data-id="${s.id}" data-i18n="btn_editar">✏️ Editar</button>
+                        <button class="btn-borrar" data-id="${s.id}" style="color:darkred;" data-i18n="btn_borrar">🗑️ Borrar</button>
+                    </section> section>
             `}).join('');
+
+            if (window.traducirPagina) window.traducirPagina();
 
             document.querySelectorAll('#crud-contenedor-servicios .btn-editar').forEach(b => {
                 b.onclick = () => prepararEdicion(b.dataset.id);
@@ -73,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- 3. CARGAR CITAS ---
+    // --- 3. CARGAR CITAS (GESTIÓN ADMIN) ---
     async function cargarCitasAdmin() {
         if (!contenedorCitas) return;
         try {
@@ -83,32 +96,42 @@ document.addEventListener('DOMContentLoaded', async () => {
                     id,
                     fecha_hora,
                     Usuarios:Usuarios!Citas_usuario_id_fkey1 ( nombre, correo ),
-                    servicios:servicio_id ( nombre )
+                    servicios:servicio_id ( nombre, nombre_en )
                 `)
                 .order('fecha_hora', { ascending: true });
 
             if (error) throw error;
 
-            contenedorCitas.innerHTML = citas.map(c => `
+            const idioma = getIdioma();
+
+            contenedorCitas.innerHTML = citas.map(c => {
+                // 🌍 Traducir el nombre del servicio dentro de la cita
+                const nombreServicioCita = (idioma === 'en' && c.servicios?.nombre_en) 
+                    ? c.servicios.nombre_en 
+                    : (c.servicios?.nombre || 'No encontrado');
+
+                return `
                 <section class="tarjeta-servicio"> 
                     <section class="info-cita">
-                        <h3>Paciente: ${c.Usuarios?.nombre || 'Sin nombre'}</h3>
-                        <p><strong>Servicio:</strong> ${c.servicios?.nombre || 'No encontrado'}</p>
-                        <p><strong>Fecha:</strong> ${new Date(c.fecha_hora).toLocaleString()}</p>
+                        <h3><span data-i18n="admin_paciente">Paciente</span>: ${c.Usuarios?.nombre || 'Sin nombre'}</h3>
+                        <p><strong data-i18n="admin_servicio">Servicio:</strong> <span data-i18n-dinamico>${nombreServicioCita}</span></p>
+                        <p><strong data-i18n="admin_fecha">Fecha:</strong> ${new Date(c.fecha_hora).toLocaleString()}</p>
                         <p><small>${c.Usuarios?.correo || ''}</small></p>
                     </section>
                     <section class="acciones">
-                        <button class="btn-editar" onclick="reprogramarCita(${c.id}, '${c.fecha_hora}')">✏️ Reprogramar</button>
-                        <button class="btn-borrar" onclick="eliminarCitaAdmin(${c.id})" style="color:darkred;">🗑️ Cancelar</button>
-                    </section>
-                </section>
-            `).join('');
+                        <button class="btn-editar" data-i18n="btn_reprogramar" onclick="reprogramarCita(${c.id}, '${c.fecha_hora}')">✏️ Reprogramar</button>
+                        <button class="btn-borrar" data-i18n="btn_cancelar" onclick="eliminarCitaAdmin(${c.id})" style="color:darkred;">🗑️ Cancelar</button>
+                    </section> section>
+            `}).join('');
+
+            if (window.traducirPagina) window.traducirPagina();
+
         } catch (error) {
             console.error("Error citas:", error);
         }
     }
 
-    // --- 4. GUARDAR / EDITAR (CON SUBIDA DE ARCHIVOS) ---
+    // --- 4. GUARDAR / EDITAR (CON ALERTAS BILINGÜES) ---
     if (form) {
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -116,7 +139,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const file = document.getElementById("imagenInput")?.files[0];
             let nombreArchivoParaBD = "";
 
-            // Si el usuario sube un archivo nuevo
             if (file) {
                 const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
                 const { error: upError } = await db.storage
@@ -125,8 +147,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 if (!upError) {
                     nombreArchivoParaBD = fileName;
-                } else {
-                    console.error("Error subida:", upError);
                 }
             }
 
@@ -136,16 +156,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 descripcion: document.getElementById("descripcion").value
             };
             
-            
             if (nombreArchivoParaBD) datos.imagen_url = nombreArchivoParaBD;
 
             const res = id 
                 ? await db.from('servicios').update(datos).eq('id', id)
                 : await db.from('servicios').insert([datos]);
 
-            if (res.error) alert("Error: " + res.error.message);
-            else {
-                alert("Guardado correctamente");
+            if (res.error) {
+                alert("Error: " + res.error.message);
+            } else {
+                const idioma = getIdioma();
+                const msgGuardado = idioma === 'en' ? "Saved successfully" : "Guardado correctamente";
+                alert(msgGuardado);
                 form.reset();
                 panel.close();
                 cargarServicios();
@@ -153,46 +175,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Funciones globales
+    // --- FUNCIONES GLOBALES (VENTANAS DE CONFIRMACIÓN BILINGÜES) ---
     window.eliminarCitaAdmin = async (id) => {
-        if (!confirm("¿Cancelar cita?")) return;
+        const idioma = getIdioma();
+        const msgCancel = idioma === 'en' ? "Cancel appointment?" : "¿Cancelar cita?";
+        if (!confirm(msgCancel)) return;
         await db.from('Citas').delete().eq('id', id);
         cargarCitasAdmin();
     };
 
     window.reprogramarCita = async (id, fechaActual) => {
-        const nuevaFecha = prompt("Nueva fecha (YYYY-MM-DD HH:MM):", new Date(fechaActual).toISOString().slice(0,16));
+        const idioma = getIdioma();
+        const msgPrompt = idioma === 'en' ? "New date (YYYY-MM-DD HH:MM):" : "Nueva fecha (YYYY-MM-DD HH:MM):";
+        const nuevaFecha = prompt(msgPrompt, new Date(fechaActual).toISOString().slice(0,16));
         if (!nuevaFecha) return;
         await db.from('Citas').update({ fecha_hora: new Date(nuevaFecha).toISOString() }).eq('id', id);
         cargarCitasAdmin();
     };
 
-    if (btnNuevo) {
-        btnNuevo.onclick = () => {
-            form.reset();
-            inputId.value = "";
-            panel.showModal();
-        };
-    }
-
-    async function eliminarServicio(id) {
-        if (confirm("¿Eliminar servicio?")) {
-            await db.from('servicios').delete().eq('id', id);
-            cargarServicios();
-        }
-    }
-
-    async function prepararEdicion(id) {
-        const { data: s } = await db.from('servicios').select('*').eq('id', id).single();
-        if (s) {
-            inputId.value = s.id;
-            document.getElementById("nombre").value = s.nombre;
-            document.getElementById("precio").value = s.precio;
-            document.getElementById("descripcion").value = s.descripcion;
-            panel.showModal();
-        }
-    }
-
+    // Inicialización
     cargarServicios();
     cargarCitasAdmin();
+    
+    // 🌍 Exportar funciones para que el traductor las invoque si es necesario refrescar
+    window.cargarServiciosAdmin = cargarServicios;
+    window.cargarCitasAdmin = cargarCitasAdmin;
 });

@@ -4,51 +4,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Citas - DENTOLOGY</title>
+    <title data-i18n="gestion_citas_titulo_pestana">Gestión de Citas - DENTOLOGY</title>
     <link rel="stylesheet" href="/Frontend/styles/tema.css">
     <link rel="stylesheet" href="/Frontend/styles/PaginaAdmin/admin.css">
+    <link rel="stylesheet" href="/Frontend/styles/idioma.css"> 
     <link rel="icon" href="/Media/favicon.png" type="image/png">
 </head>
 
 <body>
     
-    button class="menu-hamburguesa" id="btnHamburguesa">☰</button>
-
+    <button class="menu-hamburguesa" id="btnHamburguesa">☰</button>
 
     <aside class="sidebar" id="sidebar">
         <a href="/Frontend/index/lobby.html" class="logo">
             <img src="/Media/Logo.png" alt="DENTOLOGY">
         </a>
         <nav class="main-nav">
-            <a href="/Frontend/index/lobby.html">Pagina</a>
-            <a href="/Frontend/index/PaginaAdmin/admin.html">Panel de Administración</a>
-            <a href="/Frontend/index/PaginaAdmin/gestionCitas.html">Gestión de Citas</a>
-            <a href="/Frontend/index/PaginaAdmin/gestionUsuario.html">Gestión de Usuarios</a>
+            <a data-i18n="pagina" href="/Frontend/index/lobby.html">Pagina</a>
+            <a data-i18n="panel_admin" href="/Frontend/index/PaginaAdmin/admin.html">Panel de Administración</a>
+            <a data-i18n="gestion_citas" href="/Frontend/index/PaginaAdmin/gestionCitas.html" class="activo">Gestión de Citas</a>
+            <a data-i18n="gestion_usuarios" href="/Frontend/index/PaginaAdmin/gestionUsuario.html">Gestión de Usuarios</a>
         </nav>
         <section class="sidebar-footer">
-            <a href="/Frontend/index/inicio.html" id="btnCerrarSesion" type="button">🚪 Cerrar Sesión</a>
+            <a href="/Frontend/index/inicio.html" id="btnCerrarSesion">
+                <span data-i18n="cerrar_sesion">🚪 Cerrar Sesión</span>
+            </a>
         </section>
     </aside>
 
     <header class="admin-topbar">
         <output id="info-admin-logueado"></output>
-        <button id="theme-toggle" class="btn-tema" type="button" aria-label="Cambiar tema">🌙</button>
+        
+        <div class="topbar-controls" style="display: flex; align-items: center; gap: 15px; margin-left: auto;">
+            <div class="idioma-selector">
+                <button id="btn-es" type="button" class="btn-lang">🇪🇸</button>
+                <button id="btn-en" type="button" class="btn-lang">🇺🇸</button>
+            </div>
+            <button id="theme-toggle" class="btn-tema" type="button" aria-label="Cambiar tema">🌙</button>
+        </div>
     </header>
 
     <main class="admin-content">
         <header class="admin-header-section">
-            <h1>Gestión de Citas</h1>
+            <h1 data-i18n="gestion_citas_header">Gestión de Citas</h1>
         </header>
 
         <section class="admin-filtros">
-            <input type="search" id="buscarCita" placeholder="Buscar por paciente o documento..." class="input-busqueda">
+            <input type="search" id="buscarCita" placeholder="Buscar por paciente o documento..." class="input-busqueda" data-i18n-placeholder="buscar_cita_placeholder">
             <input type="date" id="filtroFechaCita" class="select-filtro" aria-label="Filtrar por fecha">
+            
             <select id="filtroEstadoCita" class="select-filtro" aria-label="Filtrar por estado">
-                <option value="todas">Todos los estados</option>
-                <option value="pendiente">Pendientes</option>
-                <option value="confirmada">Confirmadas</option>
-                <option value="completada">Completadas</option>
-                <option value="cancelada">Canceladas</option>
+                <option value="todas" data-i18n="todos_estados">Todos los estados</option>
+                <option value="pendiente" data-i18n="estado_pendiente">Pendientes</option>
+                <option value="confirmada" data-i18n="estado_confirmada">Confirmadas</option>
+                <option value="completada" data-i18n="estado_completada">Completadas</option>
+                <option value="cancelada" data-i18n="estado_cancelada">Canceladas</option>
             </select>
         </section>
 
@@ -61,11 +71,12 @@
     </main>
 
     <footer class="pie-pagina-admin">
-        <p>©DENTOLOGY. Todos los derechos reservados.</p>
+        <p>©DENTOLOGY. <span data-i18n="derechos">Todos los derechos reservados.</span></p>
     </footer>
 
+    <script src="/Frontend/js/idioma.js"></script> 
     <script src="/Frontend/js/tema.js"></script>
-    <script src="/Frontend/js/admin.js"></script>
+    <script type="module" src="/Frontend/js/admin.js"></script>
 </body>
 
 </html>
