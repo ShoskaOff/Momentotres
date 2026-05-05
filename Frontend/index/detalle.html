@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="../styles/inicio.css">
   <link rel="stylesheet" href="../styles/tema.css">
   <link rel="stylesheet" href="../styles/servicios.css">
-  
 </head>
 
 <body>
@@ -39,6 +38,7 @@
     </section>
   </main>
 
+  <!-- scripts -->
   <script src="/Frontend/js/tema.js"></script>
   <script src="/Frontend/index/carrito/carrito.js"></script>
 
@@ -49,6 +49,7 @@
       await cargarUnSoloProducto();
     });
 
+    // 👉 Mantiene funcionalidad de agendar
     document.addEventListener("click", (e) => {
       if (e.target.id === "agendarBtn") {
         const servicio = e.target.getAttribute("data-servicio");

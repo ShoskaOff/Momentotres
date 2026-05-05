@@ -55,7 +55,7 @@ export async function cargarUnSoloProducto() {
     // 🏷️ Título dinámico
     document.title = `${servicio.nombre} | Dentology`;
 
-    // 🎨 Render HTML
+    // 🎨 Render HTML (SE MANTIENE TODO + CARRITO AGREGADO)
     contenedor.innerHTML = `
         <article style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto; text-align: center;">
             
@@ -79,8 +79,20 @@ export async function cargarUnSoloProducto() {
             <h2 style="color: #333; margin-bottom: 35px; font-size: 2rem;">
                 $${servicio.precio ? servicio.precio.toLocaleString() : '0'}
             </h2>
+
+            <!-- 🛒 CARRITO (AGREGADO SIN AFECTAR LO DEMÁS) -->
+            <div class="producto" 
+                data-id="${servicio.id}" 
+                data-nombre="${servicio.nombre}" 
+                data-precio="${servicio.precio}">
+                
+                <button class="btn-agregar"
+                    style="background: #28a745; color: white; padding: 15px 30px; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; font-weight: bold;">
+                    Agregar al carrito
+                </button>
+            </div>
             
-            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
                 
                 <button 
                     id="agendarBtn" 
