@@ -109,7 +109,7 @@ export async function cargarUnSoloProducto() {
         font-size: 1rem;
         cursor: pointer;
         font-weight: bold;
-        background: #ddacd7;
+        background: #99e9e2;
         color: white;
         transition: 0.3s;
     "
