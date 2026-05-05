@@ -30,8 +30,8 @@ async function cargarServicios() {
 function generarHTMLTarjetas(servicios, esLobby) {
     return servicios.map(s => {
         const rutaArchivo = `/Frontend/index/detalle.html?id=${s.id}`;
-
-        // Limpiamos el nombre del archivo y codificamos la URL para los espacios
+        
+        // Manejo de imagen con espacios y URL de Supabase
         const nombreImagen = s.imagen_url ? s.imagen_url.trim() : "";
         const imgFinal = nombreImagen 
             ? URL_BASE_STORAGE + encodeURIComponent(nombreImagen) 
@@ -47,21 +47,34 @@ function generarHTMLTarjetas(servicios, esLobby) {
                 </article>
             `;
         } else {
-            // VISTA DE TRATAMIENTOS: Solo Imagen y Nombre
+            // VISTA DE TRATAMIENTOS: Solo Imagen, Nombre y Descripción (SIN PRECIO)
             return `
-                <article class="servicio-card" style="background: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; transition: transform 0.3s ease;">
-                    <a href="${rutaArchivo}" style="text-decoration: none; color: inherit; display: block; text-align: center; padding-bottom: 15px;">
+                <article class="servicio-card" style="background: white; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; text-align: center;">
+                    <a href="${rutaArchivo}" style="text-decoration: none; color: inherit; display: block; padding-bottom: 20px;">
                         <img src="${imgFinal}" alt="${s.nombre}" 
-                             style="width: 100%; height: 200px; object-fit: cover;"
+                             style="width: 100%; height: 200px; object-fit: cover; margin-bottom: 15px;"
                              onerror="this.src='/Media/Logo.png';">
                         
-                        <h3 style="margin: 15px 10px 0; color: #333; font-size: 1.2rem;">${s.nombre}</h3>
+                        <div style="padding: 0 15px;">
+                            <h3 style="margin: 0 0 10px 0; color: #333; font-size: 1.25rem;">${s.nombre}</h3>
+                            <p style="margin: 0; color: #666; font-size: 0.9rem; line-height: 1.4;">
+                                ${s.descripcion ? s.descripcion.substring(0, 100) + '...' : 'Más información en el detalle.'}
+                            </p>
+                        </div>
                     </a>
                 </article>
             `;
         }
     }).join('');
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+    await cargarServicios();
+    const form = document.getElementById("formServicio");
+    if (form) form.addEventListener("submit", guardarServicio);
+});
+
+// Nota: Mantén tus funciones cargarCRUD y guardarServicio del archivo original.
 
 
 
