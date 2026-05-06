@@ -4,18 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="stylesheet" href="/Frontend/styles/lobby.css">
     <link rel="stylesheet" href="/Frontend/styles/servicios.css">
-    <link rel="stylesheet" href="/Frontend/styles/tema.css"> <!-- 👈 ESTE DEBE IR DE ÚLTIMO -->
+    <link rel="stylesheet" href="/Frontend/styles/tema.css"> 
     <link rel="stylesheet" href="/Frontend/styles/responsive.css">
+    <link rel="stylesheet" href="../styles/idioma.css"> <link rel="icon" href="/Media/favicon.png" type="image/png">
 
-    <link rel="icon" href="/Media/favicon.png" type="image/png">
-
-    <!-- Scripts -->
     <script type="module" src="/Frontend/js/servicios.js"></script>
     <script src="/Frontend/js/tema.js"></script>
 
-    <title>Dentology - Inicio</title>
+    <title data-i18n="inicio_titulo_pestana">Dentology - Inicio</title>
 </head>
 
 <body>
@@ -28,43 +27,43 @@
     </a>
 
     <nav class="main-nav">
-        <a href="/Frontend/index/lobby.html" class="active">Inicio</a>
-        <a href="/Frontend/index/servicios.html">Tratamientos</a>
-        <a href="/Frontend/index/citas.html">Citas</a>
-        <a href="/Frontend/index/contacto.html">Contacto</a>
-        <a href="/Frontend/index/inicio.html">Inicio Sesión</a>
-        <a href="/Frontend/index/carrito/carritoo.html">🛒</a>
-        <a id="theme-toggle">🌙</a>
+        <a data-i18n="inicio" href="/Frontend/index/lobby.html" class="active">Inicio</a>
+        <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
+        <a data-i18n="citas" href="/Frontend/index/citas.html">Citas</a>
+        <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
+        <a data-i18n="login" href="/Frontend/index/inicio.html">Inicio Sesión</a>
+        
+        <a href="/Frontend/index/carrito/carritoo.html" id="carritoIcono">🛒</a>
+        <a id="theme-toggle" style="cursor: pointer;">🌙</a>
         <a id="btnAdmin" href="/Frontend/index/PaginaAdmin/admin.html"></a>
+
+        <button id="btn-es" type="button" aria-label="Español">🇪🇸</button>
+        <button id="btn-en" type="button" aria-label="English">🇺🇸</button>
     </nav>
 </header>
 
 <main>
 
-    <!-- Banner -->
     <section class="banner-inicio">
         <hgroup>
-            <h1>DENTOLOGY</h1>
-            <p>Tu sonrisa, nuestra prioridad.</p>
+            <h1 data-i18n="banner_titulo">DENTOLOGY</h1>
+            <p data-i18n="banner_subtitulo">Tu sonrisa, nuestra prioridad.</p>
         </hgroup>
     </section>
 
-    <!-- Servicios -->
     <section class="tratamientos-destacados">
         <header>
-            <h2>Nuestros Tratamientos Principales</h2>
+            <h2 data-i18n="titulo_destacados">Nuestros Tratamientos Principales</h2>
         </header>
 
-        <!-- CONTENEDOR DINÁMICO -->
         <section class="contenedor-servicios" id="servicios-destacados">
-            <p style="text-align: center; color: white;">
+            <p style="text-align: center; color: white;" data-i18n="cargando">
                 Cargando servicios...
             </p>
         </section>
 
-        <!-- BOTÓN CORREGIDO -->
         <footer style="text-align:center; margin-top:20px;">
-            <a href="/Frontend/index/servicios.html" class="btn-ver-mas btn-global">
+            <a href="/Frontend/index/servicios.html" class="btn-ver-mas btn-global" data-i18n="btn_ver_mas">
                 Ver más tratamientos
             </a>
         </footer>
@@ -75,15 +74,16 @@
 
 <footer class="pie-pagina">
     <nav class="footer_navegacion">
-        <p class="contenido_footer">Términos de Servicio</p>
-        <p class="contenido_footer">Política de Privacidad</p>
+        <p class="contenido_footer" data-i18n="terminos">Términos de Servicio</p>
+        <p class="contenido_footer" data-i18n="privacidad">Política de Privacidad</p>
     </nav>
     <aside class="barra_inferior">
-        <p class="derechos_reservados">
+        <p class="derechos_reservados" data-i18n="derechos">
             ©2026 DENTOLOGY. Todos los derechos reservados.
         </p>
     </aside>
 </footer>
 
+<script src="../js/idioma.js"></script>
 </body>
 </html>
