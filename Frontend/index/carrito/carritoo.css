@@ -6,10 +6,12 @@
 }
 
 .item-carrito {
-    display: flex !important;
-    justify-content: space-between !important;
+    grid-template-columns: 1fr 120px 120px 100px !important; 
     align-items: center !important;
-    padding: 15px !important;
+    gap: 15px;
+    padding: 10px 0;
+    display: grid !important;
+    justify-content: space-between !important;
     border-bottom: 1px solid var(--secondary) !important;
     background-color: var(--card-bg) !important;
     color: var(--text-color) !important;
@@ -27,6 +29,50 @@
 }
 
 .item-carrito > button:last-child {
-    background-color: #40c4be;
+    background-color: #049e96;
     
+}
+
+.carrito-container{
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f5f7fa;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+
+#total-carrito{
+    margin-top: 20px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-top: 1px solid #ccc;
+    padding-top: 15px;
+}
+
+#btn-pagar{
+    margin-top: 15px;
+    background: linear-gradient(45deg, #1c94a8, #34c0d3);
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+#btn-pagar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(1, 169, 199, 0.7);
+}
+
+footer {
+    margin-top: 40px;
+    padding: 15px;
+    text-align: center;
+    background-color: var(--color-texto);
+    color: var(--color-blanco);
 }
