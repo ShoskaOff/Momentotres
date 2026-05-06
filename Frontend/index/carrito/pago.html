@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago | Dentology</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            text-align: center;
+        }
+
+        #resumen {
+            margin: 20px auto;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #2ecc71;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Simulación de Pago</h1>
+
+    <div id="resumen"></div>
+
+    <h2>Total: $<span id="total">0</span></h2>
+
+    <button id="btn-pagar">Confirmar Pago</button>
+
+    <script>
+        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        const resumen = document.getElementById("resumen");
+        const totalSpan = document.getElementById("total");
+        const btn = document.getElementById("btn-pagar");
+
+        let total = 0;
+
+        // 🛒 Mostrar productos
+        if (carrito.length === 0) {
+            resumen.innerHTML = "<p>Tu carrito está vacío 🛒</p>";
+            btn.disabled = true;
+        } else {
+            carrito.forEach(prod => {
+                const cantidad = prod.cantidad || 1;
+                const subtotal = prod.precio * cantidad;
+                total += subtotal;
+
+                resumen.innerHTML += `
+                    <div class="item">
+                        <span>${prod.nombre} x${cantidad}</span>
+                        <span>$${subtotal.toLocaleString()}</span>
+                    </div>
+                `;
+            });
+        }
+
+        totalSpan.textContent = total.toLocaleString();
+
+        // 💳 Confirmar pago
+        btn.addEventListener("click", () => {
+            const confirmar = confirm("¿Confirmar pago?");
+
+            if (confirmar) {
+                alert("✅ Pago realizado con éxito");
+
+                // Vaciar carrito
+                localStorage.removeItem("carrito");
+
+                // Volver al inicio
+                window.location.href = "../lobby.html";
+            }
+        });
+    </script>
+
+</body>
+</html>

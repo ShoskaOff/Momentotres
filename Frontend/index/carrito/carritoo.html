@@ -35,6 +35,10 @@
         </div>
     <hr>
     <h3>Total a pagar: $<span id="total-carrito">0</span></h3>
+
+    <button id="btn-pagar">
+    💳 Pagar
+</button>
 </main>
 
 <footer>
@@ -109,6 +113,23 @@
 
     // Ejecutar renderizado al cargar
     renderizar();
+
+ const btnPagar = document.getElementById("btn-pagar");
+
+if (btnPagar) {
+    btnPagar.addEventListener("click", () => {
+
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+        if (carrito.length === 0) {
+            alert("Tu carrito está vacío 🛒");
+            return;
+        }
+
+        // 👉 REDIRECCIÓN
+        window.location.href = "pago.html";
+    });
+}   
 </script>
 </main>
 </body>
