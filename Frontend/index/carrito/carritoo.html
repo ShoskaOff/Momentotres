@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -10,109 +10,127 @@
     <link rel="stylesheet" href="/Frontend/styles/responsive.css">
     <link rel="icon" href="/Media/favicon.png" type="image/png">
     <link rel="stylesheet" href="carritoo.css">
-    <link rel="stylesheet" href="../styles/idioma.css"> <script src="/Frontend/js/servicios.js"></script>
+    <script src="/Frontend/js/servicios.js"></script>
     <script src="/Frontend/js/tema.js"></script>
-    <title data-i18n="carrito_titulo_pestana">Inicio - Carrito</title>
+    <title>Inicio</title>
 </head>
 
 <body>
     <header class="site-header">
         <a href="/Frontend/index/lobby.html"><figure class="logo"><img src="/Media/Logo.png" alt="image/png"></figure></a>
         <nav class="main-nav">
-            <a data-i18n="inicio" href="/Frontend/index/lobby.html">Inicio</a>
-            <a data-i18n="tratamientos" href="/Frontend/index/servicios.html">Tratamientos</a>
-            <a data-i18n="citas" href="/Frontend/index/citas.html">Citas</a>
-            <a data-i18n="contacto" href="/Frontend/index/contacto.html">Contacto</a>
-            <a data-i18n="login" href="/Frontend/index/inicio.html">Inicio Sesion</a>
+            <a href="/Frontend/index/lobby.html">Inicio</a>
+            <a href="/Frontend/index/servicios.html">Tratamientos</a>
+            <a href="/Frontend/index/citas.html">Citas</a>
+            <a href="/Frontend/index/contacto.html">Contacto</a>
+            <a href="/Frontend/index/inicio.html">Inicio Sesion</a>
             <a id="theme-toggle" type="button">🌙</a>
-
-            <button id="btn-es" type="button">🇪🇸</button>
-            <button id="btn-en" type="button">🇺🇸</button>
         </nav>
     </header>
 
-    <main class="carrito-container">
-        <h1 data-i18n="carrito_h1">Carrito de Tratamientos</h1>
-        <div id="contenedor-carrito">
-            </div>
-        <hr>
-        <h3>
-            <span data-i18n="total_pagar">Total a pagar</span>: $<span id="total-carrito">0</span>
-        </h3>
-    </main>
+    <main>
+        <main class="carrito-container">
+    <h1>Carrito de Tratamientos</h1>
+    <div id="contenedor-carrito">
+        </div>
+    <hr>
+    <h3>Total a pagar: $<span id="total-carrito">0</span></h3>
 
-    <footer>
-        <nav class="footer_navegacion">
-            <section class="contenido_footer" data-i18n="privacidad">Política de Privacidad</section>
-            <section class="contenido_footer" data-i18n="terminos">Términos de Servicio</section>
-        </nav>
-        <nav class="barra_inferior">
-            <section class="derechos_reservados">©DENTOLOGY. <span data-i18n="derechos">Todos los derechos reservados.</span></section>
-        </nav>
-    </footer>
+    <button id="btn-pagar">
+    💳 Pagar
+</button>
+</main>
 
-    <script src="../../js/carrito.js"></script>
-    <script src="../js/idioma.js"></script> <script>
-        const contenedor = document.getElementById('contenedor-carrito');
-        const totalSpan = document.getElementById('total-carrito');
+<footer>
+    <nav class="footer_navegacion">
+        <section class="contenido_footer">Política de Privacidad</section>
+        <section class="contenido_footer">Términos de Servicio</section>
+    </nav>
+    <nav class="barra_inferior">
+        <section class="derechos_reservados">©DENTOLOGY. Todos los derechos reservados.</section>
+    </nav>
+</footer>
 
-        function renderizar() {
-            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-            contenedor.innerHTML = '';
-            let total = 0;
-            
-            if (carrito.length === 0) {
-                // Usamos data-i18n aquí también para que el script de idioma lo traduzca si cambia
-                contenedor.innerHTML = `<p data-i18n="carrito_vacio">Tu carrito está vacío.</p>`;
-            } else {
-                carrito.forEach((prod, index) => {
-                    let cantidad = prod.cantidad || 1;
-                    total += (prod.precio * cantidad);
-                    contenedor.innerHTML += `
-                        <div class="item-carrito">
-                            <span>${prod.nombre}</span>
-                            <div>
-                                <button onclick="cambiarCantidad(${index}, -1)">-</button>
-                                <span>${cantidad}</span>
-                                <button onclick="cambiarCantidad(${index}, 1)">+</button>
-                            </div>
-                            <span>$${(prod.precio * cantidad).toLocaleString()}</span>
-                            <button onclick="eliminarProducto(${index})" data-i18n="eliminar">Eliminar</button>
-                        </div>`;
-                });
-            }
-            totalSpan.innerText = total.toLocaleString();
-            
-            // Forzamos la re-traducción de los elementos nuevos inyectados
-            if (window.traducirPagina) window.traducirPagina();
+<script src="../../js/carrito.js"></script>
+
+<script>
+    const contenedor = document.getElementById('contenedor-carrito');
+    const totalSpan = document.getElementById('total-carrito');
+
+    function renderizar() {
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        contenedor.innerHTML = '';
+        let total = 0;
+        
+        if (carrito.length === 0) {
+            contenedor.innerHTML = '<p>Tu carrito está vacío.</p>';
+        } else {
+            carrito.forEach((prod, index) => {
+                let cantidad = prod.cantidad || 1;
+                total += (prod.precio * cantidad);
+                contenedor.innerHTML += `
+                    <div class="item-carrito">
+                        <span>${prod.nombre}</span>
+                        <div>
+                            <button onclick="cambiarCantidad(${index}, -1)">-</button>
+                            <span>${cantidad}</span>
+                            <button onclick="cambiarCantidad(${index}, 1)">+</button>
+                        </div>
+                        <span>$${(prod.precio * cantidad).toLocaleString()}</span>
+                        <button onclick="eliminarProducto(${index})">Eliminar</button>
+                    </div>`;
+            });
         }
+        totalSpan.innerText = total.toLocaleString();
+    }
 
-        window.cambiarCantidad = function(index, cambio) {
-            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-            carrito[index].cantidad = (carrito[index].cantidad || 1) + cambio;
-            if (carrito[index].cantidad <= 0) carrito.splice(index, 1);
-            localStorage.setItem('carrito', JSON.stringify(carrito));
-            renderizar();
-        };
-
-        window.eliminarProducto = function(index) {
-            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-            carrito.splice(index, 1);
-            localStorage.setItem('carrito', JSON.stringify(carrito));
-            renderizar();
-        };
-
-        const themeToggle = document.getElementById('theme-toggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
-            localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
-        });
-
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-theme');
-        }
-
+    // Funciones de control
+    window.cambiarCantidad = function(index, cambio) {
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        carrito[index].cantidad = (carrito[index].cantidad || 1) + cambio;
+        if (carrito[index].cantidad <= 0) carrito.splice(index, 1);
+        localStorage.setItem('carrito', JSON.stringify(carrito));
         renderizar();
-    </script>
+    };
+
+    window.eliminarProducto = function(index) {
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        carrito.splice(index, 1);
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+        renderizar();
+    };
+
+    // --- Lógica del Tema Oscuro ---
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-theme');
+        localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+    });
+
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+    }
+
+    // Ejecutar renderizado al cargar
+    renderizar();
+
+ const btnPagar = document.getElementById("btn-pagar");
+
+if (btnPagar) {
+    btnPagar.addEventListener("click", () => {
+
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+        if (carrito.length === 0) {
+            alert("Tu carrito está vacío 🛒");
+            return;
+        }
+
+        // 👉 REDIRECCIÓN
+        window.location.href = "pago.html";
+    });
+}   
+</script>
+</main>
 </body>
 </html>
