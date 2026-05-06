@@ -178,14 +178,21 @@ dialog[open] {
 
 /* ✨ HOVER ZOOM SUAVE */
 .servicio-card:hover {
+  transition: 1,2s;
   transform: scale(1.02) translateY(-5px);
   box-shadow: 0 12px 25px rgba(0,0,0,0.15);
 }
 
 /* Zoom imagen más sutil */
 .servicio-card:hover img {
+  transition: 1s;
   transform: scale(1.06);
 }
+
+
+
+
+
 
 /* 📱 TABLET */
 @media (max-width: 768px) {
