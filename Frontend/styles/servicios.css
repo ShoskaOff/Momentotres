@@ -75,72 +75,125 @@ body {
   background: var(--color-fondo);
 }
 
-/* 🔥 MAIN (AHORA OCUPA TODO EL ANCHO) */
+/* MAIN */
 main {
   margin-top: 100px;
   width: 100%;
-  max-width: 100%;
   padding: 0;
 }
 
-/* TITULO */
 .titulo-tratamientos {
   padding: 20px;
   text-align: center;
 }
 
-/* 🔥 GRID CONTENEDOR PRINCIPAL */
 .tratamientos-grid {
   width: 100%;
-  max-width: 100%;
   padding: 20px;
 }
 
-/* 🔥 GRID REAL DE TARJETAS */
+/* GRID TARJETAS */
 .contenedor-servicios {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 👈 IZQUIERDA / DERECHA */
-  gap: 20px;
-
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
   width: 100%;
 }
 
-/* TARJETAS */
-article {
-  background: var(--color-blanco);
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 1px solid var(--color-borde);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.servicio-card:hover {
+  transform: scale(1.02) translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
 }
 
-/* IMAGEN */
-article img {
+/* Zoom imagen más sutil */
+.servicio-card:hover img {
+  transform: scale(1.06);
+}
+
+/* =================================================
+   🔥 TARJETAS SERVICIOS (AQUI ESTA EL CAMBIO)
+   ================================================= */
+
+.servicio-card {
+  background: var(--color-blanco);
+  border-radius: 15px;
+  border: 1px solid var(--color-borde);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.servicio-card a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding-bottom: 20px;
+}
+
+/* Imagen */
+.servicio-card img {
   width: 100%;
   height: 200px;
   object-fit: cover;
-  border-radius: 8px;
+  margin-bottom: 15px;
+  transition: transform 0.45s ease;
 }
 
-/* BOTONES */
-button {
-  background: var(--color-boton-base);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  cursor: pointer;
+/* Contenido */
+.servicio-card div {
+  padding: 0 15px;
+}
+
+.servicio-card h3 {
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.servicio-card p {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* ✨ HOVER ZOOM SUAVE */
+.servicio-card:hover {
+  transform: scale(1.02) translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+/* Zoom imagen más sutil */
+.servicio-card:hover img {
+  transform: scale(1.06);
+}
+
+/* Brillo elegante */
+.servicio-card::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(
+      120deg,
+      transparent 20%,
+      rgba(255,255,255,0.25),
+      transparent 80%
+  );
+  opacity:0;
+  transition: opacity .4s ease;
+}
+
+.servicio-card:hover::after {
+  opacity:1;
 }
 
 /* BOTÓN DETALLE */
 .btn-detalle {
-  background: linear-gradient(
-    135deg,
-    var(--color-gradiente-1),
-    var(--color-gradiente-2)
-  );
+  background: linear-gradient(135deg,var(--color-gradiente-1),var(--color-gradiente-2));
   padding: 12px;
   color: white;
   text-decoration: none;
@@ -176,29 +229,21 @@ dialog[open] {
   padding: 10px 20px;
 }
 
-/* 📱 TABLET */
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .contenedor-servicios {
-    grid-template-columns: 1fr; /* 👈 1 columna */
+    grid-template-columns: 1fr;
   }
-
-  .site-header {
-    height: 80px;
-  }
-
-  main {
-    margin-top: 80px;
-  }
+  .site-header { height: 80px; }
+  main { margin-top: 80px; }
 }
 
-/* 📱 CELULAR */
 @media (max-width: 576px) {
   .site-header {
     flex-direction: column;
     height: auto;
     padding: 10px;
   }
-
   .main-nav {
     flex-wrap: wrap;
     justify-content: center;
